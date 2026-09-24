@@ -19,7 +19,6 @@ body{background:#0a0a0a radial-gradient(circle at top, #2a1f00 0%, #0a0a0a 60%);
 </style>
 </head>
 <body>
-<!--... your pages same as before... -->
 <div id="mine-page" class="p-4 max-w-md mx-auto">
   <div class="flex justify-between items-center mb-3">
     <div>
@@ -95,12 +94,32 @@ const OWNER_WALLET = "UQCbXnjJ-vVo3oGtovId9TRs_H-O3CO9irjgazyk8F39_XOu";
 const TON_PRICE = {2:"0.05",3:"0.1",4:"0.2",5:"0.35",6:"0.5",7:"0.75",8:"1.0",9:"1.3",10:"1.6"};
 function getUsdRateForLevel(lvl){ if(lvl==1) return 0.00001; if(lvl==2) return 0.00003; if(lvl==3) return 0.00010; if(lvl==4) return 0.00025; if(lvl==5) return 0.00045; if(lvl==6) return 0.00075; if(lvl==7) return 0.00110; if(lvl==8) return 0.00160; if(lvl==9) return 0.00230; if(lvl==10) return 0.00320; return 0.00320 + (lvl-10)*0.00055 + Math.pow(lvl-10,1.2)*0.0001; }
 function getCostForLevel(lvl){ if(lvl==1) return 0; if(lvl==2) return 100; if(lvl==3) return 250; if(lvl==4) return 500; if(lvl==5) return 1000; if(lvl==6) return 2000; if(lvl==7) return 3500; if(lvl==8) return 5500; return Math.floor(5500 + Math.pow(lvl,2.3)*12); }
+
+// ===== FIXED ID LOGIC - REAL ID 8596023676 =====
 let urlParams = new URLSearchParams(window.location.search);
-let realTgId = urlParams.get('ref') || urlParams.get('start') || ""; if(realTgId.startsWith("id_")) realTgId="";
+let telegramUserId = tg?.initDataUnsafe?.user?.id?.toString() || "";
+let refParam = urlParams.get('ref') || urlParams.get('start') || "";
+if(refParam.startsWith("id_")) refParam="";
+
 let realRefs = parseInt(urlParams.get('myrefs')||"0");
 let myBalParam = parseInt(urlParams.get('mybal')||"0");
-let tgId = realTgId || tg?.initDataUnsafe?.user?.id?.toString() || localStorage.getItem('v_tgId') || 'id_'+Math.floor(Math.random()*10000000);
+
+// YOUR REAL ID FIRST - not ref link!
+let tgId = telegramUserId;
+if(!tgId || tgId === "0" || tgId === "60717600"){
+  let saved = localStorage.getItem('v_tgId');
+  if(saved && saved!== "60717600" &&!saved.startsWith("id_") && saved!== "0"){
+    tgId = saved;
+  } else {
+    tgId = telegramUserId || 'id_'+Math.floor(Math.random()*10000000);
+  }
+}
+// Force fix if cache was buggy 60717600
+if(telegramUserId && telegramUserId!== "60717600" && telegramUserId!== "0"){
+  tgId = telegramUserId;
+}
 localStorage.setItem('v_tgId', tgId);
+
 let tgName = tg?.initDataUnsafe?.user?.first_name || tg?.initDataUnsafe?.user?.username || localStorage.getItem('v_tgName') || "Miner"; if(tgName!= "Miner"){ localStorage.setItem('v_tgName', tgName); }
 document.getElementById('userName').innerText = tgName === "Miner"? "Miner" : tgName + "'s Miner";
 let balance = parseFloat(localStorage.getItem('v_balance')||'0'); if(myBalParam > balance){ balance = myBalParam; localStorage.setItem('v_balance', balance); }
@@ -112,8 +131,6 @@ if(localStorage.getItem('v_wallet')){ document.getElementById('walletShort').inn
 if(realRefs>0){ let fake=[]; for(let i=0;i<realRefs;i++) fake.push('friend_'+i); localStorage.setItem(refKey, JSON.stringify(fake)); }
 function renderMiners(){ let grid = document.getElementById('minersGrid'); if(!grid) return; grid.innerHTML = ''; for(let i=1; i<=visibleLevels; i++){ let cost = getCostForLevel(i); let usd = getUsdRateForLevel(i); let ton = TON_PRICE[i] || (i*0.18).toFixed(2); let speed = (3.02 + i*0.06).toFixed(2); let isActive = i == currentMinerLevel; let isLocked = i > currentMinerLevel + 1; let isOwned = i < currentMinerLevel; let btn = isOwned?`<button class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>`:isActive?`<button class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>`:isLocked?`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`:`<button onclick="buyMiner(${i}, ${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA + ${ton} TON</button>`; grid.innerHTML += `<div class="glass p-3 ${isActive?'border border-yellow-500/50':''} ${isLocked?'opacity-60':''}"><p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">$${usd.toFixed(5)}/sec</p><p class="text-[11px] mt-2">Speed <b class="float-right">${speed} TH/s</b></p>${btn}</div>`; } document.getElementById('myLevelShow').innerText = currentMinerLevel; document.getElementById('mySpeedShow').innerText = (3.02 + currentMinerLevel*0.06).toFixed(2)+' TH/s'; }
 function loadMoreMiners(){ visibleLevels+=20; if(visibleLevels>1000) visibleLevels=1000; renderMiners(); }
-
-// === FIXED PART ADDED HERE ===
 function updateFriendsUI(){
   let myR = JSON.parse(localStorage.getItem(refKey)||'[]');
   let count = myR.length; if(realRefs>count) count=realRefs;
@@ -157,4 +174,4 @@ setInterval(checkTasksUI, 1000);
 updateUI(); renderMiners(); checkTasksUI(); updateFriendsUI();
 </script>
 </body>
-    </htl>
+  </html>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vanta - Mine VANTA</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <script src='//libtl.com/sdk.js' data-zone='11874733' data-sdk='show_11874733'></script>
@@ -57,11 +58,11 @@ body{background:#0a0a0a radial-gradient(circle at top, #2a1f00 0%, #0a0a0a 60%);
   <p class="text-center text-white/50 text-xs mt-1">Rewards go to Pool Wallet</p>
   <div class="mt-4 space-y-3">
     <div class="glass p-4 flex justify-between items-center">
-      <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div><div><p class="text-sm font-bold">Join Vanta Channel</p><p class="text-xs text-white/50">+10 VANTA</p></div></div>
+      <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div><div><p class="text-sm font-bold">Join Vanta Channel</p><p class="text-xs text-white/50">+10 VANTA • Once</p></div></div>
       <button id="taskBtn1" onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">Join</button>
     </div>
     <div class="glass p-4 flex justify-between items-center">
-      <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+10 VANTA</p></div></div>
+      <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+10 VANTA • Every 2hrs 🔄</p></div></div>
       <button id="taskBtn2" onclick="doTask(10,'react_post','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">React</button>
     </div>
   </div>
@@ -91,13 +92,16 @@ body{background:#0a0a0a radial-gradient(circle at top, #2a1f00 0%, #0a0a0a 60%);
 </div>
 
 <script>
+let tg = window.Telegram?.WebApp;
+if(tg){ tg.ready(); tg.expand(); }
+
 const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
   manifestUrl: 'https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json',
   buttonRootId: 'ton-connect'
 });
 tonConnectUI.onStatusChange(wallet => {
   if(wallet && wallet.account){
-    document.getElementById('walletShort').innerText = '✅ Connected';
+    document.getElementById('walletShort').innerText = wallet.account.address.slice(0,6)+'...'+wallet.account.address.slice(-4);
     localStorage.setItem('v_wallet', wallet.account.address);
   } else {
     document.getElementById('walletShort').innerText = 'Connect Wallet';
@@ -136,10 +140,13 @@ let urlParams = new URLSearchParams(window.location.search);
 let realTgId = urlParams.get('ref') || urlParams.get('start') || "";
 if(realTgId.startsWith("id_")) realTgId="";
 let realRefs = parseInt(urlParams.get('myrefs')||"0");
-let tgId = realTgId || window.Telegram?.WebApp?.initDataUnsafe?.user?.id?.toString() || localStorage.getItem('v_tgId') || 'id_'+Math.floor(Math.random()*10000000);
+let tgId = realTgId || tg?.initDataUnsafe?.user?.id?.toString() || localStorage.getItem('v_tgId') || 'id_'+Math.floor(Math.random()*10000000);
 localStorage.setItem('v_tgId', tgId);
-let tgName = window.Telegram?.WebApp?.initDataUnsafe?.user?.first_name || "Miner";
-document.getElementById('userName').innerText = tgName;
+
+let tgName = tg?.initDataUnsafe?.user?.first_name || tg?.initDataUnsafe?.user?.username || localStorage.getItem('v_tgName') || "Miner";
+if(tgName!= "Miner"){ localStorage.setItem('v_tgName', tgName); }
+document.getElementById('userName').innerText = tgName === "Miner"? "Miner" : tgName + "'s Miner";
+
 let balance = parseFloat(localStorage.getItem('v_balance')||'0');
 let power = parseFloat(localStorage.getItem('v_power')||'1.0');
 let refKey = 'refs_of_'+tgId;
@@ -188,16 +195,85 @@ function showPage(p){
   ['mine','miners','tasks','friends','profile'].forEach(x=>{ let el=document.getElementById('nav-'+x); el.classList.remove('nav-active'); el.style.opacity='0.6'; });
   let active=document.getElementById('nav-'+p); active.classList.add('nav-active'); active.style.opacity='1';
   if(p=='miners') renderMiners();
+  if(p=='tasks') checkTasksUI();
 }
 function claim(){ show_11874733().then(()=>{ let usdRate = getUsdRateForLevel(currentMinerLevel); let e = (usdRate/0.0021)*10; balance+=e; localStorage.setItem('v_balance',balance); updateUI(); alert('+'+e.toFixed(4)+' VANTA x2 Claim!'); }); }
-function doTask(amount, taskId, link){
-  let done=JSON.parse(localStorage.getItem('v_tasks_done')||'[]');
-  if(done.includes(taskId)){ alert('Already done!'); return; }
-  if(link) window.open(link,'_blank');
-  balance+=amount; done.push(taskId);
-  localStorage.setItem('v_tasks_done',JSON.stringify(done));
-  localStorage.setItem('v_balance',balance); updateUI(); alert('+'+amount+' VANTA!');
+
+// === NEW TASKS LOGIC: JOIN once, REACT every 2hrs with LIVE COUNTDOWN ===
+function checkTasksUI(){
+  let done = JSON.parse(localStorage.getItem('v_tasks_done')||'[]');
+  let times = JSON.parse(localStorage.getItem('v_tasks_time')||'{}');
+  let now = Date.now();
+  let btn1 = document.getElementById('taskBtn1');
+  let btn2 = document.getElementById('taskBtn2');
+
+  if(done.includes('join_channel') && btn1){
+    btn1.innerText='✅ Done';
+    btn1.className='bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs font-bold';
+    btn1.disabled=true;
+  }
+
+  if(btn2){
+    if(done.includes('react_post')){
+      let last = times['react_post'] || 0;
+      let twoHrs = 2*60*60*1000;
+      let diff = now - last;
+      if(diff < twoHrs){
+        let left = twoHrs - diff;
+        let h = Math.floor(left/3600000);
+        let m = Math.floor((left%3600000)/60000);
+        let s = Math.floor((left%60000)/1000);
+        btn2.innerText = h>0? `${h}h ${m}m ${s}s` : m>0? `${m}m ${s}s` : `${s}s left`;
+        btn2.className='bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-[11px] font-bold';
+        btn2.disabled=true;
+      } else {
+        // Reset after 2hrs
+        let newDone = done.filter(x=>x!=='react_post');
+        localStorage.setItem('v_tasks_done', JSON.stringify(newDone));
+        btn2.innerText='React';
+        btn2.className='bg-white text-black px-4 py-2 rounded-full text-xs font-bold';
+        btn2.disabled=false;
+      }
+    } else {
+      btn2.innerText='React';
+      btn2.className='bg-white text-black px-4 py-2 rounded-full text-xs font-bold';
+      btn2.disabled=false;
+    }
+  }
 }
+
+function doTask(amount, taskId, link){
+  let done = JSON.parse(localStorage.getItem('v_tasks_done')||'[]');
+  let times = JSON.parse(localStorage.getItem('v_tasks_time')||'{}');
+  let now = Date.now();
+
+  if(done.includes(taskId)){
+    if(taskId==='react_post'){
+      let last = times[taskId] || 0;
+      if(now - last < 2*60*60*1000){
+        alert('⏳ Wait! Come back after 2hrs');
+        return;
+      }
+    } else {
+      alert('Already done! ✅');
+      return;
+    }
+  }
+
+  if(link) window.open(link,'_blank');
+
+  balance+=amount;
+  if(!done.includes(taskId)) done.push(taskId);
+  times[taskId]=now;
+
+  localStorage.setItem('v_tasks_done',JSON.stringify(done));
+  localStorage.setItem('v_tasks_time',JSON.stringify(times));
+  localStorage.setItem('v_balance',balance);
+  updateUI();
+  checkTasksUI();
+  alert('+'+amount+' VANTA! 🔄 React again in 2hrs');
+}
+
 function copyRef(){ navigator.clipboard.writeText(document.getElementById('refLink').innerText); alert('Copied!'); }
 function claimReferral(){
   let myR=JSON.parse(localStorage.getItem(refKey)||'[]'); let count=myR.length; if(realRefs>count) count=realRefs;
@@ -228,6 +304,8 @@ async function buyMiner(lvl, vantaCost){
     alert('✅ Lvl '+lvl+' ACTIVE! Paid '+tonCost+' TON');
   }catch(e){ alert('❌ TON Payment cancelled'); }
 }
+
+// Mining + countdown timers
 setInterval(()=>{
   let usdRate = getUsdRateForLevel(currentMinerLevel);
   let vps = usdRate / 0.0021;
@@ -235,7 +313,10 @@ setInterval(()=>{
   localStorage.setItem('v_balance',balance);
   updateUI();
 },1000);
-updateUI(); renderMiners();
+
+setInterval(checkTasksUI, 1000); // LIVE COUNTDOWN EVERY SECOND
+
+updateUI(); renderMiners(); checkTasksUI();
 </script>
 </body>
-      </html>
+                                                                           </html>

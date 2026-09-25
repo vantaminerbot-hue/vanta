@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -61,21 +61,31 @@ let tgName = tg?.initDataUnsafe?.user?.first_name || tg?.initDataUnsafe?.user?.u
 document.getElementById('userName').innerText = tgName === "Miner"? "Miner" : tgName + "'s Miner";
 let balance = parseFloat(localStorage.getItem('v_balance')||'0'); if(myBalParam > balance){ balance = myBalParam; localStorage.setItem('v_balance', balance); }
 let power = parseFloat(localStorage.getItem('v_power')||'1.0');
-let refKey = 'refs_of_'+tgId; let refClaimed = parseInt(localStorage.getItem('v_ref_claimed')||'0');
+let refKey = 'refs_of_'+tgId;
+let refClaimedKey = 'v_ref_claimed_'+tgId;
+let refClaimed = parseInt(localStorage.getItem(refClaimedKey) || localStorage.getItem('v_ref_claimed') || '0');
 let currentMinerLevel = parseInt(localStorage.getItem('v_miner_level')||'1'); let visibleLevels = 20;
 document.getElementById('refLink').innerText='https://t.me/Vanta23bot?start='+tgId; document.getElementById('userIdShow').innerText=tgId;
 if(localStorage.getItem('v_wallet')){ document.getElementById('walletShort').innerText='✅ Connected'; }
 if(realRefs>0){ let fake=[]; for(let i=0;i<realRefs;i++) fake.push('friend_'+i); localStorage.setItem(refKey, JSON.stringify(fake)); }
+
+// --- FIXED JOIN CHECK ---
+function isUserJoined(){
+  let joinedFlag = localStorage.getItem('v_joined_channel');
+  let tasksDone = JSON.parse(localStorage.getItem('v_tasks_done')||'[]');
+  return joinedFlag || tasksDone.includes('join_channel');
+}
+
 const AdsgramBlockId = "49829";
 let AdController = null;
 try { if(window.Adsgram) { AdController = window.Adsgram.init({ blockId: AdsgramBlockId }); } } catch(e){ console.log("Adsgram init error", e); }
 function renderMiners(){ let grid = document.getElementById('minersGrid'); if(!grid) return; grid.innerHTML = ''; for(let i=1; i<=visibleLevels; i++){ let cost = getCostForLevel(i); let usd = getUsdRateForLevel(i); let ton = TON_PRICE[i] || (i*0.18).toFixed(2); let speed = (3.02 + i*0.06).toFixed(2); let isActive = i == currentMinerLevel; let isLocked = i > currentMinerLevel + 1; let isOwned = i < currentMinerLevel; let btn = isOwned?`<button class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>`:isActive?`<button class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>`:isLocked?`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`:`<button onclick="buyMiner(${i}, ${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA + ${ton} TON</button>`; grid.innerHTML += `<div class="glass p-3 ${isActive?'border border-yellow-500/50':''} ${isLocked?'opacity-60':''}"><p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">$${usd.toFixed(5)}/sec</p><p class="text-[11px] mt-2">Speed <b class="float-right">${speed} TH/s</b></p>${btn}</div>`; } document.getElementById('myLevelShow').innerText = currentMinerLevel; document.getElementById('mySpeedShow').innerText = (3.02 + currentMinerLevel*0.06).toFixed(2)+' TH/s'; }
 function loadMoreMiners(){ visibleLevels+=20; if(visibleLevels>1000) visibleLevels=1000; renderMiners(); }
 function updateFriendsUI(){ let myR = JSON.parse(localStorage.getItem(refKey)||'[]'); let count = myR.length; if(realRefs>count) count=realRefs; let total = count*100; let unclaimed = total-refClaimed; if(unclaimed<0) unclaimed=0; document.getElementById('refCount').innerText = count; document.getElementById('refEarned').innerText = unclaimed; let listDiv = document.getElementById('refList'); if(listDiv){ listDiv.innerHTML = ""; for(let i=0;i<count;i++){ listDiv.innerHTML += `<div class="glass p-3 text-xs flex justify-between"><span>👤 Friend ${i+1}</span><span class="text-green-400">+100 VANTA</span></div>`; } if(count==0){ listDiv.innerHTML = `<p class="text-center text-white/40 text-xs mt-4">No referrals yet.</p>`; } } }
-function updateUI(){ document.getElementById('balance').innerText=balance.toFixed(4); document.getElementById('pool').innerText=balance.toFixed(4); document.getElementById('pool2').innerText=balance.toFixed(4); document.getElementById('balProfile').innerText=balance.toFixed(4); document.getElementById('holding').innerText='30'; let usdRate = getUsdRateForLevel(currentMinerLevel); let vantaPerSec = usdRate / 0.0021; document.getElementById('power').innerText=(3.02 + currentMinerLevel*0.06).toFixed(2); document.getElementById('miningPlus').innerText='+'+vantaPerSec.toFixed(6)+' VANTA/s'; document.getElementById('rateShow').innerText=usdRate.toFixed(5); document.getElementById('usdProfile').innerText=(balance*0.0021).toFixed(2); document.getElementById('lvl').innerText=currentMinerLevel; updateFriendsUI(); let badge=document.getElementById('joinStatusBadge'); if(badge){ if(localStorage.getItem('v_joined_channel')){ badge.innerText='● JOINED'; badge.className='bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500'; } else { badge.innerText='● NOT JOINED'; badge.className='bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500'; } } }
+function updateUI(){ document.getElementById('balance').innerText=balance.toFixed(4); document.getElementById('pool').innerText=balance.toFixed(4); document.getElementById('pool2').innerText=balance.toFixed(4); document.getElementById('balProfile').innerText=balance.toFixed(4); document.getElementById('holding').innerText='30'; let usdRate = getUsdRateForLevel(currentMinerLevel); let vantaPerSec = usdRate / 0.0021; document.getElementById('power').innerText=(3.02 + currentMinerLevel*0.06).toFixed(2); document.getElementById('miningPlus').innerText='+'+vantaPerSec.toFixed(6)+' VANTA/s'; document.getElementById('rateShow').innerText=usdRate.toFixed(5); document.getElementById('usdProfile').innerText=(balance*0.0021).toFixed(2); document.getElementById('lvl').innerText=currentMinerLevel; updateFriendsUI(); let badge=document.getElementById('joinStatusBadge'); if(badge){ if(isUserJoined()){ badge.innerText='● JOINED'; badge.className='bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500'; } else { badge.innerText='● NOT JOINED'; badge.className='bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500'; } } }
 function showPage(p){ ['mine','miners','tasks','friends','profile'].forEach(x=>document.getElementById(x+'-page').classList.add('hidden')); document.getElementById(p+'-page').classList.remove('hidden'); ['mine','miners','tasks','friends','profile'].forEach(x=>{ let el=document.getElementById('nav-'+x); el.classList.remove('nav-active'); el.style.opacity='0.6'; }); let active=document.getElementById('nav-'+p); active.classList.add('nav-active'); active.style.opacity='1'; if(p=='miners') renderMiners(); if(p=='tasks') checkTasksUI(); if(p=='friends') updateFriendsUI(); if(p=='profile') renderWithdrawHistory(); }
 function claim(){
-  if(!localStorage.getItem('v_joined_channel')){ alert('❌ You must JOIN channel first! Go to Tasks and Join @VantaBotHub'); showPage('tasks'); return; }
+  if(!isUserJoined()){ alert('❌ You must JOIN channel first! Go to Tasks and Join @VantaBotHub'); showPage('tasks'); return; }
   if(isClaiming) return;
   isClaiming = true;
   let btn = document.getElementById('claimBtn');
@@ -114,7 +124,7 @@ let withdrawRequests = JSON.parse(localStorage.getItem('v_withdraw_reqs')||'[]')
 function checkTasksUI(){
   let done = JSON.parse(localStorage.getItem('v_tasks_done')||'[]');
   let times = JSON.parse(localStorage.getItem('v_tasks_time')||'{}');
-  let hasJoined = localStorage.getItem('v_joined_channel');
+  let hasJoined = isUserJoined();
   let now = Date.now();
   let btn1 = document.getElementById('taskBtn1');
   let btn2 = document.getElementById('taskBtn2');
@@ -158,7 +168,7 @@ function doTask(amount, taskId, link){
   let done = JSON.parse(localStorage.getItem('v_tasks_done')||'[]');
   let times = JSON.parse(localStorage.getItem('v_tasks_time')||'{}');
   let now = Date.now();
-  if(taskId!== 'join_channel' &&!localStorage.getItem('v_joined_channel')){
+  if(taskId!== 'join_channel' &&!isUserJoined()){
     alert('❌ You must JOIN our channel first!'); showPage('tasks'); return;
   }
   if(taskId === 'join_channel'){
@@ -188,10 +198,10 @@ function doTask(amount, taskId, link){
 }
 function copyRef(){ navigator.clipboard.writeText(document.getElementById('refLink').innerText); alert('Copied!'); }
 function claimReferral(){
-  if(!localStorage.getItem('v_joined_channel')){ alert('❌ Join channel first!'); showPage('tasks'); return; }
+  if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; }
   let myR=JSON.parse(localStorage.getItem(refKey)||'[]'); let count=myR.length; if(realRefs>count) count=realRefs; let total=count*100; let unclaimed=total-refClaimed; if(unclaimed<=0){ alert(count==0?'Invite friends first!':'All claimed'); return; }
-  if(AdController){ AdController.show().then((res)=>{ if(res && res.done){ balance+=unclaimed; refClaimed+=unclaimed; localStorage.setItem('v_balance',balance); localStorage.setItem('v_ref_claimed',refClaimed); updateUI(); alert('+'+unclaimed+' claimed!'); } }); }
-  else { balance+=unclaimed; refClaimed+=unclaimed; localStorage.setItem('v_balance',balance); localStorage.setItem('v_ref_claimed',refClaimed); updateUI(); alert('+'+unclaimed+' claimed!'); }
+  if(AdController){ AdController.show().then((res)=>{ if(res && res.done){ balance+=unclaimed; refClaimed+=unclaimed; localStorage.setItem('v_balance',balance); localStorage.setItem(refClaimedKey,refClaimed); localStorage.setItem('v_ref_claimed',refClaimed); updateUI(); alert('+'+unclaimed+' claimed!'); } }); }
+  else { balance+=unclaimed; refClaimed+=unclaimed; localStorage.setItem('v_balance',balance); localStorage.setItem(refClaimedKey,refClaimed); localStorage.setItem('v_ref_claimed',refClaimed); updateUI(); alert('+'+unclaimed+' claimed!'); }
 }
 function calcReceive(){ let v=parseFloat(document.getElementById('withdrawAmt').value)||0; let r=v-30; if(r<0)r=0; document.getElementById('receiveAmt').innerText=r.toFixed(2); }
 function withdraw(){
@@ -200,7 +210,7 @@ function withdraw(){
   if(v>balance){ alert('Insufficient'); return; }
   let wallet = localStorage.getItem('v_wallet') || '';
   if(!wallet){ alert('❌ Connect wallet first!'); return; }
-  if(!localStorage.getItem('v_joined_channel')){ alert('❌ Join channel first!'); showPage('tasks'); return; }
+  if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; }
   if(!confirm(`Withdraw ${v} VANTA Receive ${v-30} Wallet ${wallet.slice(0,10)} Confirm?`)) return;
   balance-=v;
   let req = {id: Date.now(), amount: v, receive: v-30, wallet: wallet, userId: tgId, userName: tgName, date: new Date().toLocaleString(), status: 'pending'};
@@ -221,4 +231,4 @@ setInterval(checkTasksUI, 1000);
 updateUI(); renderMiners(); checkTasksUI(); updateFriendsUI(); renderWithdrawHistory();
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                          </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                  </html>

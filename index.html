@@ -41,7 +41,6 @@ button:disabled{opacity:.65;cursor:not-allowed}
     <div class="glass p-4 flex justify-between items-center border border-cyan-500/50 bg-cyan-500/5"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center">🔬</div><div><p class="text-sm font-bold">Join Quanta Lab</p><p class="text-xs text-white/50">+3 VANTA</p></div></div><button id="taskBtnQuanta" onclick="doTask(3,'quanta_join','https://t.me/Quanta_Lab')" class="bg-cyan-400 text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
     <div class="glass p-4 flex justify-between items-center border border-orange-500/50 bg-orange-500/5"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center">🤖</div><div><p class="text-sm font-bold">Join PoeMiner Bot</p><p class="text-xs text-white/50">+3 VANTA</p></div></div><button id="taskBtnPoe" onclick="doTask(3,'poe_join','https://t.me/PoeMiner_Bot?start=8596023676')" class="bg-orange-400 text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
     <div class="glass p-4 flex justify-between items-center border border-blue-500/50 bg-blue-500/5"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">🏢</div><div><p class="text-sm font-bold">Join Victor's Company</p><p class="text-xs text-white/50">+3 VANTA</p></div></div><button id="taskBtnVictor" onclick="doTask(3,'victor_join','https://t.me/VictorsCompanybot/app?startapp=ref_5DC2A2CECD')" class="bg-blue-400 text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
-    <div class="glass p-4 flex justify-between items-center border border-yellow-500/50 bg-yellow-500/5"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">⛏️</div><div><p class="text-sm font-bold">Join HashBe Bot</p><p class="text-xs text-white/50">+3 VANTA</p></div></div><button id="taskBtnHashbe" onclick="doTask(3,'hashbe_join','https://t.me/hashbe_bot?start=6909180225')" class="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
     <div class="glass p-4 flex justify-between items-center border border-green-500/50"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div><div><p class="text-sm font-bold">Watch Monetag Ads</p><p class="text-xs text-white/50">+1 VANTA to app pool</p><p class="text-xs text-green-400 mt-1">Today: <b id="monetagAdCount">0</b>/20</p></div></div><button id="monetagTaskBtn" onclick="watchMonetagTaskAd()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad</button></div>
     <div class="glass p-4 flex justify-between items-center border border-yellow-500/50"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div><div><p class="text-sm font-bold">Join Vanta Channel <span class="text-red-400">*</span></p><p class="text-xs text-white/50">+10 VANTA • Required</p></div></div><button id="taskBtn1" onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
     <div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 VANTA • Every 2hrs</p></div></div><button id="taskBtn2" onclick="doTask(5,'react_post','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div>
@@ -88,7 +87,7 @@ function checkTasksUI(){
   const done=readArray("v_tasks_done");
   const times=readObject("v_tasks_time");
   const now=Date.now();
-  const configs=[["taskBtnEpsilon","epsilon_join"],["taskBtnQuanta","quanta_join"],["taskBtnPoe","poe_join"],["taskBtnVictor","victor_join"],["taskBtnHashbe","hashbe_join"],["taskBtn1","join_channel"]];
+  const configs=[["taskBtnEpsilon","epsilon_join"],["taskBtnQuanta","quanta_join"],["taskBtnPoe","poe_join"],["taskBtnVictor","victor_join"],["taskBtn1","join_channel"]];
   configs.forEach(([id,task])=>{
     const btn=document.getElementById(id);
     if(!btn) return;
@@ -121,7 +120,7 @@ function doTask(amount, taskId, link){
   const amountSafe=Math.max(0,safeNum(amount,0));
   if(done.includes(taskId)&&taskId!=="react_post"){alert("Already done ✅");return;}
   if(taskId!=="join_channel"&&!isUserJoined()){alert("Join Vanta channel first");showPage("tasks");return;}
-  let btnId=taskId==="epsilon_join"?"taskBtnEpsilon":taskId==="quanta_join"?"taskBtnQuanta":taskId==="poe_join"?"taskBtnPoe":taskId==="victor_join"?"taskBtnVictor":taskId==="hashbe_join"?"taskBtnHashbe":taskId==="join_channel"?"taskBtn1":"taskBtn2";
+  let btnId=taskId==="epsilon_join"?"taskBtnEpsilon":taskId==="quanta_join"?"taskBtnQuanta":taskId==="poe_join"?"taskBtnPoe":taskId==="victor_join"?"taskBtnVictor":taskId==="join_channel"?"taskBtn1":"taskBtn2";
   const btn=document.getElementById(btnId);
   if(!btn) return;
   if(btn.innerText==="Join"){
@@ -154,13 +153,10 @@ function finishMonetagTaskAd(){let count=getMonetagAdCount();if(count>=MONETAG_D
 function renderMiners(){const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML="";for(let i=1;i<=visibleLevels;i++){const cost=getCostForLevel(i);const rate=getVantaPerSec(i);const ton=TON_PRICE[i]||(i*0.18).toFixed(2);const speed=(3.02+i*0.06).toFixed(2);const isActive=i===currentMinerLevel;const isLocked=i>currentMinerLevel+1;const isOwned=i<currentMinerLevel;let buttonHtml;if(isOwned){buttonHtml='<button disabled class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>';}else if(isActive){buttonHtml='<button disabled class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>';}else if(isLocked){buttonHtml=`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`;}else{buttonHtml=`<button onclick="buyMiner(${i},${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA + ${ton} TON</button>`;}const card=document.createElement("div");card.className="glass p-3 "+(isActive?"border border-yellow-500/50 ":"")+(isLocked?"opacity-60":"");card.innerHTML=`<p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">+${rate.toFixed(5)}/sec</p><p class="text-[10px] text-white/40">${usd(rate*liveVantaPriceUsd)} /sec • ${(rate*86400).toFixed(1)}/day</p><p class="text-[11px] mt-2">Speed <b class="float-right">${speed} TH/s</b></p>${buttonHtml}`;grid.appendChild(card);}document.getElementById("myLevelShow").innerText=currentMinerLevel;document.getElementById("mySpeedShow").innerText=(3.02+currentMinerLevel*0.06).toFixed(2)+" TH/s";}
 function loadMoreMiners(){visibleLevels=Math.min(1000,visibleLevels+20);renderMiners();}
 async function buyMiner(lvl,vantaCost){if(lvl!==currentMinerLevel+1){alert("Buy Level "+(currentMinerLevel+1)+" first");return;}if(poolBalance<vantaCost){alert("Need "+vantaCost+" VANTA");return;}if(!connectedWalletAddress||!tonConnectUI){alert("Connect wallet");return;}const tonCost=TON_PRICE[lvl]||(lvl*0.18).toFixed(2);if(!confirm(`Upgrade to Level ${lvl}? Cost: ${vantaCost} VANTA + ${tonCost} TON`)) return;try{await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:String(Math.round(Number(tonCost)*1000000000))}]});poolBalance=Math.max(0,poolBalance-vantaCost);currentMinerLevel=lvl;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_miner_level",String(currentMinerLevel));updateUI();renderMiners();alert("Upgraded!");}catch(e){alert("Cancelled");}}
-// REFERRAL WITH REAL NAMES
 function updateFriendsUI(){
   const myRefs=readArray(refKey);
   let count=myRefs.length;
   if(realRefs>count) count=realRefs;
-
-  // Try to get names from URL param refnames (from Bots.Business)
   let urlNames=[];
   try{
     const rawNames=urlParams.get("refnames");
@@ -171,10 +167,8 @@ function updateFriendsUI(){
       }
     }
   }catch(e){}
-
   let storedNames=readArray("refs_names_"+tgId);
   let allNames=urlNames.length>0?urlNames:storedNames;
-
   const pendingNow=Math.max(safeNum(localStorage.getItem("v_pending_ref"),0),pendingRefParam);
   const releasedRef=safeNum(localStorage.getItem("v_released_ref"),0);
   const totalFromCount=count*100;
@@ -183,10 +177,8 @@ function updateFriendsUI(){
   if(!Number.isFinite(available)) available=0;
   let pendingDisplay=0;
   if(!isVerified()) pendingDisplay=Math.max(pendingNow,totalFromCount);
-
   document.getElementById("refCount").innerText=safeNum(count,0);
   document.getElementById("refEarned").innerText=(isVerified()?available:pendingDisplay)+" VANTA";
-
   const text=document.getElementById("refRewardText");
   const btn=document.getElementById("claimReferralBtn");
   if(!isVerified()){
@@ -200,7 +192,6 @@ function updateFriendsUI(){
     btn.innerText=available>0?"Claim to Pool":"No Reward";
     btn.className=available>0?"gold-gradient px-4 py-2 rounded-full text-xs":"bg-white/10 text-white/40 px-4 py-2 rounded-full text-xs";
   }
-
   const list=document.getElementById("refList");
   list.innerHTML="";
   if(count===0){

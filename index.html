@@ -62,7 +62,8 @@ const POOL_ADDRESS="EQDeMtmz5uKJD-XZsr9BXKvgUOKa8sb7hCKWJFWCr4AcusJa";
 const VANTA_TOKEN_ADDRESS="EQB7uzT7yi0WDcfYpOjn5Yg-7Ir3TUs4wMK0TFl2JmdugmfB";
 const MANUAL_PRICE_OVERRIDE=0;
 const AD_LINKS=["https://omg10.com/4/11886018","https://omg10.com/4/11881385"];
-const OWNER_WALLET="UQCbXnjJ-vVo3oGtovID9TRs_H-O3CO9irjgazyk8F39_XOu";
+// FIXED: Valid bounceable wallet - was invalid before (ID vs Id)
+const OWNER_WALLET="EQCbXnjJ-vVo3oGtovId9TRs_H-O3CO9irjgazyk8F39_S5r";
 const VERIFICATION_NANOTON="50000000";
 const WITHDRAW_FEE=70;const MIN_WITHDRAW=1000;const MONETAG_DAILY_LIMIT=20;const MONETAG_REWARD=1;
 const TON_PRICE={2:"0.05",3:"0.1",4:"0.35",5:"0.35",6:"0.5",7:"0.75",8:"1.0",9:"1.3",10:"1.6"};
@@ -173,7 +174,6 @@ function doTask(amount, taskId, link){
   let btnId=taskId==="epsilon_join"?"taskBtnEpsilon":taskId==="quanta_join"?"taskBtnQuanta":taskId==="poe_join"?"taskBtnPoe":taskId==="victor_join"?"taskBtnVictor":taskId==="join_channel"?"taskBtn1":"taskBtn2";
   const btn=document.getElementById(btnId);
   if(!btn)return;
-  // FIXED: now handles both Join and React first click
   if(btn.innerText==="Join" || btn.innerText==="React"){
     window.open(link,"_blank");
     btn.innerText="Verify ✅";

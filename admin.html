@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VANTA Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>body{font-family:sans-serif;background:#0a0e1a;color:#fff;padding:20px}table{width:100%;border-collapse:collapse;background:#121a2d}th,td{padding:12px;border:1px solid #333;text-align:left}th{background:#1a233f}button{padding:6px 12px;border:none;border-radius:6px;cursor:pointer;margin:2px}.pay{background:#00d395;color:#000}.rej{background:#ff3b5c;color:#fff}.pending{color:#ffaa00}.paid{color:#00d395}</style>
+</head><body>
+<h2>VANTA Withdraw Admin</h2>
+<p id="stats"></p>
+<table><thead><tr><th>Date</th><th>User</th><th>Amount</th><th>Wallet</th><th>Status</th><th>Action</th></tr></thead><tbody id="tbody"></tbody></table>
+<script>
+const SUPABASE_URL="https://ydrplmyfchfimkwcqyqw.supabase.co";
+const SUPABASE_KEY="sb_publishable_zQIHYhN3xg-7p8EtXxXRrQ_NZeGwL3f";
+const supa=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+async function load(){
+ const {data,error}=await supa.from('withdraws').select('*').order('created_at',{ascending:false});
+ if(error){document.getElementById('tbody').innerHTML='<tr><td colspan=6>'+error.message+'</td></tr>';return;}
+ let pend=data.filter(d=>d.status==='pending').length;
+ document.getElementById('stats').innerHTML='Pending: '+pend+' | Total: '+data.length;
+ document.getElementById('tbody').innerHTML=data.map(r=>`
+ <tr>
+ <td>${new Date(r.created_at).toLocaleString()}</td>
+ <td>${r.user_id}<br><small>${r.wallet}</small></td>
+ <td>${r.amount} → ${r.receive}</td>
+ <td style="font-size:11px;word-break:break-all">${r.wallet}</td>
+ <td class="${r.status}">${r.status}</td>
+ <td>
+ ${r.status==='pending'?`<button class="pay" onclick="setStatus(${r.id},'paid')">Pay</button><button class="rej" onclick="setStatus(${r.id},'rejected')">Reject</button>`:''}
+ </td>
+ </tr>`).join('');
+}
+async function setStatus(id,status){
+ const {error}=await supa.from('withdraws').update({status}).eq('id',id);
+ if(error)alert(error.message);else load();
+}
+load(); setInterval(load,5000);
+</script>
+</body></html>

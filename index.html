@@ -23,6 +23,10 @@ body{background:#001a4d radial-gradient(ellipse at 50% 0%,#00308a 0%,#001a4d 50%
 .nav-active{color:#60a5fa!important}
 #ton-connect button{width:100%!important}
 button:disabled{opacity:.65;cursor:not-allowed}
+.wheel-wrap{position:relative;width:300px;height:300px;margin:20px auto}
+.wheel{width:100%;height:100%;border-radius:50%;border:6px solid #FFD700;position:relative;overflow:hidden;transition:transform 4s cubic-bezier(0.15,0,0.15,1);box-shadow:0 0 30px rgba(255,215,0,.4), inset 0 0 20px rgba(0,0,0,.5)}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;background:radial-gradient(#FFD700,#B8860B);border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;z-index:10;box-shadow:0 0 20px rgba(0,0,0,.5)}
+.wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #FFD700;z-index:11;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
 </style>
 </head>
 <body>
@@ -33,6 +37,51 @@ button:disabled{opacity:.65;cursor:not-allowed}
   </div>
   <div id="verificationCard" class="glass p-4 mt-4 border border-yellow-500/40"><div class="flex items-center justify-between"><div><p class="text-sm font-bold">🔐 Verification</p><p id="verificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><div id="verificationIcon" class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-xl">🔐</div></div><p id="verificationText" class="text-xs text-white/60 mt-3">Verify with <b class="text-[#FFD700]">0.05 TON</b> to unlock withdrawals.</p><button id="verifyBtn" onclick="verifyAccount()" class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">VERIFY WITH 0.05 TON</button></div>
   <div class="text-center mt-5 relative"><p class="text-xs tracking-[0.3em] text-white/50">MINING (Auto + Tap)</p><h1 class="text-3xl font-bold mt-1"><span id="miningBalance">0.0000</span> <span class="text-[#FFD700] text-xl">VANTA</span></h1><p class="text-[11px] text-white/40 mt-1">Tap V for +0.01 • Auto-mining active</p><div class="glass mt-3 py-2 px-4 inline-block text-xs">APP POOL BALANCE: <b id="pool" class="text-[#00FF88]">0.0000</b> VANTA <span id="poolUsd" class="text-white/40 text-[10px]"></span></div><p id="livePriceBox" class="text-[10px] text-blue-300 mt-2">VANTA Price: <span id="livePrice">Fetching DeDust...</span></p><p class="text-2xl font-bold green-glow mt-3" id="miningPlus">+0.0000 /sec</p><div class="flex justify-center mt-6 relative"><div class="coin" id="vCoin" onclick="tapCoin()">V</div></div><button id="claimBtn" onclick="claimMining()" class="w-full blue-btn py-4 rounded-xl mt-8 text-lg">CLAIM TO POOL (Watch Ad)</button><p class="text-xs text-white/40 mt-3">Power: <span id="power">3.02</span> TH/s | <span id="rateShow">0.00000</span>/sec</p></div>
+</div>
+
+<div id="spin-page" class="hidden p-4 max-w-md mx-auto">
+  <h1 class="text-2xl font-bold text-center">🎡 Spin & Win</h1>
+  <p class="text-center text-xs mt-1 text-white/50">Daily free spin - Win up to <b class="text-[#FFD700]">30 VANTA</b>!</p>
+  <div class="glass p-3 mt-4 flex justify-between text-xs">
+    <span>Status: <b id="spinCount" class="text-[#FFD700]">0/1</b></span>
+    <span>Won: <b id="spinWonToday" class="text-[#00FF88]">0 VANTA</b></span>
+  </div>
+  <div class="wheel-wrap">
+    <div class="wheel-pointer"></div>
+    <div id="spinWheel" class="wheel" style="background: conic-gradient(#FFD700 0deg 51.4deg, #FFA500 51.4deg 102.8deg, #00FF88 102.8deg 154.2deg, #60a5fa 154.2deg 205.7deg, #ff6b9d 205.7deg 257.1deg, #FFEC8B 257.1deg 308.5deg, #a78bfa 308.5deg 360deg);">
+      <div style="position:absolute;width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <div style="transform:rotate(0deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">30</div>
+        <div style="transform:rotate(51deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">3</div>
+        <div style="transform:rotate(102deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">25</div>
+        <div style="transform:rotate(154deg) translateY(-95px);position:absolute;font-weight:900;color:#fff;font-size:14px;">5</div>
+        <div style="transform:rotate(205deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">20</div>
+        <div style="transform:rotate(257deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">10</div>
+        <div style="transform:rotate(308deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">15</div>
+      </div>
+    </div>
+    <div class="wheel-center">V</div>
+  </div>
+  <div id="spinResultCard" class="glass p-4 mt-4 text-center hidden border border-yellow-400/30">
+    <p class="text-xs text-white/50">YOU WON</p>
+    <h2 class="text-3xl font-bold text-[#FFD700] mt-1"><span id="spinResultAmount">0</span> VANTA</h2>
+    <p class="text-[11px] text-white/40 mt-1">Watch Ad to claim to your Pool</p>
+  </div>
+  <button id="spinBtn" onclick="spinWheel()" class="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black">🎡 SPIN NOW - 1 FREE DAILY</button>
+  <button id="claimSpinBtn" onclick="claimSpinReward()" class="w-full blue-btn py-4 rounded-xl mt-3 text-sm hidden">📺 WATCH AD TO CLAIM</button>
+  <p id="spinTimer" class="text-center text-xs mt-3 font-bold"></p>
+  <div class="glass p-3 mt-4">
+    <p class="text-xs font-bold">🏆 Rewards on Wheel:</p>
+    <div class="flex flex-wrap gap-2 mt-2">
+      <span class="bg-white/10 px-2 py-1 rounded text-[11px]">3 VANTA</span>
+      <span class="bg-white/10 px-2 py-1 rounded text-[11px]">5 VANTA</span>
+      <span class="bg-white/10 px-2 py-1 rounded text-[11px]">10 VANTA</span>
+      <span class="bg-yellow-400/20 border border-yellow-400 px-2 py-1 rounded text-[11px]">15 VANTA</span>
+      <span class="bg-green-400/20 border border-green-400 px-2 py-1 rounded text-[11px]">20 VANTA</span>
+      <span class="bg-purple-400/20 border border-purple-400 px-2 py-1 rounded text-[11px]">25 VANTA</span>
+      <span class="bg-[#FFD700] text-black px-2 py-1 rounded text-[11px] font-bold">30 VANTA 🔥</span>
+    </div>
+    <p class="text-[10px] text-white/30 mt-3">* Daily free spin - Come back every 24 hours</p>
+  </div>
 </div>
 
 <div id="tasks-page" class="hidden p-4 max-w-md mx-auto">
@@ -68,6 +117,7 @@ button:disabled{opacity:.65;cursor:not-allowed}
 
 <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-white/10 flex justify-around p-2 max-w-md mx-auto">
 <button onclick="showPage('mine')" id="nav-mine" class="nav-active flex flex-col items-center"><span class="text-xl">⛏️</span><span class="text-[10px]">Mine</span></button>
+<button onclick="showPage('spin')" id="nav-spin" class="flex flex-col items-center opacity-60"><span class="text-xl">🎡</span><span class="text-[10px]">Spin</span></button>
 <button onclick="showPage('tasks')" id="nav-tasks" class="flex flex-col items-center opacity-60"><span class="text-xl">📝</span><span class="text-[10px]">Tasks</span></button>
 <button onclick="showPage('miners')" id="nav-miners" class="flex flex-col items-center opacity-60"><span class="text-xl">⚡</span><span class="text-[10px]">Miners</span></button>
 <button onclick="showPage('friends')" id="nav-friends" class="flex flex-col items-center opacity-60"><span class="text-xl">👥</span><span class="text-[10px]">Friends</span></button>
@@ -143,7 +193,6 @@ function playSound(type){
 document.addEventListener('touchstart',()=>{getAudio();},{once:true});
 document.addEventListener('click',()=>{getAudio();},{once:true});
 function toggleSound(){soundOn=!soundOn; localStorage.setItem("v_sound", soundOn?"on":"off"); document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF"; try{getAudio();playSound('tapSound');}catch(e){}}
-
 const refKey="refs_of_"+tgId;
 const refClaimedKey="v_ref_claimed_"+tgId;
 const teamWalletKey="v_team_wallet_"+tgId;
@@ -156,7 +205,149 @@ let visibleLevels=20;
 function getVantaPerSec(lvl){if(lvl===1)return 0.00005;if(lvl===2)return 0.00010;if(lvl===3)return 0.00020;if(lvl===4)return 0.00035;if(lvl===5)return 0.00060;if(lvl===6)return 0.00100;if(lvl===7)return 0.00160;if(lvl===8)return 0.00250;if(lvl===9)return 0.00400;if(lvl===10)return 0.00600;return 0.00600+(lvl-10)*0.0005;}
 function getCostForLevel(lvl){if(lvl===1)return 0;if(lvl===2)return 100;if(lvl===3)return 250;if(lvl===4)return 500;if(lvl===5)return 1000;if(lvl===6)return 2000;if(lvl===7)return 3500;if(lvl===8)return 5500;return Math.floor(5500+Math.pow(lvl,2.3)*12);}
 
-// === REAL PRICE FROM YOUR DEDUST POOL - LIVE ===
+// === SPIN - 24 HOURS ONCE PER DAY - RIGGED MAX 20 ===
+let currentSpinReward=0;
+let isSpinning=false;
+const SPIN_DAILY_LIMIT=1;
+const SPIN_COOLDOWN_MS=24*60*60*1000; // 24 hours
+function getSpinDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function getSpinData(){
+  const today=getSpinDate();
+  if(localStorage.getItem("v_spin_date")!==today){
+    // new day, but still check 24h cooldown separately
+  }
+  return {
+    count: Math.max(0, Math.floor(safeNum(localStorage.getItem("v_spin_today"),0))),
+    won: safeNum(localStorage.getItem("v_spin_won_today"),0),
+    last: safeNum(localStorage.getItem("v_spin_last"),0),
+    date: localStorage.getItem("v_spin_date")||""
+  };
+}
+function updateSpinUI(){
+  const data=getSpinData();
+  const countEl=document.getElementById("spinCount");
+  const wonEl=document.getElementById("spinWonToday");
+  const timerEl=document.getElementById("spinTimer");
+  const btn=document.getElementById("spinBtn");
+  const today=getSpinDate();
+  const isNewDay = data.date!==today;
+  const now=Date.now();
+  const diff=now-data.last;
+  const canSpin = isNewDay || diff>=SPIN_COOLDOWN_MS;
+  
+  if(countEl) countEl.innerText= canSpin ? "1/1 Available" : "0/1 Used";
+  if(wonEl) wonEl.innerText=data.won.toFixed(1)+" VANTA";
+  if(timerEl && btn){
+    if(!canSpin){
+      const remain=SPIN_COOLDOWN_MS-diff;
+      const h=Math.floor(remain/3600000);
+      const m=Math.floor((remain%3600000)/60000);
+      const s=Math.floor((remain%60000)/1000);
+      timerEl.innerText=`Next free spin in ${h}h ${m}m ${s}s - Come back tomorrow!`;
+      timerEl.className="text-center text-xs text-yellow-400 mt-3 font-bold";
+      btn.disabled=true;
+      btn.innerText=`⏳ NEXT SPIN IN ${h}H ${m}M`;
+      btn.className="w-full bg-white/10 text-white/30 py-4 rounded-xl mt-6 text-sm font-bold";
+    }else{
+      timerEl.innerText="🎁 You have 1 FREE daily spin!";
+      timerEl.className="text-center text-xs text-green-400 mt-3 font-bold";
+      btn.disabled=false;
+      btn.innerText="🎡 SPIN NOW - DAILY FREE";
+      btn.className="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black";
+    }
+  }
+}
+setInterval(updateSpinUI,1000);
+function getRiggedReward(){
+  const r=Math.random()*100;
+  if(r<5) return 3;
+  if(r<35) return 5;
+  if(r<65) return 10;
+  if(r<85) return 15;
+  return 20;
+}
+function spinWheel(){
+  if(isSpinning) return;
+  const data=getSpinData();
+  const today=getSpinDate();
+  const now=Date.now();
+  const canSpin = data.date!==today || now-data.last>=SPIN_COOLDOWN_MS;
+  if(!canSpin){alert("You already spun today - Come back in 24 hours!");return;}
+  isSpinning=true;
+  currentSpinReward=getRiggedReward();
+  let targetAngleMap={3:51,5:154,10:257,15:308,20:205,25:102,30:0};
+  let baseAngle=targetAngleMap[currentSpinReward] || 154;
+  baseAngle+= (Math.random()*30 -15);
+  const spins= 5*360 + (360-baseAngle);
+  const wheel=document.getElementById("spinWheel");
+  wheel.style.transform=`rotate(${spins}deg)`;
+  const btn=document.getElementById("spinBtn");
+  btn.disabled=true;
+  btn.innerText="SPINNING...";
+  playSound("tapSound");
+  setTimeout(()=>{
+    isSpinning=false;
+    document.getElementById("spinResultAmount").innerText=currentSpinReward;
+    document.getElementById("spinResultCard").classList.remove("hidden");
+    document.getElementById("claimSpinBtn").classList.remove("hidden");
+    btn.classList.add("hidden");
+    playSound("claimSound");
+    if(navigator.vibrate) navigator.vibrate(100);
+  },4100);
+}
+function claimSpinReward(){
+  if(currentSpinReward<=0) return;
+  const btn=document.getElementById("claimSpinBtn");
+  btn.disabled=true;
+  btn.innerText="LOADING AD...";
+  function finalizeClaim(){
+    poolBalance+=currentSpinReward;
+    localStorage.setItem("v_balance",String(poolBalance));
+    const data=getSpinData();
+    const today=getSpinDate();
+    localStorage.setItem("v_spin_date",today);
+    localStorage.setItem("v_spin_today","1");
+    localStorage.setItem("v_spin_won_today",String(data.won+currentSpinReward));
+    localStorage.setItem("v_spin_last",String(Date.now()));
+    document.getElementById("spinResultCard").classList.add("hidden");
+    btn.classList.add("hidden");
+    const spinBtn=document.getElementById("spinBtn");
+    spinBtn.classList.remove("hidden");
+    spinBtn.disabled=true;
+    currentSpinReward=0;
+    const wheel=document.getElementById("spinWheel");
+    wheel.style.transition="none";
+    wheel.style.transform="rotate(0deg)";
+    setTimeout(()=>{wheel.style.transition="transform 4s cubic-bezier(0.15,0,0.15,1)";},50);
+    updateUI();
+    updateSpinUI();
+    syncToSupabase();
+    alert("Claimed to Pool! Come back in 24 hours for next spin");
+  }
+  try{
+    if(typeof window.show_11874733==="function"){
+      const result=window.show_11874733();
+      if(result && result.then){
+        result.then(finalizeClaim).catch(()=>{
+          const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];
+          window.open(link,"_blank");
+          setTimeout(finalizeClaim,800);
+        });
+      }else{
+        const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];
+        window.open(link,"_blank");
+        setTimeout(finalizeClaim,800);
+      }
+    }else{
+      const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];
+      window.open(link,"_blank");
+      setTimeout(finalizeClaim,800);
+    }
+  }catch(e){
+    finalizeClaim();
+  }
+}
+
 async function fetchLivePrice(){
   const priceEl=document.getElementById("livePrice");
   const usdEl=document.getElementById("poolUsd");
@@ -204,7 +395,6 @@ async function fetchLivePrice(){
   updateUI();
 }
 fetchLivePrice();setInterval(fetchLivePrice,15000);
-
 function getVerifiedWallet(){return localStorage.getItem("v_verified_wallet")||"";}
 function isVerified(){return localStorage.getItem("v_verified")==="1"&&getVerifiedWallet()!=="";}
 function updateVerificationUI(){
@@ -278,8 +468,6 @@ function updateReactUI(){
   }
 }
 setInterval(updateReactUI,1000);
-
-// === FIXED REACT - 1 CLICK AUTO CREDIT ===
 function doReactTask(){
   const last=getReactTime();const now=Date.now();const threeHours=3*60*60*1000;
   if(now-last < threeHours && last!==0){const m=Math.floor((threeHours-(now-last))/60000);alert(`Wait ${m} mins - every 3 hours`);return;}
@@ -299,7 +487,6 @@ function doReactTask(){
     alert("+5 VANTA! Thanks for reacting ❤️");
   },3000);
 }
-
 function renderMiners(){const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML="";for(let i=1;i<=visibleLevels;i++){const cost=getCostForLevel(i);const rate=getVantaPerSec(i);const isActive=i===currentMinerLevel;const isLocked=i>currentMinerLevel+1;const isOwned=i<currentMinerLevel;let btn;if(isOwned)btn='<button disabled class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>';else if(isActive)btn='<button disabled class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>';else if(isLocked)btn=`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`;else btn=`<button onclick="buyMiner(${i},${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA</button>`;const card=document.createElement("div");card.className="glass p-3 "+(isActive?"border border-blue-500/50 ":"")+(isLocked?"opacity-60":"");card.innerHTML=`<p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">+${rate.toFixed(5)}/sec</p>${btn}`;grid.appendChild(card);}document.getElementById("myLevelShow").innerText=currentMinerLevel;}
 function loadMoreMiners(){visibleLevels=Math.min(1000,visibleLevels+20);renderMiners();}
 async function buyMiner(lvl,cost){if(lvl!==currentMinerLevel+1){alert("Buy Level "+(currentMinerLevel+1)+" first");return;}if(poolBalance<cost){alert("Need "+cost+" VANTA");return;}if(!connectedWalletAddress||!tonConnectUI){alert("Connect wallet");return;}const tonCost=TON_PRICE[lvl]||(lvl*0.18).toFixed(2);if(!confirm(`Upgrade to Level ${lvl}? Cost: ${cost} VANTA + ${tonCost} TON`))return;try{await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:String(Math.round(Number(tonCost)*1000000000))}]});poolBalance-=cost;currentMinerLevel=lvl;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_miner_level",String(currentMinerLevel));updateUI();renderMiners();await syncToSupabase();alert("Upgraded!");}catch(e){alert("Cancelled");}}
@@ -409,18 +596,18 @@ function updateUI(){
   const badge=document.getElementById("joinStatusBadge");
   if(isUserJoined()){badge.innerText="● JOINED";badge.className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500";}
   else{badge.innerText="● NOT JOINED";badge.className="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500";}
-  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateReactUI();
+  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateReactUI();updateSpinUI();
   if(liveVantaPriceUsd>0){
     const usdEl=document.getElementById("poolUsd");
     if(usdEl){const v=poolBalance*liveVantaPriceUsd; if(v>0.00001)usdEl.textContent="(~$"+v.toFixed(5)+")";}
   }
 }
-function showPage(page){["mine","miners","tasks","friends","profile"].forEach(n=>{document.getElementById(n+"-page").classList.add("hidden");document.getElementById("nav-"+n).classList.remove("nav-active");document.getElementById("nav-"+n).style.opacity="0.6";});document.getElementById(page+"-page").classList.remove("hidden");document.getElementById("nav-"+page).classList.add("nav-active");document.getElementById("nav-"+page).style.opacity="1";if(page==="miners")renderMiners();if(page==="tasks"){checkTasksUI();updateAdsUI();updateReactUI();}if(page==="friends")updateFriendsUI();if(page==="profile"){loadWithdrawsFromSupabase();}}
+function showPage(page){["mine","spin","miners","tasks","friends","profile"].forEach(n=>{document.getElementById(n+"-page").classList.add("hidden");document.getElementById("nav-"+n).classList.remove("nav-active");document.getElementById("nav-"+n).style.opacity="0.6";});document.getElementById(page+"-page").classList.remove("hidden");document.getElementById("nav-"+page).classList.add("nav-active");document.getElementById("nav-"+page).style.opacity="1";if(page==="miners")renderMiners();if(page==="tasks"){checkTasksUI();updateAdsUI();updateReactUI();}if(page==="friends")updateFriendsUI();if(page==="profile"){loadWithdrawsFromSupabase();}if(page==="spin"){updateSpinUI();}}
 (function applyOffline(){const last=safeNum(localStorage.getItem("v_last_mine_time"),0);if(last>0){const diff=Math.floor((Date.now()-last)/1000);const earn=Math.min(diff,MAX_OFFLINE_HOURS*3600);if(earn>0&&earn<7200){const rate=getVantaPerSec(currentMinerLevel);miningPending+=rate*earn;localStorage.setItem("v_mining_pending",String(miningPending));}}localStorage.setItem("v_last_mine_time",String(Date.now()));})();
 setInterval(()=>{const rate=getVantaPerSec(currentMinerLevel);miningPending+=rate;localStorage.setItem("v_mining_pending",String(miningPending));localStorage.setItem("v_last_mine_time",String(Date.now()));updateUI();},1000);
 const savedWallet=localStorage.getItem("v_wallet");if(savedWallet){document.getElementById("walletShort").innerText="✅ "+savedWallet.slice(0,6)+"..."+savedWallet.slice(-4);}
 document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";
-updateUI();renderMiners();checkTasksUI();updateFriendsUI();loadWithdrawsFromSupabase();updateAdsUI();updateReactUI();
+updateUI();renderMiners();checkTasksUI();updateFriendsUI();loadWithdrawsFromSupabase();updateAdsUI();updateReactUI();updateSpinUI();
 setInterval(()=>{syncToSupabase();},15000);
 const inviterParam=urlParams.get("ref")||urlParams.get("start");if(inviterParam&&inviterParam!==String(tgId)&&!localStorage.getItem("v_inviter")){localStorage.setItem("v_inviter",inviterParam);}
 </script>

@@ -40,7 +40,7 @@ button:disabled{opacity:.65;cursor:not-allowed}
 <p class="text-center text-xs mt-1 text-white/40">Complete tasks for VANTA</p>
 <div class="mt-4 space-y-3">
 <div class="glass p-4 flex justify-between items-center border border-green-400/40 bg-green-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div><div><p class="text-sm font-bold">Watch Ads</p><p class="text-xs text-white/50">+1 VANTA per ad • 30/day</p><p class="text-xs text-green-400 mt-1 font-bold">Today: <span id="adsCount">0</span>/30</p></div></div><button id="watchAdsBtn" onclick="watchAdsTask()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad</button></div>
-<div class="glass p-4 flex justify-between items-center border border-pink-400/40 bg-pink-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-pink-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 VANTA • Every 3hrs</p><p class="text-[10px] text-pink-300 mt-1" id="reactTimer">Ready!</p></div></div><button id="reactBtn" onclick="doReactTask()" class="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div>
+<div class="glass p-4 flex justify-between items-center border border-pink-400/40 bg-pink-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-pink-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 VANTA • 1 Click • Every 3hrs</p><p class="text-[10px] text-pink-300 mt-1" id="reactTimer">Ready!</p></div></div><button id="reactBtn" onclick="doReactTask()" class="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div>
 <div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div><div><p class="text-sm font-bold">Join Vanta Channel *</p><p class="text-xs text-white/50">+10 VANTA • Required</p></div></div><button id="taskBtn1" onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
 <div class="glass p-4 flex justify-between items-center border border-yellow-400/30 bg-yellow-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">🏢</div><div><p class="text-sm font-bold">Join Victor's Company</p><p class="text-xs text-white/50">+5 VANTA</p></div></div><button id="victorBtn" onclick="doTask(5,'victor_join','https://t.me/VictorsCompanybot/app?startapp=ref_5DC2A2CECD')" class="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div>
 </div>
@@ -156,52 +156,34 @@ let visibleLevels=20;
 function getVantaPerSec(lvl){if(lvl===1)return 0.00005;if(lvl===2)return 0.00010;if(lvl===3)return 0.00020;if(lvl===4)return 0.00035;if(lvl===5)return 0.00060;if(lvl===6)return 0.00100;if(lvl===7)return 0.00160;if(lvl===8)return 0.00250;if(lvl===9)return 0.00400;if(lvl===10)return 0.00600;return 0.00600+(lvl-10)*0.0005;}
 function getCostForLevel(lvl){if(lvl===1)return 0;if(lvl===2)return 100;if(lvl===3)return 250;if(lvl===4)return 500;if(lvl===5)return 1000;if(lvl===6)return 2000;if(lvl===7)return 3500;if(lvl===8)return 5500;return Math.floor(5500+Math.pow(lvl,2.3)*12);}
 
-// === REAL PRICE FROM YOUR DEDUST POOL ===
+// === REAL PRICE FROM YOUR DEDUST POOL - LIVE ===
 async function fetchLivePrice(){
   const priceEl=document.getElementById("livePrice");
   const usdEl=document.getElementById("poolUsd");
   let price=0;
   try{
-    // 1. DeDust official API - your pool
     try{
       const r=await fetch("https://api.dedust.io/v2/pools/"+VANTA_DEDUST_POOL,{cache:"no-store"});
       const d=await r.json();
-      console.log("DeDust raw:",d);
       if(d?.stats?.price_usd) price=Number(d.stats.price_usd);
       else if(d?.price_usd) price=Number(d.price_usd);
       else if(d?.price) price=Number(d.price);
-      // Some dedust responses have assets
-      if(!price && d?.assets){
-        // find VANTA asset price
-        const assets = Array.isArray(d.assets)?d.assets:Object.values(d.assets);
-        for(const a of assets){
-          if(a?.price_usd){ price=Number(a.price_usd); if(price>0) break; }
-        }
-      }
-    }catch(e){console.log("DeDust fail",e);}
-
-    // 2. TON API - jetton price (uses DeDust+StonFi)
+    }catch(e){}
     if(!price){
       try{
         const r2=await fetch("https://api.tonapi.io/v2/jettons/"+VANTA_TOKEN_ADDRESS,{cache:"no-store"});
         const d2=await r2.json();
-        console.log("TonAPI",d2?.price);
         if(d2?.price?.prices?.USD) price=Number(d2.price.prices.USD);
-        else if(d2?.price?.price) price=Number(d2.price.price);
       }catch(e){}
     }
-
-    // 3. Dexscreener fallback
     if(!price){
       try{
         const r3=await fetch("https://api.dexscreener.com/latest/dex/tokens/"+VANTA_TOKEN_ADDRESS,{cache:"no-store"});
         const d3=await r3.json();
         const valid=(d3.pairs||[]).filter(p=>String(p.chainId).toLowerCase()==="ton"&&Number(p.priceUsd)>0);
-        valid.sort((a,b)=>Number(b.liquidity?.usd||0)-Number(a.liquidity?.usd||0));
         if(valid[0]) price=Number(valid[0].priceUsd);
       }catch(e){}
     }
-
     if(price>0){
       liveVantaPriceUsd=price;
       localStorage.setItem("v_last_price",String(price));
@@ -213,7 +195,7 @@ async function fetchLivePrice(){
         liveVantaPriceUsd=last;
         if(priceEl){priceEl.textContent="$"+last.toFixed(8)+" (last)";priceEl.className="text-yellow-400";}
       }else{
-        if(priceEl){priceEl.textContent="Fetching real price...";priceEl.className="text-yellow-400 text-[9px]";}
+        if(priceEl){priceEl.textContent="Fetching DeDust...";priceEl.className="text-yellow-400 text-[9px]";}
       }
     }
   }catch(e){
@@ -288,7 +270,7 @@ function updateReactUI(){
   const el=document.getElementById("reactTimer");const btn=document.getElementById("reactBtn");
   if(!el||!btn)return;
   if(diff>=threeHours||last===0){
-    el.innerText="Ready! +5 VANTA";el.className="text-[10px] text-green-400 mt-1 font-bold";btn.innerText="React";btn.disabled=false;btn.className="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold";
+    el.innerText="Ready! +5 VANTA - 1 Click";el.className="text-[10px] text-green-400 mt-1 font-bold";btn.innerText="React";btn.disabled=false;btn.className="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold";
   }else{
     const remain=threeHours-diff;const h=Math.floor(remain/3600000);const m=Math.floor((remain%3600000)/60000);const s=Math.floor((remain%60000)/1000);
     el.innerText=`Next in ${h}h ${m}m ${s}s`;el.className="text-[10px] text-yellow-400 mt-1";
@@ -296,18 +278,28 @@ function updateReactUI(){
   }
 }
 setInterval(updateReactUI,1000);
+
+// === FIXED REACT - 1 CLICK AUTO CREDIT ===
 function doReactTask(){
   const last=getReactTime();const now=Date.now();const threeHours=3*60*60*1000;
   if(now-last < threeHours && last!==0){const m=Math.floor((threeHours-(now-last))/60000);alert(`Wait ${m} mins - every 3 hours`);return;}
+  window.open("https://t.me/VantaBotHub/104","_blank");
   const btn=document.getElementById("reactBtn");
-  if(btn.innerText==="React"){
-    window.open("https://t.me/VantaBotHub/104","_blank");
-    btn.innerText="Verify ✅";btn.className="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold";
-    return;
-  }
-  poolBalance+=5;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_react_last",String(now));
-  playSound("claimSound");updateUI();updateReactUI();syncToSupabase();alert("+5 VANTA! Come back in 3 hours");
+  const timerEl=document.getElementById("reactTimer");
+  if(btn){btn.innerText="Verifying...";btn.disabled=true;btn.className="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold";}
+  if(timerEl){timerEl.innerText="Please wait 3s...";}
+  setTimeout(()=>{
+    poolBalance+=5;
+    localStorage.setItem("v_balance",String(poolBalance));
+    localStorage.setItem("v_react_last",String(Date.now()));
+    playSound("claimSound");
+    updateUI();
+    updateReactUI();
+    syncToSupabase();
+    alert("+5 VANTA! Thanks for reacting ❤️");
+  },3000);
 }
+
 function renderMiners(){const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML="";for(let i=1;i<=visibleLevels;i++){const cost=getCostForLevel(i);const rate=getVantaPerSec(i);const isActive=i===currentMinerLevel;const isLocked=i>currentMinerLevel+1;const isOwned=i<currentMinerLevel;let btn;if(isOwned)btn='<button disabled class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>';else if(isActive)btn='<button disabled class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>';else if(isLocked)btn=`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`;else btn=`<button onclick="buyMiner(${i},${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA</button>`;const card=document.createElement("div");card.className="glass p-3 "+(isActive?"border border-blue-500/50 ":"")+(isLocked?"opacity-60":"");card.innerHTML=`<p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">+${rate.toFixed(5)}/sec</p>${btn}`;grid.appendChild(card);}document.getElementById("myLevelShow").innerText=currentMinerLevel;}
 function loadMoreMiners(){visibleLevels=Math.min(1000,visibleLevels+20);renderMiners();}
 async function buyMiner(lvl,cost){if(lvl!==currentMinerLevel+1){alert("Buy Level "+(currentMinerLevel+1)+" first");return;}if(poolBalance<cost){alert("Need "+cost+" VANTA");return;}if(!connectedWalletAddress||!tonConnectUI){alert("Connect wallet");return;}const tonCost=TON_PRICE[lvl]||(lvl*0.18).toFixed(2);if(!confirm(`Upgrade to Level ${lvl}? Cost: ${cost} VANTA + ${tonCost} TON`))return;try{await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:String(Math.round(Number(tonCost)*1000000000))}]});poolBalance-=cost;currentMinerLevel=lvl;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_miner_level",String(currentMinerLevel));updateUI();renderMiners();await syncToSupabase();alert("Upgraded!");}catch(e){alert("Cancelled");}}

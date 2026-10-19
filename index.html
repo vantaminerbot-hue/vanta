@@ -48,16 +48,39 @@ button:disabled{opacity:.65;cursor:not-allowed}
   </div>
   <div class="wheel-wrap">
     <div class="wheel-pointer"></div>
-    <div id="spinWheel" class="wheel" style="background: conic-gradient(#FFD700 0deg 51.4deg, #FFA500 51.4deg 102.8deg, #00FF88 102.8deg 154.2deg, #60a5fa 154.2deg 205.7deg, #ff6b9d 205.7deg 257.1deg, #FFEC8B 257.1deg 308.5deg, #a78bfa 308.5deg 360deg);"></div>
+    <div id="spinWheel" class="wheel" style="background: conic-gradient(#FFD700 0deg 51.4deg, #FFA500 51.4deg 102.8deg, #00FF88 102.8deg 154.2deg, #60a5fa 154.2deg 205.7deg, #ff6b9d 205.7deg 257.1deg, #FFEC8B 257.1deg 308.5deg, #a78bfa 308.5deg 360deg);">
+      <div style="position:absolute;width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <div style="transform:rotate(0deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">30</div>
+        <div style="transform:rotate(51deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">3</div>
+        <div style="transform:rotate(102deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">25</div>
+        <div style="transform:rotate(154deg) translateY(-95px);position:absolute;font-weight:900;color:#fff;font-size:14px;">5</div>
+        <div style="transform:rotate(205deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">20</div>
+        <div style="transform:rotate(257deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">10</div>
+        <div style="transform:rotate(308deg) translateY(-95px);position:absolute;font-weight:900;color:#000;font-size:14px;">15</div>
+      </div>
+    </div>
     <div class="wheel-center">V</div>
   </div>
   <div id="spinResultCard" class="glass p-4 mt-4 text-center hidden border border-yellow-400/30">
     <p class="text-xs text-white/50">YOU WON</p>
     <h2 class="text-3xl font-bold text-[#FFD700] mt-1"><span id="spinResultAmount">0</span> VANTA</h2>
+    <p class="text-[11px] text-white/40 mt-1">Watch Ad to claim to your Pool</p>
   </div>
-  <button id="spinBtn" onclick="spinWheel()" class="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black">🎡 SPIN NOW - DAILY FREE</button>
+  <button id="spinBtn" onclick="spinWheel()" class="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black">🎡 SPIN NOW - 1 FREE DAILY</button>
   <button id="claimSpinBtn" onclick="claimSpinReward()" class="w-full blue-btn py-4 rounded-xl mt-3 text-sm hidden">📺 WATCH AD TO CLAIM</button>
   <p id="spinTimer" class="text-center text-xs mt-3 font-bold"></p>
+  <div class="glass p-3 mt-4">
+    <p class="text-xs font-bold">🏆 Rewards on Wheel:</p>
+    <div class="flex flex-wrap gap-2 mt-2">
+      <span class="bg-white/10 px-2 py-1 rounded text-[11px]">3 VANTA</span>
+      <span class="bg-white/10 px-2 py-1 rounded text-[11px]">5 VANTA</span>
+      <span class="bg-white/10 px-2 py-1 rounded text-[11px]">10 VANTA</span>
+      <span class="bg-yellow-400/20 border border-yellow-400 px-2 py-1 rounded text-[11px]">15 VANTA</span>
+      <span class="bg-green-400/20 border border-green-400 px-2 py-1 rounded text-[11px]">20 VANTA</span>
+      <span class="bg-purple-400/20 border border-purple-400 px-2 py-1 rounded text-[11px]">25 VANTA</span>
+      <span class="bg-[#FFD700] text-black px-2 py-1 rounded text-[11px] font-bold">30 VANTA 🔥</span>
+    </div>
+  </div>
 </div>
 
 <div id="vip-page" class="hidden p-4 max-w-md mx-auto">
@@ -84,10 +107,17 @@ button:disabled{opacity:.65;cursor:not-allowed}
       <div class="flex justify-between items-center mt-3"><p class="font-bold text-lg text-yellow-300">10 TON <span class="text-xs font-normal text-white/50">~$16</span></p><button id="buyGenesisBtn" onclick="mintNFT('genesis')" class="bg-yellow-400 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 10 TON</button></div>
     </div>
   </div>
+  <div class="glass p-3 mt-6 text-[11px] text-white/40">
+    <p class="font-bold text-white/70">How it works:</p>
+    <p>• No NFT = normal rate as before</p>
+    <p>• After purchase: multiplier stays forever</p>
+    <p>• Supply is real-time - 10 each, SOLD OUT when gone</p>
+  </div>
 </div>
 
 <div id="tasks-page" class="hidden p-4 max-w-md mx-auto">
 <h1 class="text-2xl font-bold text-center">Earn Rewards</h1>
+<p class="text-center text-xs mt-1 text-white/40">Complete tasks for VANTA</p>
 <div class="mt-4 space-y-3">
 <div class="glass p-4 flex justify-between items-center border border-green-400/40 bg-green-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div><div><p class="text-sm font-bold">Watch Ads</p><p class="text-xs text-white/50">+1 VANTA per ad • 30/day</p><p class="text-xs text-green-400 mt-1 font-bold">Today: <span id="adsCount">0</span>/30</p></div></div><button id="watchAdsBtn" onclick="watchAdsTask()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad</button></div>
 <div class="glass p-4 flex justify-between items-center border border-pink-400/40 bg-pink-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-pink-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 VANTA • 1 Click • Every 3hrs</p><p class="text-[10px] text-pink-300 mt-1" id="reactTimer">Ready!</p></div></div><button id="reactBtn" onclick="doReactTask()" class="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div>
@@ -97,16 +127,23 @@ button:disabled{opacity:.65;cursor:not-allowed}
 </div>
 
 <div id="miners-page" class="hidden p-4 max-w-md mx-auto"><h2 class="text-center text-white/50 text-xs tracking-widest mb-3">MINERS LVL 1 - 1000</h2><div class="glass p-3 mb-3 flex justify-between text-xs"><p>Your Level: <b id="myLevelShow" class="text-[#60a5fa]">1</b> / 1000</p><p>Speed: <b id="mySpeedShow" class="text-green-400">3.02 TH/s</b></p></div><div id="minersGrid" class="grid grid-cols-2 gap-3"></div><button onclick="loadMoreMiners()" class="w-full glass py-3 rounded-xl mt-4 text-xs">Load More Levels ▼</button></div>
+
 <div id="friends-page" class="hidden p-4 max-w-md mx-auto">
   <div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🔗</div><div><p class="text-sm font-bold">Your Invite Link</p><p id="refLink" class="text-[10px] text-white/50 break-all w-48"></p></div></div><button onclick="copyRef()" class="blue-btn px-4 py-2 rounded-full text-xs">Copy</button></div>
+  <div class="glass p-4 flex justify-between items-center mt-3"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">👥</div><div><p class="text-sm font-bold">Your Referrals</p><p class="text-xs text-white/50"><span id="refCount">0</span> total</p></div></div></div>
+  <div id="refRewardCard" class="glass p-4 flex justify-between items-center mt-3 border border-blue-500/20"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🎁</div><div><p class="text-sm font-bold">Referral Reward</p><p id="refRewardText" class="text-xs text-white/50">0 available</p><p id="refEarned" class="text-[10px] text-white/30 mt-1">0 VANTA</p></div></div><button onclick="claimReferral()" id="claimReferralBtn" class="bg-white/20 px-4 py-2 rounded-full text-xs">Claim</button></div>
+  <div id="teamWalletCard" class="glass p-4 flex justify-between items-center mt-3 border border-blue-400/40 bg-blue-600/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💼</div><div><p class="text-sm font-bold">Team Wallet (5%)</p><p id="teamWalletText" class="text-xs text-blue-200">0.00 VANTA available</p><p class="text-[10px] text-white/40 mt-1">5% of what team mines & claims</p></div></div><button onclick="claimTeamWallet()" id="claimTeamBtn" class="blue-btn px-4 py-2 rounded-full text-xs">Claim to Pool</button></div>
   <div id="refList" class="mt-6 space-y-2"></div>
 </div>
+
 <div id="profile-page" class="hidden p-4 max-w-md mx-auto">
 <h1 class="text-xl font-bold text-center">Profile</h1>
+<div id="profileVerification" class="glass p-4 mt-4 border border-blue-500/30"><div class="flex justify-between items-center"><div><p class="text-sm font-bold">Account Verification</p><p id="profileVerificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><span id="profileVerificationIcon">🔐</span></div></div>
+<div class="glass p-4 flex justify-between items-center mt-4"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">👤</div><div><p class="text-sm font-bold">User ID</p><p id="userIdShow" class="text-xs text-white/50"></p></div></div></div>
 <div class="glass p-4 mt-3"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💰</div><div><p class="text-sm font-bold">App Pool Balance</p><p class="text-xs"><span id="balProfile">0</span> VANTA</p></div></div></div>
-<div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Mining (Unclaimed)</p></div><p class="text-blue-300 font-bold"><span id="miningProfile">0</span> VANTA</p></div>
+<div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Mining (Unclaimed)</p><p class="text-xs text-white/40">Tap Claim to move to pool</p></div><p class="text-blue-300 font-bold"><span id="miningProfile">0</span> VANTA</p></div>
 <div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History</p><div id="withdrawHistory" class="mt-2"></div></div>
-<div id="withdrawCard" class="glass p-4 mt-4"><p class="text-sm font-bold">Withdraw</p><p class="text-xs text-blue-300 mt-1">You receive: <b id="receiveAmt">0.00</b> VANTA</p><input id="withdrawAmt" oninput="calcReceive()" type="number" placeholder="Amount" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white"><button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdraw</button></div>
+<div id="withdrawCard" class="glass p-4 mt-4"><p class="text-sm font-bold">Withdraw</p><p class="text-xs text-blue-300 mt-1">You receive: <b id="receiveAmt">0.00</b> VANTA</p><input id="withdrawAmt" oninput="calcReceive()" type="number" min="0" step="any" placeholder="Amount" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white"><button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdraw</button></div>
 </div>
 
 <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-white/10 flex justify-around p-2 max-w-md mx-auto">
@@ -139,48 +176,134 @@ const NFT_CONFIG = {
   overlord: { price: 5, multiplier: 2, dailyBonus: 100, days: 28, name: "Overlord" },
   genesis: { price: 10, multiplier: 2.5, dailyBonus: 100, days: 56, name: "Genesis" }
 };
-function getVipData(){const tier=localStorage.getItem("v_nft_tier")||"";const start=Number(localStorage.getItem("v_nft_start")||0);const bonusClaimed=Number(localStorage.getItem("v_nft_bonus_claimed")||0);return{tier,start,bonusClaimed};}
-function getNftMultiplier(){const data=getVipData();if(!data.tier) return 1;return NFT_CONFIG[data.tier]?.multiplier||1;}
+function getVipData(){
+  const tier = localStorage.getItem("v_nft_tier") || "";
+  const start = Number(localStorage.getItem("v_nft_start")||0);
+  const bonusClaimed = Number(localStorage.getItem("v_nft_bonus_claimed")||0);
+  return { tier, start, bonusClaimed };
+}
+function getNftMultiplier(){
+  const data = getVipData();
+  if(!data.tier) return 1;
+  return NFT_CONFIG[data.tier]?.multiplier || 1;
+}
 async function fetchNftSupply(){
   try{
-    const {data}=await supabaseClient.from("vanta_users").select("nft_tier").not("nft_tier","is",null);
-    let e=0,o=0,g=0;(data||[]).forEach(u=>{if(u.nft_tier==="elite")e++;if(u.nft_tier==="overlord")o++;if(u.nft_tier==="genesis")g++;});
-    document.getElementById("eliteSupply").innerText=Math.max(0,10-e);
-    document.getElementById("overlordSupply").innerText=Math.max(0,10-o);
-    document.getElementById("genesisSupply").innerText=Math.max(0,10-g);
-    if(10-e<=0){let b=document.getElementById("buyEliteBtn");if(b){b.innerText="SOLD OUT";b.disabled=true;}}
-    if(10-o<=0){let b=document.getElementById("buyOverlordBtn");if(b){b.innerText="SOLD OUT";b.disabled=true;}}
-    if(10-g<=0){let b=document.getElementById("buyGenesisBtn");if(b){b.innerText="SOLD OUT";b.disabled=true;}}
-  }catch(e){}
+    const { data, error } = await supabaseClient.from("vanta_users").select("nft_tier").not("nft_tier","is",null);
+    if(error) throw error;
+    let eliteCount=0, overlordCount=0, genesisCount=0;
+    (data||[]).forEach(u=>{
+      if(u.nft_tier==="elite") eliteCount++;
+      if(u.nft_tier==="overlord") overlordCount++;
+      if(u.nft_tier==="genesis") genesisCount++;
+    });
+    const eliteLeft=Math.max(0,10-eliteCount);
+    const overlordLeft=Math.max(0,10-overlordCount);
+    const genesisLeft=Math.max(0,10-genesisCount);
+    const eEl=document.getElementById("eliteSupply");
+    const oEl=document.getElementById("overlordSupply");
+    const gEl=document.getElementById("genesisSupply");
+    if(eEl) eEl.innerText=eliteLeft;
+    if(oEl) oEl.innerText=overlordLeft;
+    if(gEl) gEl.innerText=genesisLeft;
+    if(eliteLeft<=0){ const b=document.getElementById("buyEliteBtn"); if(b){ b.innerText="SOLD OUT"; b.disabled=true; b.className="bg-white/10 text-white/30 px-5 py-2 rounded-full text-xs"; } }
+    if(overlordLeft<=0){ const b=document.getElementById("buyOverlordBtn"); if(b){ b.innerText="SOLD OUT"; b.disabled=true; b.className="bg-white/10 text-white/30 px-5 py-2 rounded-full text-xs"; } }
+    if(genesisLeft<=0){ const b=document.getElementById("buyGenesisBtn"); if(b){ b.innerText="SOLD OUT"; b.disabled=true; b.className="bg-white/10 text-white/30 px-5 py-2 rounded-full text-xs"; } }
+  }catch(e){ console.log("supply error",e); }
 }
 setInterval(fetchNftSupply,10000);
 function updateVipUI(){
-  const data=getVipData();const tierText=document.getElementById("vipTierText");const bonusText=document.getElementById("vipBonusText");const badge=document.getElementById("vipBadge");const boostShow=document.getElementById("boostShow");
-  if(!data.tier){tierText.innerText="Free Miner (normal rate)";if(badge)badge.classList.add("hidden");if(boostShow)boostShow.innerText="";}else{const cfg=NFT_CONFIG[data.tier];const remaining=Math.max(0,cfg.days-(Date.now()-data.start)/86400000);tierText.innerText=cfg.name+" ("+cfg.multiplier+"x FOREVER)";tierText.className="text-yellow-400 font-bold";if(bonusText)bonusText.innerText=remaining>0?" +"+cfg.dailyBonus+"/day - "+remaining.toFixed(1)+"d left":" (bonus done, "+cfg.multiplier+"x still)";if(badge){badge.classList.remove("hidden");badge.innerText="💎 "+cfg.name+" "+cfg.multiplier+"x";}if(boostShow)boostShow.innerText="| BOOST "+cfg.multiplier+"x";}
+  const data = getVipData();
+  const tierText = document.getElementById("vipTierText");
+  const bonusText = document.getElementById("vipBonusText");
+  const badge = document.getElementById("vipBadge");
+  const boostShow = document.getElementById("boostShow");
+  if(!tierText) return;
+  if(!data.tier){
+    tierText.innerText="Free Miner (normal rate as before)";
+    tierText.className="text-white/50";
+    if(bonusText) bonusText.innerText="";
+    if(badge){ badge.classList.add("hidden"); }
+    if(boostShow) boostShow.innerText="";
+  } else {
+    const cfg = NFT_CONFIG[data.tier];
+    const elapsed = (Date.now() - data.start)/86400000;
+    const remaining = Math.max(0, cfg.days - elapsed);
+    tierText.innerText = cfg.name + " (" + cfg.multiplier + "x FOREVER)";
+    tierText.className="text-yellow-400 font-bold";
+    if(bonusText){
+      if(remaining>0) bonusText.innerText = " +"+cfg.dailyBonus+"/day - "+remaining.toFixed(1)+" days left";
+      else bonusText.innerText = " (daily bonus finished, "+cfg.multiplier+"x still active)";
+    }
+    if(badge){ badge.classList.remove("hidden"); badge.innerText="💎 "+cfg.name+" "+cfg.multiplier+"x"; }
+    if(boostShow) boostShow.innerText="| BOOST "+cfg.multiplier+"x ACTIVE";
+    const order = {elite:1, overlord:2, genesis:3};
+    Object.keys(NFT_CONFIG).forEach(k=>{
+      const btn = document.getElementById("buy"+k.charAt(0).toUpperCase()+k.slice(1)+"Btn");
+      if(btn && order[data.tier] >= order[k]){ btn.innerText="✅ OWNED"; btn.disabled=true; btn.className="bg-green-500/20 text-green-400 border border-green-500 px-5 py-2 rounded-full text-xs font-bold"; }
+    });
+  }
 }
 async function mintNFT(tier){
-  const cfg=NFT_CONFIG[tier];if(!connectedWalletAddress||!tonConnectUI){alert("Connect TON wallet first");return;}
-  const btn=document.getElementById("buy"+tier.charAt(0).toUpperCase()+tier.slice(1)+"Btn");if(btn){btn.disabled=true;btn.innerText="Opening Wallet...";}
+  const cfg = NFT_CONFIG[tier];
+  if(!cfg){ alert("Invalid tier"); return; }
+  const vip = getVipData();
+  if(vip.tier){
+    const order={elite:1, overlord:2, genesis:3};
+    if(order[vip.tier] >= order[tier]){ alert("You already own "+vip.tier+" or higher"); return; }
+  }
+  if(!connectedWalletAddress || !tonConnectUI){ alert("Connect TON wallet first (top right)"); return; }
+  const btn = document.getElementById("buy"+tier.charAt(0).toUpperCase()+tier.slice(1)+"Btn");
+  if(btn){ btn.disabled=true; btn.innerText="Opening Wallet..."; }
   try{
-    const amountNano=String(Math.round(cfg.price*1000000000));
-    const result=await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:amountNano}]});
-    if(!result?.boc)throw new Error("fail");
-    localStorage.setItem("v_nft_tier",tier);localStorage.setItem("v_nft_start",String(Date.now()));localStorage.setItem("v_nft_bonus_claimed","0");
-    poolBalance+=cfg.dailyBonus;localStorage.setItem("v_balance",String(poolBalance));
-    await syncToSupabase();await fetchNftSupply();updateVipUI();updateUI();
-    alert("Success! "+cfg.name+" "+cfg.multiplier+"x FOREVER + "+cfg.dailyBonus+"/day");
-  }catch(e){alert("Cancelled");}
-  finally{if(btn){btn.disabled=false;btn.innerText="Mint "+cfg.price+" TON";}}
+    const amountNano = String(Math.round(cfg.price * 1000000000));
+    const result = await tonConnectUI.sendTransaction({
+      validUntil: Math.floor(Date.now()/1000)+600,
+      messages: [{ address: OWNER_WALLET, amount: amountNano }]
+    });
+    if(!result?.boc) throw new Error("Transaction failed");
+    localStorage.setItem("v_nft_tier", tier);
+    localStorage.setItem("v_nft_start", String(Date.now()));
+    localStorage.setItem("v_nft_bonus_claimed", "0");
+    poolBalance += cfg.dailyBonus;
+    localStorage.setItem("v_balance", String(poolBalance));
+    updateVipUI();
+    updateUI();
+    await syncToSupabase();
+    await fetchNftSupply();
+    alert("Success! You are now "+cfg.name+" - "+cfg.multiplier+"x FOREVER + "+cfg.dailyBonus+"/day for "+cfg.days+" days");
+    playSound("claimSound");
+  }catch(e){
+    alert("Payment cancelled or failed");
+  }finally{
+    if(btn){ btn.disabled=false; btn.innerText="Mint "+cfg.price+" TON"; }
+    updateVipUI();
+  }
 }
-function checkNftDailyBonus(){const data=getVipData();if(!data.tier||!data.start)return;const cfg=NFT_CONFIG[data.tier];const elapsed=Math.floor((Date.now()-data.start)/86400000);const should=Math.min(elapsed,cfg.days);if(should>data.bonusClaimed){const add=(should-data.bonusClaimed)*cfg.dailyBonus;poolBalance+=add;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_nft_bonus_claimed",String(should));updateUI();syncToSupabase();}}
-setInterval(checkNftDailyBonus,60000);
+function checkNftDailyBonus(){
+  const data = getVipData();
+  if(!data.tier || !data.start) return;
+  const cfg = NFT_CONFIG[data.tier];
+  const elapsedDays = Math.floor((Date.now() - data.start)/86400000);
+  const shouldHaveClaimed = Math.min(elapsedDays, cfg.days);
+  const alreadyClaimed = data.bonusClaimed;
+  if(shouldHaveClaimed > alreadyClaimed){
+    const diff = shouldHaveClaimed - alreadyClaimed;
+    const add = diff * cfg.dailyBonus;
+    poolBalance += add;
+    localStorage.setItem("v_balance", String(poolBalance));
+    localStorage.setItem("v_nft_bonus_claimed", String(shouldHaveClaimed));
+    updateUI();
+    syncToSupabase();
+  }
+}
+setInterval(checkNftDailyBonus, 60000);
 
-// ---- rest of your original JS below ----
 function safeNum(v,f=0){if(v===null||v===undefined||String(v).trim()==="")return f;const n=Number(v);return Number.isFinite(n)?n:f;}
 function readArray(k){try{const v=JSON.parse(localStorage.getItem(k)||"[]");return Array.isArray(v)?v:[];}catch(_){return[];}}
 let tg=window.Telegram?.WebApp; if(tg){tg.ready();tg.expand();}
 let tonConnectUI=null;let connectedWalletAddress="";let walletReady=false;
-try{if(window.TON_CONNECT_UI?.TonConnectUI){tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:"https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json",buttonRootId:"ton-connect"});tonConnectUI.onStatusChange(function(w){if(w?.account?.address){connectedWalletAddress=w.account.address;walletReady=true;document.getElementById("walletShort").innerText=w.account.address.slice(0,6)+"..."+w.account.address.slice(-4);localStorage.setItem("v_wallet",connectedWalletAddress);}else{connectedWalletAddress="";walletReady=false;document.getElementById("walletShort").innerText="Connect Wallet";}});}}catch(e){}
+try{if(window.TON_CONNECT_UI?.TonConnectUI){tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:"https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json",buttonRootId:"ton-connect"});tonConnectUI.onStatusChange(function(w){if(w?.account?.address){connectedWalletAddress=w.account.address;walletReady=true;document.getElementById("walletShort").innerText=w.account.address.slice(0,6)+"..."+w.account.address.slice(-4);localStorage.setItem("v_wallet",connectedWalletAddress);}else{connectedWalletAddress="";walletReady=false;document.getElementById("walletShort").innerText="Connect Wallet";}updateVerificationUI();updateWithdrawUI();});}}catch(e){}
 const urlParams=new URLSearchParams(window.location.search);
 const telegramUserId=tg?.initDataUnsafe?.user?.id?.toString()||"";
 let urlRealId=urlParams.get("ref")||urlParams.get("start")||"";
@@ -191,27 +314,481 @@ let tgName=tg?.initDataUnsafe?.user?.first_name||tg?.initDataUnsafe?.user?.usern
 if(tgName!=="Miner")localStorage.setItem("v_tgName",tgName);
 document.getElementById("userName").innerText=tgName==="Miner"?"Miner":tgName+"'s Miner";
 document.getElementById("refLink").innerText="https://t.me/Vanta23bot?start="+tgId;
+document.getElementById("userIdShow").innerText=tgId;
 let _rawPool=safeNum(localStorage.getItem("v_balance"),0);
 let _rawMining=safeNum(localStorage.getItem("v_mining_pending"),0);
+let isFakeUser = String(tgId).startsWith("id_") ||!telegramUserId;
+if(!Number.isFinite(_rawMining) || _rawMining > MAX_MINING_PENDING || _rawMining < 0){_rawMining=0;localStorage.setItem("v_mining_pending","0");}
+if(_rawPool > MAX_BALANCE){_rawPool=MAX_BALANCE;localStorage.setItem("v_balance",String(MAX_BALANCE));}
 let poolBalance=_rawPool;let miningPending=_rawMining;
 let currentMinerLevel=Math.max(1,Math.min(1000,Math.floor(safeNum(localStorage.getItem("v_miner_level"),1))));
-let lastTapTime=0;let isClaiming=false;let liveVantaPriceUsd=0;let soundOn=localStorage.getItem("v_sound")!=="off";let audioCtx=null;
+if(isFakeUser){ currentMinerLevel=Math.min(currentMinerLevel,3); }
+let lastTapTime=0;let isClaiming=false;let liveVantaPriceUsd=0;
+let soundOn = localStorage.getItem("v_sound")!=="off";
+let audioCtx=null;
 function getAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return audioCtx;}
-function playSound(type){if(!soundOn)return;try{const ctx=getAudio();if(!ctx)return;if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.setValueAtTime(800,ctx.currentTime);g.gain.setValueAtTime(0.3,ctx.currentTime);o.start();o.stop(ctx.currentTime+0.13);}catch(e){}}
-function toggleSound(){soundOn=!soundOn;localStorage.setItem("v_sound",soundOn?"on":"off");document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";}
+function playSound(type){
+  if(!soundOn) return;
+  try{
+    const ctx=getAudio();if(!ctx)return;
+    if(ctx.state==='suspended')ctx.resume();
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    if(type==='tapSound'){
+      o.type='sine';o.frequency.setValueAtTime(800,ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1200,ctx.currentTime+0.08);
+      g.gain.setValueAtTime(0.3,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.12);
+      o.start();o.stop(ctx.currentTime+0.13);
+    }else{
+      o.type='triangle';o.frequency.setValueAtTime(600,ctx.currentTime);
+      o.frequency.setValueAtTime(900,ctx.currentTime+0.1);
+      g.gain.setValueAtTime(0.4,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.4);
+      o.start();o.stop(ctx.currentTime+0.45);
+      setTimeout(()=>{try{const o2=ctx.createOscillator();const g2=ctx.createGain();o2.connect(g2);g2.connect(ctx.destination);o2.type='sine';o2.frequency.value=1200;g2.gain.setValueAtTime(0.3,ctx.currentTime);g2.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.3);o2.start();o2.stop(ctx.currentTime+0.32);}catch(e){}},120);
+    }
+    if(navigator.vibrate){navigator.vibrate(type==='tapSound'?20:50);}
+  }catch(e){}
+}
+document.addEventListener('touchstart',()=>{getAudio();},{once:true});
+document.addEventListener('click',()=>{getAudio();},{once:true});
+function toggleSound(){soundOn=!soundOn; localStorage.setItem("v_sound", soundOn?"on":"off"); document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF"; try{getAudio();playSound('tapSound');}catch(e){}}
+const refKey="refs_of_"+tgId;
+const refClaimedKey="v_ref_claimed_"+tgId;
+const teamWalletKey="v_team_wallet_"+tgId;
+const teamClaimedKey="v_team_claimed_"+tgId;
+let refClaimed=Math.max(0,safeNum(localStorage.getItem(refClaimedKey),0));
+let teamWallet=safeNum(localStorage.getItem(teamWalletKey),0);
+let teamClaimed=safeNum(localStorage.getItem(teamClaimedKey),0);
+(function migrate(){const myRefsLen=readArray(refKey).length;const noRecord=localStorage.getItem(refClaimedKey)===null;if(noRecord&&myRefsLen>0&&poolBalance>=myRefsLen*50){refClaimed=myRefsLen*100;localStorage.setItem(refClaimedKey,String(refClaimed));}})();
 let visibleLevels=20;
-function getVantaPerSec(lvl){let base=0.00005;if(lvl===1)base=0.00005;else if(lvl===2)base=0.00010;else if(lvl===3)base=0.00020;else if(lvl===4)base=0.00035;else if(lvl===5)base=0.00060;else if(lvl===6)base=0.00100;else if(lvl===7)base=0.00160;else if(lvl===8)base=0.00250;else if(lvl===9)base=0.00400;else if(lvl===10)base=0.00600;else base=0.00600+(lvl-10)*0.0005;return base*getNftMultiplier();}
+function getVantaPerSec(lvl){
+  let base=0;
+  if(lvl===1) base=0.00005;
+  else if(lvl===2) base=0.00010;
+  else if(lvl===3) base=0.00020;
+  else if(lvl===4) base=0.00035;
+  else if(lvl===5) base=0.00060;
+  else if(lvl===6) base=0.00100;
+  else if(lvl===7) base=0.00160;
+  else if(lvl===8) base=0.00250;
+  else if(lvl===9) base=0.00400;
+  else if(lvl===10) base=0.00600;
+  else base=0.00600+(lvl-10)*0.0005;
+  const mult = getNftMultiplier();
+  return base * mult;
+}
 function getCostForLevel(lvl){if(lvl===1)return 0;if(lvl===2)return 100;if(lvl===3)return 250;if(lvl===4)return 500;if(lvl===5)return 1000;if(lvl===6)return 2000;if(lvl===7)return 3500;if(lvl===8)return 5500;return Math.floor(5500+Math.pow(lvl,2.3)*12);}
-function updateUI(){document.getElementById("miningBalance").innerText=miningPending.toFixed(5);document.getElementById("pool").innerText=poolBalance.toFixed(4);document.getElementById("balProfile").innerText=poolBalance.toFixed(4);document.getElementById("miningProfile").innerText=miningPending.toFixed(5);const rate=getVantaPerSec(currentMinerLevel);document.getElementById("power").innerText=(3.02+currentMinerLevel*0.06).toFixed(2);document.getElementById("miningPlus").innerText="+"+rate.toFixed(5)+" /sec";document.getElementById("rateShow").innerText=rate.toFixed(5);document.getElementById("lvl").innerText=currentMinerLevel;updateVipUI();checkNftDailyBonus();}
-function showPage(page){["mine","vip","spin","miners","tasks","friends","profile"].forEach(n=>{const el=document.getElementById(n+"-page");if(el)el.classList.add("hidden");const nav=document.getElementById("nav-"+n);if(nav){nav.classList.remove("nav-active");nav.style.opacity="0.6";}});document.getElementById(page+"-page").classList.remove("hidden");document.getElementById("nav-"+page).classList.add("nav-active");document.getElementById("nav-"+page).style.opacity="1";if(page==="vip"){updateVipUI();fetchNftSupply();}}
-function tapCoin(){const now=Date.now();if(now-lastTapTime<900)return;lastTapTime=now;miningPending+=0.01;localStorage.setItem("v_mining_pending",String(miningPending));updateUI();}
-async function claimMining(){if(miningPending<=0)return;poolBalance+=miningPending;miningPending=0;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_mining_pending","0");updateUI();await syncToSupabase();}
-async function syncToSupabase(){try{const vip=getVipData();await supabaseClient.from("vanta_users").upsert({tg_id:String(tgId),username:String(tgName),balance:Number(poolBalance),mining_pending:Number(miningPending),miner_level:Number(currentMinerLevel),wallet:connectedWalletAddress||"",nft_tier:vip.tier||null,nft_start:vip.start?new Date(vip.start).toISOString():null,updated_at:new Date().toISOString()},{onConflict:'tg_id'});}catch(e){}}
-function calcReceive(){}
-function withdraw(){}
-setInterval(()=>{const rate=getVantaPerSec(currentMinerLevel);miningPending+=rate;localStorage.setItem("v_mining_pending",String(miningPending));updateUI();},1000);
-updateUI();fetchNftSupply();
+
+let currentSpinReward=0;
+let isSpinning=false;
+const SPIN_DAILY_LIMIT=1;
+const SPIN_COOLDOWN_MS=24*60*60*1000;
+function getSpinDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function getSpinData(){
+  const today=getSpinDate();
+  return {
+    count: Math.max(0, Math.floor(safeNum(localStorage.getItem("v_spin_today"),0))),
+    won: safeNum(localStorage.getItem("v_spin_won_today"),0),
+    last: safeNum(localStorage.getItem("v_spin_last"),0),
+    date: localStorage.getItem("v_spin_date")||""
+  };
+}
+function updateSpinUI(){
+  const data=getSpinData();
+  const countEl=document.getElementById("spinCount");
+  const wonEl=document.getElementById("spinWonToday");
+  const timerEl=document.getElementById("spinTimer");
+  const btn=document.getElementById("spinBtn");
+  const today=getSpinDate();
+  const isNewDay = data.date!==today;
+  const now=Date.now();
+  const diff=now-data.last;
+  const canSpin = isNewDay || diff>=SPIN_COOLDOWN_MS;
+  if(countEl) countEl.innerText= canSpin ? "1/1 Available" : "0/1 Used";
+  if(wonEl) wonEl.innerText=data.won.toFixed(1)+" VANTA";
+  if(timerEl && btn){
+    if(!canSpin){
+      const remain=SPIN_COOLDOWN_MS-diff;
+      const h=Math.floor(remain/3600000);
+      const m=Math.floor((remain%3600000)/60000);
+      const s=Math.floor((remain%60000)/1000);
+      timerEl.innerText=`Next free spin in ${h}h ${m}m ${s}s - Come back tomorrow!`;
+      timerEl.className="text-center text-xs text-yellow-400 mt-3 font-bold";
+      btn.disabled=true;
+      btn.innerText=`⏳ NEXT SPIN IN ${h}H ${m}M`;
+      btn.className="w-full bg-white/10 text-white/30 py-4 rounded-xl mt-6 text-sm font-bold";
+    }else{
+      timerEl.innerText="🎁 You have 1 FREE daily spin!";
+      timerEl.className="text-center text-xs text-green-400 mt-3 font-bold";
+      btn.disabled=false;
+      btn.innerText="🎡 SPIN NOW - DAILY FREE";
+      btn.className="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black";
+    }
+  }
+}
+setInterval(updateSpinUI,1000);
+function getRiggedReward(){
+  const r=Math.random()*100;
+  if(r<5) return 3;
+  if(r<35) return 5;
+  if(r<65) return 10;
+  if(r<85) return 15;
+  return 20;
+}
+function spinWheel(){
+  if(isSpinning) return;
+  const data=getSpinData();
+  const today=getSpinDate();
+  const now=Date.now();
+  const canSpin = data.date!==today || now-data.last>=SPIN_COOLDOWN_MS;
+  if(!canSpin){alert("You already spun today - Come back in 24 hours!");return;}
+  isSpinning=true;
+  currentSpinReward=getRiggedReward();
+  let targetAngleMap={3:51,5:154,10:257,15:308,20:205,25:102,30:0};
+  let baseAngle=targetAngleMap[currentSpinReward] || 154;
+  baseAngle+= (Math.random()*30 -15);
+  const spins= 5*360 + (360-baseAngle);
+  const wheel=document.getElementById("spinWheel");
+  wheel.style.transform=`rotate(${spins}deg)`;
+  const btn=document.getElementById("spinBtn");
+  btn.disabled=true;
+  btn.innerText="SPINNING...";
+  playSound("tapSound");
+  setTimeout(()=>{
+    isSpinning=false;
+    document.getElementById("spinResultAmount").innerText=currentSpinReward;
+    document.getElementById("spinResultCard").classList.remove("hidden");
+    document.getElementById("claimSpinBtn").classList.remove("hidden");
+    btn.classList.add("hidden");
+    playSound("claimSound");
+    if(navigator.vibrate) navigator.vibrate(100);
+  },4100);
+}
+function claimSpinReward(){
+  if(currentSpinReward<=0) return;
+  const btn=document.getElementById("claimSpinBtn");
+  btn.disabled=true;
+  btn.innerText="LOADING AD...";
+  function finalizeClaim(){
+    poolBalance+=currentSpinReward;
+    localStorage.setItem("v_balance",String(poolBalance));
+    const data=getSpinData();
+    const today=getSpinDate();
+    localStorage.setItem("v_spin_date",today);
+    localStorage.setItem("v_spin_today","1");
+    localStorage.setItem("v_spin_won_today",String(data.won+currentSpinReward));
+    localStorage.setItem("v_spin_last",String(Date.now()));
+    document.getElementById("spinResultCard").classList.add("hidden");
+    btn.classList.add("hidden");
+    const spinBtn=document.getElementById("spinBtn");
+    spinBtn.classList.remove("hidden");
+    spinBtn.disabled=true;
+    currentSpinReward=0;
+    const wheel=document.getElementById("spinWheel");
+    wheel.style.transition="none";
+    wheel.style.transform="rotate(0deg)";
+    setTimeout(()=>{wheel.style.transition="transform 4s cubic-bezier(0.15,0,0.15,1)";},50);
+    updateUI();
+    updateSpinUI();
+    syncToSupabase();
+    alert("Claimed to Pool! Come back in 24 hours for next spin");
+  }
+  try{
+    if(typeof window.show_11874733==="function"){
+      const result=window.show_11874733();
+      if(result && result.then){
+        result.then(finalizeClaim).catch(()=>{
+          const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];
+          window.open(link,"_blank");
+          setTimeout(finalizeClaim,800);
+        });
+      }else{
+        const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];
+        window.open(link,"_blank");
+        setTimeout(finalizeClaim,800);
+      }
+    }else{
+      const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];
+      window.open(link,"_blank");
+      setTimeout(finalizeClaim,800);
+    }
+  }catch(e){
+    finalizeClaim();
+  }
+}
+
+async function fetchLivePrice(){
+  const priceEl=document.getElementById("livePrice");
+  const usdEl=document.getElementById("poolUsd");
+  let price=0;
+  try{
+    try{
+      const r=await fetch("https://api.dedust.io/v2/pools/"+VANTA_DEDUST_POOL,{cache:"no-store"});
+      const d=await r.json();
+      if(d?.stats?.price_usd) price=Number(d.stats.price_usd);
+      else if(d?.price_usd) price=Number(d.price_usd);
+      else if(d?.price) price=Number(d.price);
+    }catch(e){}
+    if(!price){
+      try{
+        const r2=await fetch("https://api.tonapi.io/v2/jettons/"+VANTA_TOKEN_ADDRESS,{cache:"no-store"});
+        const d2=await r2.json();
+        if(d2?.price?.prices?.USD) price=Number(d2.price.prices.USD);
+      }catch(e){}
+    }
+    if(!price){
+      try{
+        const r3=await fetch("https://api.dexscreener.com/latest/dex/tokens/"+VANTA_TOKEN_ADDRESS,{cache:"no-store"});
+        const d3=await r3.json();
+        const valid=(d3.pairs||[]).filter(p=>String(p.chainId).toLowerCase()==="ton"&&Number(p.priceUsd)>0);
+        if(valid[0]) price=Number(valid[0].priceUsd);
+      }catch(e){}
+    }
+    if(price>0){
+      liveVantaPriceUsd=price;
+      localStorage.setItem("v_last_price",String(price));
+      if(priceEl){priceEl.textContent="$"+price.toFixed(8)+" LIVE DeDust";priceEl.className="text-green-400 font-bold";}
+      if(usdEl){const v=poolBalance*price; if(v>0.00001) usdEl.textContent="(~$"+v.toFixed(5)+")";}
+    }else{
+      const last=safeNum(localStorage.getItem("v_last_price"),0);
+      if(last>0){
+        liveVantaPriceUsd=last;
+        if(priceEl){priceEl.textContent="$"+last.toFixed(8)+" (last)";priceEl.className="text-yellow-400";}
+      }else{
+        if(priceEl){priceEl.textContent="Fetching DeDust...";priceEl.className="text-yellow-400 text-[9px]";}
+      }
+    }
+  }catch(e){
+    if(priceEl) priceEl.textContent="Fetching...";
+  }
+  updateUI();
+}
+fetchLivePrice();setInterval(fetchLivePrice,15000);
+function getVerifiedWallet(){return localStorage.getItem("v_verified_wallet")||"";}
+function isVerified(){return localStorage.getItem("v_verified")==="1"&&getVerifiedWallet()!=="";}
+function updateVerificationUI(){
+  const verified=isVerified();
+  const card=document.getElementById("verificationCard");
+  const status=document.getElementById("verificationStatus");
+  const btn=document.getElementById("verifyBtn");
+  const icon=document.getElementById("verificationIcon");
+  if(verified){
+    if(card)card.className="glass p-4 mt-4 border border-green-500/40 bg-green-500/10";
+    if(status){status.innerText="✅ Verified";status.className="text-xs text-green-400 mt-1 font-bold";}
+    if(icon)icon.innerText="✅";
+    if(btn){btn.innerText="✅ VERIFIED";btn.disabled=true;btn.className="w-full bg-green-500/20 text-green-400 border border-green-500 py-3 rounded-xl mt-4 text-sm font-bold";}
+  }else{
+    if(card)card.className="glass p-4 mt-4 border border-yellow-500/40";
+    if(status){status.innerText="Not verified";status.className="text-xs text-yellow-400 mt-1";}
+    if(icon)icon.innerText="🔐";
+    if(btn){btn.innerText=connectedWalletAddress?"VERIFY WITH 0.05 TON":"CONNECT WALLET FIRST";btn.disabled=false;btn.className="w-full gold-gradient py-3 rounded-xl mt-4 text-sm";}
+  }
+  const pCard=document.getElementById("profileVerification");
+  const pStatus=document.getElementById("profileVerificationStatus");
+  const pIcon=document.getElementById("profileVerificationIcon");
+  if(pCard){
+    if(verified){
+      pCard.className="glass p-4 mt-4 border border-green-500/40 bg-green-500/10";
+      if(pStatus){pStatus.innerText="✅ Verified";pStatus.className="text-xs text-green-400 mt-1 font-bold";}
+      if(pIcon)pIcon.innerText="✅";
+    }else{
+      pCard.className="glass p-4 mt-4 border border-yellow-500/40";
+      if(pStatus){pStatus.innerText="Not verified";pStatus.className="text-xs text-yellow-400 mt-1";}
+      if(pIcon)pIcon.innerText="🔐";
+    }
+  }
+}
+async function verifyAccount(){if(isVerified()){alert("Already verified");return;}if(!connectedWalletAddress){alert("Connect wallet first");return;}const btn=document.getElementById("verifyBtn");btn.disabled=true;btn.innerText="Opening Wallet...";try{const result=await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:VERIFICATION_NANOTON}]});if(!result?.boc)throw new Error("fail");localStorage.setItem("v_verification_boc",result.boc);localStorage.setItem("v_verified_wallet",connectedWalletAddress);localStorage.setItem("v_verified","1");updateVerificationUI();playSound("claimSound");await syncToSupabase();alert("Verified! ✅");}catch(e){btn.disabled=false;btn.innerText="VERIFY WITH 0.05 TON";alert("Verify failed");}}
+function isUserJoined(){const done=readArray("v_tasks_done");return localStorage.getItem("v_joined_channel")==="true"||done.includes("join_channel");}
+function checkTasksUI(){const done=readArray("v_tasks_done");const b=document.getElementById("taskBtn1");if(b&&done.includes("join_channel")){b.innerText="✅ Done";b.disabled=true;}if(done.includes("victor_join")){const vb=document.getElementById("victorBtn");if(vb){vb.innerText="✅ Done";vb.disabled=true;}}updateAdsUI();updateReactUI();}
+function doTask(amount, taskId, link){const done=readArray("v_tasks_done");if(done.includes(taskId)){alert("Already done");return;}const btnMap={"join_channel":"taskBtn1","victor_join":"victorBtn"};const bid=btnMap[taskId];const b=bid?document.getElementById(bid):null;if(b&& (b.innerText==="Join")){window.open(link,"_blank");b.innerText="Verify ✅";b.className="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold";return;}poolBalance+=amount;if(!done.includes(taskId))done.push(taskId);if(taskId==="join_channel")localStorage.setItem("v_joined_channel","true");localStorage.setItem("v_tasks_done",JSON.stringify(done));localStorage.setItem("v_balance",String(poolBalance));if(b){b.innerText="✅ Done";b.disabled=true;b.className="bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs";}playSound("claimSound");updateUI();syncToSupabase();}
+function getAdsDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function getAdsCount(){const today=getAdsDate();if(localStorage.getItem("v_ads_date")!==today){localStorage.setItem("v_ads_date",today);localStorage.setItem("v_ads_today","0");return 0;}return Math.max(0,Math.floor(safeNum(localStorage.getItem("v_ads_today"),0)));}
+function updateAdsUI(){const c=getAdsCount();const el=document.getElementById("adsCount");const btn=document.getElementById("watchAdsBtn");if(el)el.innerText=c;if(btn){if(c>=ADS_DAILY_LIMIT){btn.innerText="✅ 30/30 Done";btn.disabled=true;btn.className="bg-green-500/20 text-green-400 border border-green-500 px-4 py-2 rounded-full text-xs";}else{btn.innerText="Watch Ad";btn.disabled=false;btn.className="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold";}}}
+function watchAdsTask(){
+  const count=getAdsCount();
+  if(count>=ADS_DAILY_LIMIT){alert("30/30 done today");return;}
+  const btn=document.getElementById("watchAdsBtn");if(!btn)return;btn.disabled=true;btn.innerText="Loading...";
+  function reward(){
+    let c=getAdsCount();if(c>=ADS_DAILY_LIMIT)return;
+    poolBalance+=ADS_REWARD;c+=1;
+    localStorage.setItem("v_ads_date",getAdsDate());localStorage.setItem("v_ads_today",String(c));localStorage.setItem("v_balance",String(poolBalance));
+    updateUI();updateAdsUI();playSound("claimSound");syncToSupabase();alert("+"+ADS_REWARD+" VANTA "+c+"/30");
+  }
+  try{
+    if(typeof window.show_11874733==="function"){
+      const res=window.show_11874733();
+      if(res&&res.then){res.then(()=>reward()).catch(()=>{const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];window.open(link,"_blank");setTimeout(reward,800);});}
+      else{const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];window.open(link,"_blank");setTimeout(reward,800);}
+    }else{const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)];window.open(link,"_blank");setTimeout(reward,800);}
+  }catch(e){btn.disabled=false;btn.innerText="Watch Ad";}
+}
+function getReactTime(){return safeNum(localStorage.getItem("v_react_last"),0);}
+function updateReactUI(){
+  const last=getReactTime();const now=Date.now();const diff=now-last;const threeHours=3*60*60*1000;
+  const el=document.getElementById("reactTimer");const btn=document.getElementById("reactBtn");
+  if(!el||!btn)return;
+  if(diff>=threeHours||last===0){
+    el.innerText="Ready! +5 VANTA - 1 Click";el.className="text-[10px] text-green-400 mt-1 font-bold";btn.innerText="React";btn.disabled=false;btn.className="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold";
+  }else{
+    const remain=threeHours-diff;const h=Math.floor(remain/3600000);const m=Math.floor((remain%3600000)/60000);const s=Math.floor((remain%60000)/1000);
+    el.innerText=`Next in ${h}h ${m}m ${s}s`;el.className="text-[10px] text-yellow-400 mt-1";
+    btn.innerText=h>0?`${h}h ${m}m`:`${m}m ${s}s`;btn.disabled=true;btn.className="bg-white/10 text-white/40 px-3 py-2 rounded-full text-[10px]";
+  }
+}
+setInterval(updateReactUI,1000);
+function doReactTask(){
+  const last=getReactTime();const now=Date.now();const threeHours=3*60*60*1000;
+  if(now-last < threeHours && last!==0){const m=Math.floor((threeHours-(now-last))/60000);alert(`Wait ${m} mins - every 3 hours`);return;}
+  window.open("https://t.me/VantaBotHub/104","_blank");
+  const btn=document.getElementById("reactBtn");
+  const timerEl=document.getElementById("reactTimer");
+  if(btn){btn.innerText="Verifying...";btn.disabled=true;btn.className="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold";}
+  if(timerEl){timerEl.innerText="Please wait 3s...";}
+  setTimeout(()=>{
+    poolBalance+=5;
+    localStorage.setItem("v_balance",String(poolBalance));
+    localStorage.setItem("v_react_last",String(Date.now()));
+    playSound("claimSound");
+    updateUI();
+    updateReactUI();
+    syncToSupabase();
+    alert("+5 VANTA! Thanks for reacting ❤️");
+  },3000);
+}
+function renderMiners(){const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML="";for(let i=1;i<=visibleLevels;i++){const cost=getCostForLevel(i);const rate=getVantaPerSec(i);const isActive=i===currentMinerLevel;const isLocked=i>currentMinerLevel+1;const isOwned=i<currentMinerLevel;let btn;if(isOwned)btn='<button disabled class="w-full bg-white/10 py-2 rounded-lg text-xs mt-2">OWNED</button>';else if(isActive)btn='<button disabled class="w-full bg-[#00FF88] text-black py-2 rounded-lg text-xs font-bold mt-2">ACTIVE</button>';else if(isLocked)btn=`<div class="bg-black/50 py-2 rounded-lg mt-2 text-center text-xs">🔒 Lvl ${currentMinerLevel+1} First</div>`;else btn=`<button onclick="buyMiner(${i},${cost})" class="w-full gold-gradient py-2 rounded-lg text-[9px] mt-2">${cost} VANTA</button>`;const card=document.createElement("div");card.className="glass p-3 "+(isActive?"border border-blue-500/50 ":"")+(isLocked?"opacity-60":"");card.innerHTML=`<p class="text-xs">Lvl ${i}</p><p class="text-sm font-bold green-glow mt-2">+${rate.toFixed(5)}/sec</p>${btn}`;grid.appendChild(card);}document.getElementById("myLevelShow").innerText=currentMinerLevel;}
+function loadMoreMiners(){visibleLevels=Math.min(1000,visibleLevels+20);renderMiners();}
+async function buyMiner(lvl,cost){if(lvl!==currentMinerLevel+1){alert("Buy Level "+(currentMinerLevel+1)+" first");return;}if(poolBalance<cost){alert("Need "+cost+" VANTA");return;}if(!connectedWalletAddress||!tonConnectUI){alert("Connect wallet");return;}const tonCost=TON_PRICE[lvl]||(lvl*0.18).toFixed(2);if(!confirm(`Upgrade to Level ${lvl}? Cost: ${cost} VANTA + ${tonCost} TON`))return;try{await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:String(Math.round(Number(tonCost)*1000000000))}]});poolBalance-=cost;currentMinerLevel=lvl;localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_miner_level",String(currentMinerLevel));updateUI();renderMiners();await syncToSupabase();alert("Upgraded!");}catch(e){alert("Cancelled");}}
+function updateFriendsUI(){
+  const myRefs=readArray(refKey);const count=myRefs.length;let storedNames=readArray("refs_names_"+tgId);
+  let available=Math.max(0,count*100-refClaimed);
+  document.getElementById("refCount").innerText=count;
+  document.getElementById("refEarned").innerText=available+" VANTA";
+  document.getElementById("refRewardText").innerText=available>0?available+" available • +100 each":"All claimed";
+  const teamAvailable=Math.max(0,teamWallet-teamClaimed);
+  document.getElementById("teamWalletText").innerText=teamAvailable.toFixed(4)+" VANTA available • "+teamWallet.toFixed(4)+" total";
+  const list=document.getElementById("refList");list.innerHTML="";
+  if(count===0){list.innerHTML='<p class="text-center text-white/40 text-xs mt-4">No referrals yet</p>';}else{
+    for(let i=0;i<Math.min(count,100);i++){
+      let raw=storedNames[i]||myRefs[i]||"User "+(i+1);
+      if(raw.startsWith("friend_"))raw="User "+(i+1);
+      if(raw.startsWith("id_"))raw="User "+String(raw).slice(-4);
+      const item=document.createElement("div");item.className="glass p-3 text-xs flex justify-between items-center";item.innerHTML='<span>👤 '+String(raw).slice(0,22)+'</span><span class="text-blue-300">5% team</span>';list.appendChild(item);
+    }
+  }
+}
+function claimReferral(){
+  const myRefs=readArray(refKey);const count=myRefs.length;const unclaimed=Math.max(0,count*100-refClaimed);
+  if(unclaimed<=0){alert("All claimed - invite new person");return;}
+  if(!isVerified()){alert("Verify first");return;}
+  refClaimed+=unclaimed;localStorage.setItem(refClaimedKey,String(refClaimed));
+  poolBalance+=unclaimed;localStorage.setItem("v_balance",String(poolBalance));
+  playSound("claimSound");updateUI();syncToSupabase();alert("+"+unclaimed+" VANTA");
+}
+function claimTeamWallet(){
+  const available=Math.max(0,teamWallet-teamClaimed);
+  if(available<=0){alert("No team reward yet - wait for team to claim");return;}
+  teamClaimed+=available;poolBalance+=available;
+  localStorage.setItem(teamClaimedKey,String(teamClaimed));localStorage.setItem("v_balance",String(poolBalance));
+  playSound("claimSound");updateUI();syncToSupabase();alert("Team +"+available.toFixed(4)+" VANTA to Pool!");
+}
+function copyRef(){const l=document.getElementById("refLink").innerText;navigator.clipboard?.writeText(l).then(()=>alert("Copied!"));}
+function tapCoin(){
+  const now=Date.now();if(now-lastTapTime<900)return;lastTapTime=now;
+  let logs=readArray("v_tap_log");logs=logs.filter(t=>now-t<60000);logs.push(now);localStorage.setItem("v_tap_log",JSON.stringify(logs));
+  if(logs.length>60){alert("Slow down!");return;}
+  const coin=document.getElementById("vCoin");coin.classList.remove("coin-tap");void coin.offsetWidth;coin.classList.add("coin-tap");
+  miningPending+=0.01;localStorage.setItem("v_mining_pending",String(miningPending));updateUI();playSound("tapSound");
+}
+async function claimMining(){
+  if(miningPending<=0){alert("Nothing to claim");return;}
+  if(isClaiming)return;isClaiming=true;
+  const btn=document.getElementById("claimBtn");btn.innerText="Loading Ad...";btn.disabled=true;
+  async function finish(){
+    const amount=miningPending;poolBalance+=amount;miningPending=0;
+    localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_mining_pending","0");
+    updateUI();btn.innerText="CLAIM TO POOL (Watch Ad)";btn.disabled=false;isClaiming=false;playSound("claimSound");
+    const inviter=urlParams.get("ref")||urlParams.get("start")||localStorage.getItem("v_inviter");
+    if(inviter&&inviter!==String(tgId)){
+      try{
+        await supabaseClient.from("team_wallet_events").insert({inviter_id:String(inviter),referral_id:String(tgId),referral_name:String(tgName),amount:amount*0.05,source_amount:amount});
+        const {data} = await supabaseClient.from("vanta_users").select("team_wallet").eq("tg_id",String(inviter)).single();
+        if(data){await supabaseClient.from("vanta_users").update({team_wallet:Number(data.team_wallet||0)+amount*0.05}).eq("tg_id",String(inviter));}
+      }catch(e){}
+    }
+    await syncToSupabase();alert("+"+amount.toFixed(4)+" VANTA");
+  }
+  setTimeout(async()=>{
+    if(typeof window.show_11874733==="function"){
+      try{const r=window.show_11874733();if(r&&r.then){r.then(finish).catch(()=>{btn.disabled=false;btn.innerText="CLAIM TO POOL (Watch Ad)";isClaiming=false;});}else await finish();}catch(e){await finish();}
+    }else await finish();
+  },800);
+}
+async function syncToSupabase(){
+  try{
+    const vip = getVipData();
+    await supabaseClient.from("vanta_users").upsert({tg_id:String(tgId),username:String(tgName),balance:Number(poolBalance),mining_pending:Number(miningPending),miner_level:Number(currentMinerLevel),verified:isVerified(),verified_wallet:getVerifiedWallet(),wallet:connectedWalletAddress||localStorage.getItem("v_wallet")||"",ref_claimed:Number(refClaimed),team_wallet:Number(teamWallet),team_claimed:Number(teamClaimed),total_refs:readArray(refKey).length,nft_tier:vip.tier||null,nft_start:vip.start?new Date(vip.start).toISOString():null,updated_at:new Date().toISOString()},{onConflict:'tg_id'});
+    const {data}=await supabaseClient.from("vanta_users").select("team_wallet,nft_tier,nft_start").eq("tg_id",String(tgId)).single();
+    if(data){
+      if(Number(data.team_wallet)>teamWallet){teamWallet=Number(data.team_wallet);localStorage.setItem(teamWalletKey,String(teamWallet));updateFriendsUI();}
+      if(data.nft_tier && !localStorage.getItem("v_nft_tier")){
+        localStorage.setItem("v_nft_tier", data.nft_tier);
+        if(data.nft_start) localStorage.setItem("v_nft_start", String(new Date(data.nft_start).getTime()));
+        updateVipUI();
+      }
+    }
+  }catch(e){}
+}
+async function saveWithdrawToSupabase(req){
+  try{const {error}=await supabaseClient.from("withdraws").insert({user_id:String(req.userId),user_name:String(req.userName),amount:Number(req.amount),receive:Number(req.receive),wallet:String(req.wallet),status:"pending"});if(error)throw error;return true;}catch(e){return false;}
+}
+async function loadWithdrawsFromSupabase(){
+  try{const {data}=await supabaseClient.from("withdraws").select("*").eq("user_id",String(tgId)).order("created_at",{ascending:false}).limit(20);const div=document.getElementById("withdrawHistory");if(!data||data.length===0){div.innerHTML='<p class="text-white/30 text-xs text-center">No withdraw yet</p>';return;}div.innerHTML="";data.forEach(r=>{const row=document.createElement("div");row.className="glass p-2 mt-2 text-[11px] flex justify-between";row.innerHTML=`<div><b>${r.amount} → ${r.receive}</b><br><span class="text-white/40 text-[9px]">${new Date(r.created_at).toLocaleString()}</span></div><span class="${r.status==='pending'?'text-yellow-400':'text-green-400'}">${String(r.status).toUpperCase()}</span>`;div.appendChild(row);});}catch(e){}
+}
+function updateWithdrawUI(){const b=document.getElementById("withdrawBtn");if(b)b.innerText=isVerified()?"Request Withdraw":"🔐 VERIFY TO WITHDRAW";}
+function calcReceive(){const i=document.getElementById("withdrawAmt");const r=document.getElementById("receiveAmt");const a=Number(i.value.trim()||0);const rec=Math.max(0,a-WITHDRAW_FEE);if(r)r.innerText=rec.toFixed(2);}
+async function withdraw(){
+  if(!isVerified()){alert("Verify first");return;}
+  const input=document.getElementById("withdrawAmt");const amount=Number(input.value.trim());
+  if(!Number.isFinite(amount)||amount<MIN_WITHDRAW){alert("Min 1000 VANTA");return;}
+  if(amount>poolBalance){alert("Insufficient");return;}
+  const wallet=connectedWalletAddress||localStorage.getItem("v_wallet")||"";if(!wallet){alert("Connect wallet");return;}
+  const receive=amount-WITHDRAW_FEE;if(!confirm(`Withdraw?\nAmount: ${amount}\nReceive: ${receive}`))return;
+  const req={amount,receive,wallet,userId:String(tgId),userName:String(tgName)};
+  const saved=await saveWithdrawToSupabase(req);if(!saved){alert("Network error");return;}
+  poolBalance-=amount;localStorage.setItem("v_balance",String(poolBalance));updateUI();loadWithdrawsFromSupabase();await syncToSupabase();input.value="";alert("Withdraw saved ✅");
+}
+function updateUI(){
+  if(poolBalance>MAX_BALANCE){poolBalance=MAX_BALANCE;localStorage.setItem("v_balance",String(poolBalance));}
+  poolBalance=Math.max(0,safeNum(poolBalance,0));miningPending=Math.max(0,safeNum(miningPending,0));
+  document.getElementById("miningBalance").innerText=miningPending.toFixed(5);
+  document.getElementById("miningProfile").innerText=miningPending.toFixed(5);
+  document.getElementById("pool").innerText=poolBalance.toFixed(4);
+  document.getElementById("balProfile").innerText=poolBalance.toFixed(4);
+  const rate=getVantaPerSec(currentMinerLevel);
+  document.getElementById("power").innerText=(3.02+currentMinerLevel*0.06).toFixed(2);
+  document.getElementById("miningPlus").innerText="+"+rate.toFixed(5)+" /sec";
+  document.getElementById("rateShow").innerText=rate.toFixed(5);
+  document.getElementById("lvl").innerText=currentMinerLevel;
+  const badge=document.getElementById("joinStatusBadge");
+  if(isUserJoined()){badge.innerText="● JOINED";badge.className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500";}
+  else{badge.innerText="● NOT JOINED";badge.className="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500";}
+  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateReactUI();updateSpinUI();updateVipUI();checkNftDailyBonus();
+  if(liveVantaPriceUsd>0){
+    const usdEl=document.getElementById("poolUsd");
+    if(usdEl){const v=poolBalance*liveVantaPriceUsd; if(v>0.00001)usdEl.textContent="(~$"+v.toFixed(5)+")";}
+  }
+}
+function showPage(page){["mine","vip","spin","miners","tasks","friends","profile"].forEach(n=>{const el=document.getElementById(n+"-page"); if(el) el.classList.add("hidden"); const nav=document.getElementById("nav-"+n); if(nav){ nav.classList.remove("nav-active"); nav.style.opacity="0.6"; }});document.getElementById(page+"-page").classList.remove("hidden");const navActive=document.getElementById("nav-"+page); if(navActive){ navActive.classList.add("nav-active"); navActive.style.opacity="1"; }if(page==="miners")renderMiners();if(page==="tasks"){checkTasksUI();updateAdsUI();updateReactUI();}if(page==="friends")updateFriendsUI();if(page==="profile"){loadWithdrawsFromSupabase();}if(page==="spin"){updateSpinUI();}if(page==="vip"){updateVipUI(); fetchNftSupply();}}
+(function applyOffline(){const last=safeNum(localStorage.getItem("v_last_mine_time"),0);if(last>0){const diff=Math.floor((Date.now()-last)/1000);const earn=Math.min(diff,MAX_OFFLINE_HOURS*3600);if(earn>0&&earn<7200){const rate=getVantaPerSec(currentMinerLevel);miningPending+=rate*earn;localStorage.setItem("v_mining_pending",String(miningPending));}}localStorage.setItem("v_last_mine_time",String(Date.now()));})();
+setInterval(()=>{const rate=getVantaPerSec(currentMinerLevel);miningPending+=rate;localStorage.setItem("v_mining_pending",String(miningPending));localStorage.setItem("v_last_mine_time",String(Date.now()));updateUI();},1000);
+const savedWallet=localStorage.getItem("v_wallet");if(savedWallet){document.getElementById("walletShort").innerText="✅ "+savedWallet.slice(0,6)+"..."+savedWallet.slice(-4);}
+document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";
+updateUI();renderMiners();checkTasksUI();updateFriendsUI();loadWithdrawsFromSupabase();updateAdsUI();updateReactUI();updateSpinUI();updateVipUI();fetchNftSupply();
 setInterval(()=>{syncToSupabase();},15000);
+const inviterParam=urlParams.get("ref")||urlParams.get("start");if(inviterParam&&inviterParam!==String(tgId)&&!localStorage.getItem("v_inviter")){localStorage.setItem("v_inviter",inviterParam);}
 </script>
 </body>
 </html>

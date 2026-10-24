@@ -78,13 +78,8 @@ button:disabled{opacity:.65;cursor:not-allowed}
 <h1 class="text-xl font-bold text-center">Profile</h1>
 <div id="profileVerification" class="glass p-4 mt-4 border border-blue-500/30"><div class="flex justify-between items-center"><div><p class="text-sm font-bold">Account Verification</p><p id="profileVerificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><span id="profileVerificationIcon">🔐</span></div></div>
 <div class="glass p-4 flex justify-between items-center mt-4"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">👤</div><div><p class="text-sm font-bold">User ID</p><p id="userIdShow" class="text-xs text-white/50"></p></div></div></div>
-
-<!-- POOL BALANCE WITH GRAM RATE -->
 <div class="glass p-4 mt-3 border border-green-400/20 bg-green-500/5"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">💰</div><div><p class="text-sm font-bold">POOL BALANCE</p><p class="text-xs"><span id="balProfile">0</span> VANTA <span id="balProfileUsd" class="text-[#00FF88] text-[10px] font-bold"></span></p><p id="balProfileRate" class="text-[9px] text-white/30 mt-1">Syncing Gram rate...</p></div></div></div>
-
-<!-- ON-CHAIN WITH GRAM RATE - NEW -->
 <div class="glass p-4 mt-3 border border-yellow-400/20 bg-yellow-500/5"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">⛓️</div><div><p class="text-sm font-bold">ON-CHAIN</p><p class="text-xs"><span id="balProfileOnchain">0.00</span> VANTA <span id="balProfileOnchainUsd" class="text-[#FFD700] text-[10px] font-bold"></span></p><p id="balProfileOnchainRate" class="text-[9px] text-white/30 mt-1">Syncing Gram rate...</p></div></div></div>
-
 <div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Mining (Unclaimed)</p><p class="text-xs text-white/40">Tap Claim to move to pool</p></div><p class="text-blue-300 font-bold"><span id="miningProfile">0</span> VANTA</p></div>
 <div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History</p><div id="withdrawHistory" class="mt-2"><p class="text-white/30 text-xs text-center">Loading...</p></div></div>
 <div id="withdrawCard" class="glass p-4 mt-4"><p class="text-sm font-bold">Withdraw</p><p class="text-xs text-blue-300 mt-1">You receive: <b id="receiveAmt">0.00</b> VANTA</p><input id="withdrawAmt" oninput="calcReceive()" type="number" min="0" step="any" placeholder="Amount" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white"><button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdraw</button></div>
@@ -179,7 +174,6 @@ function getRiggedReward(){ const r=Math.random()*100; if(r<5) return 3; if(r<35
 function spinWheel(){ if(isSpinning) return; const data=getSpinData(); const today=getSpinDate(); const now=Date.now(); const canSpin = data.date!==today || now-data.last>=SPIN_COOLDOWN_MS; if(!canSpin){alert("You already spun today - Come back in 24 hours!");return;} isSpinning=true; currentSpinReward=getRiggedReward(); let targetAngleMap={3:51,5:154,10:257,15:308,20:205,25:102,30:0}; let baseAngle=targetAngleMap[currentSpinReward] || 154; baseAngle+= (Math.random()*30 -15); const spins= 5*360 + (360-baseAngle); const wheel=document.getElementById("spinWheel"); wheel.style.transform=`rotate(${spins}deg)`; const btn=document.getElementById("spinBtn"); btn.disabled=true; btn.innerText="SPINNING..."; playSound("tapSound"); setTimeout(()=>{ isSpinning=false; document.getElementById("spinResultAmount").innerText=currentSpinReward; document.getElementById("spinResultCard").classList.remove("hidden"); document.getElementById("claimSpinBtn").classList.remove("hidden"); btn.classList.add("hidden"); playSound("claimSound"); if(navigator.vibrate) navigator.vibrate(100); },4100); }
 function claimSpinReward(){ if(currentSpinReward<=0) return; const btn=document.getElementById("claimSpinBtn"); btn.disabled=true; btn.innerText="LOADING AD..."; function finalizeClaim(){ poolBalance+=currentSpinReward; localStorage.setItem("v_balance",String(poolBalance)); const data=getSpinData(); const today=getSpinDate(); localStorage.setItem("v_spin_date",today); localStorage.setItem("v_spin_today","1"); localStorage.setItem("v_spin_won_today",String(data.won+currentSpinReward)); localStorage.setItem("v_spin_last",String(Date.now())); document.getElementById("spinResultCard").classList.add("hidden"); btn.classList.add("hidden"); const spinBtn=document.getElementById("spinBtn"); spinBtn.classList.remove("hidden"); spinBtn.disabled=true; currentSpinReward=0; const wheel=document.getElementById("spinWheel"); wheel.style.transition="none"; wheel.style.transform="rotate(0deg)"; setTimeout(()=>{wheel.style.transition="transform 4s cubic-bezier(0.15,0,0.15,1)";},50); updateUI(); updateSpinUI(); syncToSupabase(); alert("Claimed to Pool! Come back in 24 hours for next spin"); } try{ if(typeof window.show_11874733==="function"){ const result=window.show_11874733(); if(result && result.then){ result.then(finalizeClaim).catch(()=>{ const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)]; window.open(link,"_blank"); setTimeout(finalizeClaim,800); }); }else{ const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)]; window.open(link,"_blank"); setTimeout(finalizeClaim,800); } }else{ const link=AD_LINKS[Math.floor(Math.random()*AD_LINKS.length)]; window.open(link,"_blank"); setTimeout(finalizeClaim,800); } }catch(e){ finalizeClaim(); } }
 
-// ====== LIVE USDT PRICE - FIXED FOR GRAM POOL ======
 async function fetchLivePrice(){
   const priceEl=document.getElementById("livePrice");
   const usdEl=document.getElementById("poolUsd");
@@ -222,10 +216,8 @@ async function fetchLivePrice(){
       if(balRateEl){
         balRateEl.textContent=`Rate: $${price.toFixed(8)} / VANTA • Gram • LIVE`;
       }
-      // Also update ON-CHAIN rate
       const onchainRateEl=document.getElementById("balProfileOnchainRate");
       if(onchainRateEl){ onchainRateEl.textContent=`Rate: $${price.toFixed(8)} / VANTA • Gram • LIVE`; }
-      // Update onchain USD if already fetched
       const onchainEl=document.getElementById("balProfileOnchain");
       const onchainUsdEl=document.getElementById("balProfileOnchainUsd");
       if(onchainEl && onchainUsdEl){
@@ -250,36 +242,81 @@ async function fetchLivePrice(){
 fetchLivePrice();
 setInterval(fetchLivePrice,10000);
 
-// ===== ON-CHAIN FETCH FOR PROFILE - WITH GRAM RATE =====
+// ===== ON-CHAIN FETCH FOR PROFILE - FIXED V2 =====
 async function fetchProfileOnchain(){
   const wallet = connectedWalletAddress || localStorage.getItem("v_wallet") || "";
   const onchainEl=document.getElementById("balProfileOnchain");
   const onchainUsdEl=document.getElementById("balProfileOnchainUsd");
   const onchainRateEl=document.getElementById("balProfileOnchainRate");
+  const poolRateEl=document.getElementById("balProfileRate");
+  
   if(!wallet){
-    if(onchainEl) onchainEl.innerText="0.00";
+    console.log("No wallet for on-chain");
     return;
   }
+  console.log("Fetching on-chain for:", wallet);
+  
+  let bal = 0;
   try{
     const r=await fetch(`https://tonapi.io/v2/accounts/${wallet}/jettons?currencies=usd`,{cache:"no-store"});
     const d=await r.json();
-    let bal=0;
-    let jet=d?.balances?.find(b=>b.jetton?.address===VANTA_TOKEN_ADDRESS || b.jetton?.symbol==="VANTA");
-    if(jet){
-      bal=Number(jet.balance)/(10**9);
+    console.log("Jettons response:", d);
+    
+    if(d?.balances && Array.isArray(d.balances)){
+      for(let j of d.balances){
+        const addr = j.jetton?.address || "";
+        const symbol = (j.jetton?.symbol || "").toUpperCase();
+        if(addr === VANTA_TOKEN_ADDRESS || symbol === "VANTA" || (j.jetton?.name && j.jetton.name.toLowerCase().includes("vanta"))){
+          const decimals = j.jetton?.decimals || 9;
+          bal = Number(j.balance) / (10**decimals);
+          console.log("Found VANTA:", bal, "decimals:", decimals);
+          break;
+        }
+      }
     }
-    if(onchainEl) onchainEl.innerText=bal.toFixed(2);
-    if(onchainUsdEl && liveVantaPriceUsd>0){
+    
+    if(bal === 0){
+      try{
+        const r2=await fetch(`https://tonapi.io/v2/accounts/${wallet}/jettons/${VANTA_TOKEN_ADDRESS}`,{cache:"no-store"});
+        const d2=await r2.json();
+        console.log("Direct jetton response:", d2);
+        if(d2?.balance){
+          const decimals = d2.jetton?.decimals || d2?.jetton?.decimals || 9;
+          bal = Number(d2.balance) / (10**decimals);
+        }
+      }catch(e2){ console.log("direct fail", e2); }
+    }
+  }catch(e){
+    console.log("on-chain fetch error", e);
+  }
+  
+  if(onchainEl) onchainEl.innerText=bal.toFixed(2);
+  if(onchainUsdEl){
+    if(bal>0 && liveVantaPriceUsd>0){
       const usd=bal*liveVantaPriceUsd;
-      onchainUsdEl.innerText= usd>=0.01 ? `(~$${usd.toFixed(4)} USDT)` : (bal>0 ? `(~$${usd.toFixed(6)} USDT)` : "");
+      onchainUsdEl.innerText= usd>=0.01 ? `(~$${usd.toFixed(4)} USDT)` : `(~$${usd.toFixed(6)} USDT)`;
+    } else if(bal>0){
+      onchainUsdEl.innerText=`(${bal} VANTA in wallet)`;
+    } else {
+      onchainUsdEl.innerText="";
     }
-    if(onchainRateEl && liveVantaPriceUsd>0){
+  }
+  if(onchainRateEl){
+    if(liveVantaPriceUsd>0){
       onchainRateEl.innerText=`Rate: $${liveVantaPriceUsd.toFixed(8)} / VANTA • Gram • LIVE`;
+    } else {
+      onchainRateEl.innerText=`${bal>0 ? bal.toFixed(2)+' VANTA found in wallet' : 'Wallet connected, checking...'} • Gram`;
     }
-  }catch(e){}
+  }
+  if(poolRateEl && liveVantaPriceUsd>0){
+    poolRateEl.innerText=`Rate: $${liveVantaPriceUsd.toFixed(8)} / VANTA • Gram • LIVE`;
+  }
 }
-setInterval(()=>{ if(connectedWalletAddress || localStorage.getItem("v_wallet")) fetchProfileOnchain(); },10000);
-setTimeout(fetchProfileOnchain,2500);
+setInterval(()=>{ 
+  const w = connectedWalletAddress || localStorage.getItem("v_wallet");
+  if(w) fetchProfileOnchain(); 
+}, 8000);
+setTimeout(fetchProfileOnchain, 1500);
 
 function getVerifiedWallet(){return localStorage.getItem("v_verified_wallet")||"";}
 function isVerified(){return localStorage.getItem("v_verified")==="1"&&getVerifiedWallet()!=="";}

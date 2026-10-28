@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vanta - Mine VANTA - V6.9 LEVEL COMBINED FIXED</title>
+<title>Vanta - V7 TIMELINE MINERS</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@tonconnect/ui@2.0.9/dist/tonconnect-ui.min.js"></script>
@@ -33,6 +33,19 @@ button:disabled{opacity:.65;cursor:not-allowed}
 .wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;background:radial-gradient(#FFD700,#B8860B);border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;z-index:10}
 .wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #FFD700;z-index:11}
 .wheel-label{position:absolute;left:50%;top:50%;transform-origin:0% 0%;font-weight:900;font-size:16px;color:#000;width:115px;text-align:right;padding-right:18px;pointer-events:none}
+/* TIMELINE STAIRCASE CSS */
+.timeline-wrap{position:relative;padding-left:38px}
+.timeline-line{position:absolute;left:15px;top:10px;bottom:10px;width:3px;background:linear-gradient(to bottom,#FFD700,#0a3d9c,#00FF88);border-radius:10px;opacity:.6}
+.timeline-item{position:relative;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.timeline-dot{position:absolute;left:-30px;width:16px;height:16px;border-radius:50%;border:3px solid #001a4d;z-index:2}
+.timeline-dot.owned{background:#00FF88;box-shadow:0 0 10px #00FF88}
+.timeline-dot.active{background:#FFD700;box-shadow:0 0 15px #FFD700;animation:pulse 1.5s infinite}
+.timeline-dot.locked{background:#ffffff30;border-color:#ffffff30}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.timeline-card{flex:1;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px}
+.timeline-card.owned{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25)}
+.timeline-card.active{background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);box-shadow:0 0 20px rgba(255,215,0,.15)}
+.timeline-card.locked{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
 #securityOverlay{position:fixed;inset:0;z-index:9999999;background:#000c26 radial-gradient(ellipse at 50% 0%,#001a4d 0%,#000c26 80%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
 .sec-logo-box{width:290px;height:290px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#0a2a5a,#001a4d);border:4px solid #FFD700;box-shadow:0 0 40px rgba(255,215,0,.5);display:flex;align-items:center;justify-content:center}
 .float{animation:float 3s ease-in-out infinite}
@@ -41,21 +54,12 @@ button:disabled{opacity:.65;cursor:not-allowed}
 </style>
 </head>
 <body>
-<div id="securityOverlay">
-<div class="sec-logo-box float"><div style="font-size:100px;font-weight:900;color:#FFD700">V</div></div>
-<h1 style="margin-top:18px;font-size:54px;font-weight:900;color:#FFD700">Vanta</h1>
-<div id="cfBox"><div class="cf-turnstile" data-sitekey="0x4AAAAAAFkZVgEgD-8pFMz1" data-callback="onVantaVerified"></div></div>
-<p style="color:#FFD700;margin-top:18px;font-size:13px;font-weight:700">Complete the security check to enter Vanta.</p>
-</div>
-<div id="mine-page" class="p-4 max-w-md mx-auto">
-<div class="flex justify-between items-center mb-3"><div><p id="userName" class="font-bold text-lg">Miner</p><div class="flex gap-2 mt-1"><span class="bg-white text-black text-xs px-3 py-1 rounded-full font-bold">Lvl <span id="lvl">1</span></span><span id="joinStatusBadge" class="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500">● NOT JOINED</span><span id="vipBadge" class="hidden bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold"></span></div><button onclick="toggleSound()" id="soundBtn" class="text-[10px] mt-2 bg-white/10 px-2 py-1 rounded">🔊 Sound ON</button></div><div class="glass px-3 py-2 text-xs min-w-[135px] text-center"><p id="walletShort" class="text-[11px]">Connect Wallet</p><div id="ton-connect" class="mt-2"></div></div></div>
-<div id="verificationCard" class="glass p-4 mt-4 border border-yellow-500/40"><div class="flex items-center justify-between"><div><p class="text-sm font-bold">🔐 Verification</p><p id="verificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><div id="verificationIcon" class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-xl">🔐</div></div><p class="text-xs text-white/60 mt-3">Verify with <b class="text-[#FFD700]">0.05 TON</b> to unlock withdrawals.</p><button id="verifyBtn" onclick="verifyAccount()" class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">VERIFY WITH 0.05 TON</button></div>
-<div class="text-center mt-5 relative"><p class="text-xs tracking-[0.3em] text-white/50">MINING (Auto + Tap)</p><h1 class="text-3xl font-bold mt-1"><span id="miningBalance">0.0000</span> <span class="text-[#FFD700] text-xl">VANTA</span></h1><p class="text-[11px] text-white/40 mt-1">Tap V for +0.01 • Auto-mining active</p><div class="glass mt-3 py-2 px-4 inline-block text-xs">APP POOL BALANCE: <b id="pool" class="text-[#00FF88]">0.0000</b> VANTA <span id="poolUsd" class="text-[#00FF88] text-[10px] font-bold"></span></div><p id="livePriceBox" class="text-[11px] mt-2 font-bold">VANTA Price: <span id="livePrice" class="text-[#00FF88]">$0.00001409 USDT • LIVE</span></p><p class="text-2xl font-bold green-glow mt-3" id="miningPlus">+0.0000 /sec</p><div class="flex justify-center mt-6 relative"><div class="coin" id="vCoin" onclick="tapCoin()">V</div></div><button id="claimBtn" onclick="claimMining()" class="w-full blue-btn py-4 rounded-xl mt-8 text-lg">CLAIM TO POOL (Watch Ad)</button><p class="text-xs text-white/40 mt-3">Power: <span id="power">3.02</span> TH/s | <span id="rateShow">0.00000</span>/sec <span id="boostShow" class="text-yellow-400 font-bold"></span> | <span id="dayRate">3.00/day</span></p></div>
-</div>
+<div id="securityOverlay"><div class="sec-logo-box float"><div style="font-size:100px;font-weight:900;color:#FFD700">V</div></div><h1 style="margin-top:18px;font-size:54px;font-weight:900;color:#FFD700">Vanta</h1><div id="cfBox"><div class="cf-turnstile" data-sitekey="0x4AAAAAAFkZVgEgD-8pFMz1" data-callback="onVantaVerified"></div></div><p style="color:#FFD700;margin-top:18px;font-size:13px;font-weight:700">Complete the security check to enter Vanta.</p></div>
+<div id="mine-page" class="p-4 max-w-md mx-auto"><div class="flex justify-between items-center mb-3"><div><p id="userName" class="font-bold text-lg">Miner</p><div class="flex gap-2 mt-1"><span class="bg-white text-black text-xs px-3 py-1 rounded-full font-bold">Lvl <span id="lvl">1</span></span><span id="joinStatusBadge" class="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500">● NOT JOINED</span><span id="vipBadge" class="hidden bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold"></span></div><button onclick="toggleSound()" id="soundBtn" class="text-[10px] mt-2 bg-white/10 px-2 py-1 rounded">🔊 Sound ON</button></div><div class="glass px-3 py-2 text-xs min-w-[135px] text-center"><p id="walletShort" class="text-[11px]">Connect Wallet</p><div id="ton-connect" class="mt-2"></div></div></div><div id="verificationCard" class="glass p-4 mt-4 border border-yellow-500/40"><div class="flex items-center justify-between"><div><p class="text-sm font-bold">🔐 Verification</p><p id="verificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><div id="verificationIcon" class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-xl">🔐</div></div><p class="text-xs text-white/60 mt-3">Verify with <b class="text-[#FFD700]">0.05 TON</b> to unlock withdrawals.</p><button id="verifyBtn" onclick="verifyAccount()" class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">VERIFY WITH 0.05 TON</button></div><div class="text-center mt-5 relative"><p class="text-xs tracking-[0.3em] text-white/50">MINING (Auto + Tap)</p><h1 class="text-3xl font-bold mt-1"><span id="miningBalance">0.0000</span> <span class="text-[#FFD700] text-xl">VANTA</span></h1><p class="text-[11px] text-white/40 mt-1">Tap V for +0.01 • Auto-mining active</p><div class="glass mt-3 py-2 px-4 inline-block text-xs">APP POOL BALANCE: <b id="pool" class="text-[#00FF88]">0.0000</b> VANTA <span id="poolUsd" class="text-[#00FF88] text-[10px] font-bold"></span></div><p id="livePriceBox" class="text-[11px] mt-2 font-bold">VANTA Price: <span id="livePrice" class="text-[#00FF88]">$0.00001409 USDT • LIVE</span></p><p class="text-2xl font-bold green-glow mt-3" id="miningPlus">+0.0000 /sec</p><div class="flex justify-center mt-6 relative"><div class="coin" id="vCoin" onclick="tapCoin()">V</div></div><button id="claimBtn" onclick="claimMining()" class="w-full blue-btn py-4 rounded-xl mt-8 text-lg">CLAIM TO POOL (Watch Ad)</button><p class="text-xs text-white/40 mt-3">Power: <span id="power">3.02</span> TH/s | <span id="rateShow">0.00000</span>/sec <span id="boostShow" class="text-yellow-400 font-bold"></span> | <span id="dayRate">3.00/day</span></p></div></div>
 <div id="spin-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">🎡 Spin & Win</h1><p class="text-center text-xs mt-1 text-white/50">Daily free spin - Win up to <b class="text-[#FFD700]">30 VANTA</b>!</p><div class="glass p-3 mt-4 flex justify-between text-xs"><span>Status: <b id="spinCount" class="text-[#FFD700]">0/1</b></span><span>Won: <b id="spinWonToday" class="text-[#00FF88]">0 VANTA</b></span></div><div class="wheel-wrap"><div class="wheel-pointer"></div><div id="spinWheel" class="wheel" style="background: conic-gradient(#FFD700 0deg 51.4deg, #FFA500 51.4deg 102.8deg, #00FF88 102.8deg 154.2deg, #60a5fa 154.2deg 205.7deg, #ff6b9d 205.7deg 257.1deg, #FFEC8B 257.1deg 308.5deg, #a78bfa 308.5deg 360deg);"><span class="wheel-label" style="transform: rotate(25deg) translate(10px,-10px) rotate(-25deg);">30</span><span class="wheel-label" style="transform: rotate(76deg) translate(10px,-10px) rotate(-76deg);">25</span><span class="wheel-label" style="transform: rotate(128deg) translate(10px,-10px) rotate(-128deg);">3</span><span class="wheel-label" style="transform: rotate(179deg) translate(10px,-10px) rotate(-179deg);">5</span><span class="wheel-label" style="transform: rotate(231deg) translate(10px,-10px) rotate(-231deg);">10</span><span class="wheel-label" style="transform: rotate(282deg) translate(10px,-10px) rotate(-282deg);">15</span><span class="wheel-label" style="transform: rotate(334deg) translate(10px,-10px) rotate(-334deg);">20</span></div><div class="wheel-center">V</div></div><div id="spinResultCard" class="glass p-4 mt-4 text-center hidden border border-yellow-400/30"><p class="text-xs text-white/50">YOU WON</p><h2 class="text-3xl font-bold text-[#FFD700] mt-1"><span id="spinResultAmount">0</span> VANTA</h2></div><button id="spinBtn" onclick="spinWheel()" class="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black">🎡 SPIN NOW</button><button id="claimSpinBtn" onclick="claimSpinReward()" class="w-full blue-btn py-4 rounded-xl mt-3 text-sm hidden">📺 WATCH AD TO CLAIM</button><p id="spinTimer" class="text-center text-xs mt-3 font-bold"></p></div>
 <div id="vip-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">💎 VIP NFT Miners</h1><div class="glass p-3 mt-4 text-xs text-center"><p>Your Tier: <b id="vipTierText">Free Miner</b></p></div><div class="mt-4 space-y-4"><div class="glass p-4 border border-[#cd7f32]/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold">⚙️ Elite Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 1.5x FOREVER</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg">2 TON</p><button id="buyEliteBtn" onclick="mintNFT('elite')" class="bg-[#cd7f32] text-white px-5 py-2 rounded-full text-xs font-bold">Mint 2 TON</button></div></div><div class="glass p-4 border border-gray-400/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold">👑 Overlord Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 2x FOREVER</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg">5 TON</p><button id="buyOverlordBtn" onclick="mintNFT('overlord')" class="bg-gray-300 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 5 TON</button></div></div><div class="glass p-4 border border-yellow-400/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold text-yellow-300">💎 Genesis Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 2.5x FOREVER</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg text-yellow-300">10 TON</p><button id="buyGenesisBtn" onclick="mintNFT('genesis')" class="bg-yellow-400 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 10 TON</button></div></div></div></div>
 <div id="tasks-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">Earn Rewards</h1><div class="mt-4 space-y-3"><div class="glass p-4 flex justify-between items-center border border-green-400/40 bg-green-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div><div><p class="text-sm font-bold">Watch Ads</p><p class="text-xs text-white/50">+1 per ad • 30/day</p><p class="text-xs text-green-400 mt-1 font-bold">Today: <span id="adsCount">0</span>/30</p></div></div><button id="watchAdsBtn" onclick="watchAdsTask()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad</button></div><div class="glass p-4 flex justify-between items-center border border-pink-400/40 bg-pink-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-pink-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 • Every 3hrs</p><p class="text-[10px] text-pink-300 mt-1" id="reactTimer">Ready!</p></div></div><button id="reactBtn" onclick="doReactTask()" class="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div><div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div><div><p class="text-sm font-bold">Join Vanta Channel *</p><p class="text-xs text-white/50">+10 • Required</p></div></div><button id="taskBtn1" onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div></div></div>
-<div id="miners-page" class="hidden p-4 max-w-md mx-auto"><h2 class="text-center text-white/50 text-xs tracking-widest mb-3">MINERS LVL 1 - 1000</h2><div class="glass p-3 mb-3 flex justify-between text-xs"><p>Your Level: <b id="myLevelShow" class="text-[#60a5fa]">1</b> / 1000</p><p>Speed: <b id="mySpeedShow" class="text-green-400">3.00 /day</b></p></div><div id="minersGrid" class="grid grid-cols-1 gap-3"></div><button onclick="loadMoreMiners()" class="w-full glass py-3 rounded-xl mt-4 text-xs">Load More ▼</button></div>
+<div id="miners-page" class="hidden p-4 max-w-md mx-auto"><h2 class="text-center text-white/50 text-xs tracking-widest mb-3">MINERS LVL 1 - 1000 • STAIRCASE</h2><div class="glass p-3 mb-4 flex justify-between text-xs"><p>Your Level: <b id="myLevelShow" class="text-[#FFD700]">1</b> / 1000</p><p>Speed: <b id="mySpeedShow" class="text-green-400">3.00 /day</b></p></div><div class="timeline-wrap" id="timelineWrap"><div class="timeline-line"></div><div id="minersGrid"></div></div><button onclick="loadMoreMiners()" class="w-full glass py-3 rounded-xl mt-4 text-xs">Load More ▼</button></div>
 <div id="levelModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center; padding:20px;"><div style="background:#0a1933; border:1px solid rgba(255,215,0,0.3); padding:22px; border-radius:20px; width:100%; max-width:360px; color:white;"><h2 id="modalLevelTitle" class="text-xl font-black text-center text-[#FFD700]">LEVEL 10</h2><p class="text-center text-[11px] text-white/50 mt-1" id="modalRate">3.00 VANTA/day</p><div class="glass p-3 mt-4 text-sm space-y-2"><div class="flex justify-between"><span class="text-white/60 text-xs">You have Combined:</span><b id="haveVanta" class="text-[#00FF88]">0 VANTA</b></div><div class="flex justify-between"><span class="text-white/60 text-xs">Need for FREE auto:</span><b id="needTotal">0 VANTA</b></div><div class="flex justify-between"><span class="text-green-400 text-xs">Status:</span><b id="needMore" class="text-green-400">FREE UNLOCKED!</b></div></div><button id="buyLevelBtn" style="width:100%; padding:14px; background:linear-gradient(90deg,#FFD700,#FFA500); color:black; border:none; border-radius:12px; font-weight:900; margin-top:16px;">Pay <span id="payBtnPrice">0.50</span> USDT (TON)</button><button onclick="closeLevelModal()" style="width:100%; padding:10px; background:rgba(255,255,255,0.08); color:#aaa; border-radius:10px; margin-top:10px;">Close</button></div></div>
 <div id="friends-page" class="hidden p-4 max-w-md mx-auto"><div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🔗</div><div><p class="text-sm font-bold">Your Invite Link</p><p id="refLink" class="text-[10px] text-white/50 break-all w-48"></p></div></div><button onclick="copyRef()" class="blue-btn px-4 py-2 rounded-full text-xs">Copy</button></div><div class="glass p-4 flex justify-between items-center mt-3"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">👥</div><div><p class="text-sm font-bold">Your Referrals</p><p class="text-xs text-white/50"><span id="refCount">0</span> total</p></div></div></div><div id="refRewardCard" class="glass p-4 flex justify-between items-center mt-3 border border-blue-500/20"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🎁</div><div><p class="text-sm font-bold">Referral Reward</p><p id="refRewardText" class="text-xs text-white/50">0 available</p><p id="refEarned" class="text-[10px] text-white/30 mt-1">0 VANTA</p></div></div><button onclick="claimReferral()" id="claimReferralBtn" class="bg-white/20 px-4 py-2 rounded-full text-xs">Claim</button></div><div id="teamWalletCard" class="glass p-4 flex justify-between items-center mt-3 border border-blue-400/40 bg-blue-600/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💼</div><div><p class="text-sm font-bold">Team Wallet (5%)</p><p id="teamWalletText" class="text-xs text-blue-200">0.00 VANTA available</p></div></div><button onclick="claimTeamWallet()" id="claimTeamBtn" class="blue-btn px-4 py-2 rounded-full text-xs">Claim to Pool</button></div><div id="refList" class="mt-6 space-y-2"></div></div>
 <div id="profile-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-xl font-bold text-center">Profile</h1><div class="vault-card mt-4"><p class="text-[10px] tracking-widest opacity-80">COMBINED HOLDING • DECIDES YOUR LEVEL</p><div class="flex items-center gap-2 mt-2"><div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black">V</div><h1 class="text-3xl font-black tracking-tight"><span id="combinedBalance">0.00</span></h1></div><div class="flex items-center gap-2 mt-1"><span class="bg-black/30 px-3 py-1 rounded-full text-xs font-bold">≈ $<span id="combinedUsd">0.00</span></span></div><p class="text-xs mt-2 opacity-90">🟡 • Level <span id="combinedLevel">1</span> (MAX 1000)</p><div class="vault-inner"><div class="vault-mini"><p class="text-[10px] opacity-70">↗ In-app Pool</p><p class="text-lg font-bold mt-1"><span id="balProfile">0</span></p><p class="text-[11px] opacity-70">≈ $<span id="balProfileUsdSmall">0.00</span></p></div><div class="vault-mini"><p class="text-[10px] opacity-70 flex justify-between">⧉ On-chain Real <span onclick="fetchProfileOnchain()" class="cursor-pointer">↻</span></p><p class="text-lg font-bold mt-1"><span id="balProfileOnchain">0.00</span></p><p class="text-[11px] opacity-70">≈ $<span id="balProfileOnchainUsdSmall">0.00</span></p></div></div><p class="text-[9px] mt-3 opacity-60 text-center">Rate: $0.00001409 / VANTA • LIVE • Combined = Level</p></div><h2 class="text-lg font-bold mt-6">TON Wallet</h2><div class="glass p-4 mt-3 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-12 h-12 bg-cyan-400 rounded-2xl flex items-center justify-center text-xl">💼</div><div><p class="font-bold text-sm">Connected</p><p id="walletDisplayProfile" class="text-xs text-white/50">UQCb...XOu</p></div></div><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">↗</div></div><div id="profileVerification" class="glass p-4 mt-3 border border-green-500/30 bg-green-500/10"><div class="flex justify-between items-center"><div><p class="font-bold text-sm">Wallet verified</p></div><span id="profileVerificationIcon" class="text-xl">✅</span></div></div><div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Mining (Unclaimed)</p></div><p class="text-blue-300 font-bold"><span id="miningProfile">0</span> VANTA</p></div><div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History</p><div id="withdrawHistory" class="mt-2"><p class="text-white/30 text-xs text-center">Loading...</p></div></div><div id="withdrawCard" class="glass p-4 mt-4"><p class="text-sm font-bold">Withdraw</p><p class="text-xs text-blue-300 mt-1">You receive: <b id="receiveAmt">0.00</b> VANTA</p><input id="withdrawAmt" oninput="calcReceive()" type="number" min="0" step="any" placeholder="Amount" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white"><button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdraw</button></div><div class="glass p-4 mt-3 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">👤</div><div><p class="text-sm font-bold">User ID</p><p id="userIdShow" class="text-xs text-white/50"></p></div></div></div></div>
@@ -70,8 +74,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const VANTA_TOKEN_ADDRESS="EQB7uzT7yi0WDcfYpOjn5Yg-7Ir3TUs4wMK0TFl2JmdugmfB";
 const AD_LINKS=["https://omg10.com/4/11886018","https://omg10.com/4/11881385"];
 const OWNER_WALLET="UQCbXnjJ-vVo3oGtovId9TRs_H-O3CO9irjgazyk8F39_XOu";
-const VERIFICATION_NANOTON="50000000";
-const WITHDRAW_FEE=70;const MIN_WITHDRAW=1000;
+const VERIFICATION_NANOTON="50000000";const WITHDRAW_FEE=70;const MIN_WITHDRAW=1000;
 const MAX_TAPS_PER_MINUTE=60;const MAX_OFFLINE_HOURS=2;const MAX_BALANCE=5000000000;const MAX_MINING_PENDING=5000;
 const NFT_CONFIG = { elite: { price: 2, multiplier: 1.5, dailyBonus: 100, days: 14, name: "Elite" }, overlord: { price: 5, multiplier: 2, dailyBonus: 100, days: 28, name: "Overlord" }, genesis: { price: 10, multiplier: 2.5, dailyBonus: 100, days: 56, name: "Genesis" } };
 let secretSupply = { elite: 0, overlord: 0, genesis: 0 };
@@ -107,13 +110,10 @@ let poolBalance=_rawPool;let miningPending=_rawMining;
 let currentMinerLevel=Math.max(1,Math.min(1000,Math.floor(safeNum(localStorage.getItem("v_miner_level"),1))));
 let lastTapTime=0;let isClaiming=false;
 let liveVantaPriceUsd=0.00001409;
-// V6.9 FIX: CLEAR FAKE 999M BUG - FORCE RESET
 let cachedRaw = Number(localStorage.getItem("v_onchain_cached")||0);
 if(cachedRaw > 100000 || cachedRaw < 0){ cachedRaw = 0; localStorage.setItem("v_onchain_cached","0"); }
 let onChainBalance = cachedRaw;
 let soundOn = localStorage.getItem("v_sound")!=="off";
-let audioCtx=null;
-function getAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return audioCtx;}
 function toggleSound(){soundOn=!soundOn; localStorage.setItem("v_sound", soundOn?"on":"off"); document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";}
 const refKey="refs_of_"+tgId; const refClaimedKey="v_ref_claimed_"+tgId; const teamWalletKey="v_team_wallet_"+tgId; const teamClaimedKey="v_team_claimed_"+tgId;
 let refClaimed=Math.max(0,safeNum(localStorage.getItem(refClaimedKey),0)); let teamWallet=safeNum(localStorage.getItem(teamWalletKey),0); let teamClaimed=safeNum(localStorage.getItem(teamClaimedKey),0);
@@ -123,40 +123,19 @@ function getVantaPerSec(lvl){ let base=getMiningRatePerDay(lvl)/86400; return ba
 function getCostForLevel(lvl){ if(lvl<=1) return 0; if(lvl==2) return 100; if(lvl==3) return 125; if(lvl==4) return 150; if(lvl==5) return 200; if(lvl==6) return 250; if(lvl==7) return 300; if(lvl==8) return 350; if(lvl==9) return 400; if(lvl==10) return 500; return 500 + (lvl-10)*50; }
 function getFastUSDT_TON(lvl){ return lvl * 0.05; }
 function getTotalNeededForLevel(targetLevel){ let total=0; for(let i=2;i<=targetLevel;i++){ total+=getCostForLevel(i); } return total; }
-function getCorrectLevelForBalance(base){
-  if(base < 100) return 1;
-  let lvl = 1;
-  for(let i=2; i<=1000; i++){
-    let need = getTotalNeededForLevel(i);
-    if(base >= need) lvl = i;
-    else break;
-  }
-  return lvl;
-}
+function getCorrectLevelForBalance(base){ if(base < 100) return 1; let lvl = 1; for(let i=2; i<=1000; i++){ let need = getTotalNeededForLevel(i); if(base >= need) lvl = i; else break; } return lvl; }
 function autoJumpLevel(){
-  // V6.9: LEVEL = COMBINED HOLDING (Pool + REAL On-chain) as boss said
   const combined = poolBalance + onChainBalance;
   const base = combined > 0 ? combined : poolBalance;
-  // HARD RESET: If level is 1000 but base is small (<24M needed for 1000), force correct
   const needForCurrent = getTotalNeededForLevel(currentMinerLevel);
   if(currentMinerLevel >= 100 && base < needForCurrent){
     const correctLevel = getCorrectLevelForBalance(base);
-    if(correctLevel !== currentMinerLevel){
-      currentMinerLevel = correctLevel;
-      localStorage.setItem("v_miner_level", String(currentMinerLevel));
-    }
+    if(correctLevel !== currentMinerLevel){ currentMinerLevel = correctLevel; localStorage.setItem("v_miner_level", String(currentMinerLevel)); }
     return;
   }
-  // Normal auto-jump based on combined
   const correctLevel = getCorrectLevelForBalance(base);
-  if(correctLevel > currentMinerLevel){
-    currentMinerLevel = correctLevel;
-    localStorage.setItem("v_miner_level", String(currentMinerLevel));
-  }else if(currentMinerLevel >= 1000 && base < getTotalNeededForLevel(1000)){
-    // Force downgrade if still 1000
-    currentMinerLevel = correctLevel;
-    localStorage.setItem("v_miner_level", String(currentMinerLevel));
-  }
+  if(correctLevel > currentMinerLevel){ currentMinerLevel = correctLevel; localStorage.setItem("v_miner_level", String(currentMinerLevel)); }
+  else if(currentMinerLevel >= 1000 && base < getTotalNeededForLevel(1000)){ currentMinerLevel = correctLevel; localStorage.setItem("v_miner_level", String(currentMinerLevel)); }
 }
 let currentSpinReward=0; let isSpinning=false;
 const SPIN_COOLDOWN_MS=24*60*60*1000;
@@ -167,11 +146,7 @@ setInterval(updateSpinUI,1000);
 function getRiggedReward(){ const r=Math.random()*100; if(r<5) return 3; if(r<35) return 5; if(r<65) return 10; if(r<85) return 15; return 20; }
 function spinWheel(){ if(isSpinning) return; const data=getSpinData(); const today=getSpinDate(); const now=Date.now(); const canSpin = data.date!==today || now-data.last>=SPIN_COOLDOWN_MS; if(!canSpin){alert("You already spun today");return;} isSpinning=true; currentSpinReward=getRiggedReward(); let targetAngleMap={3:51,5:154,10:257,15:308,20:205,25:102,30:0}; let baseAngle=targetAngleMap[currentSpinReward] || 154; const spins= 5*360 + (360-baseAngle); const wheel=document.getElementById("spinWheel"); wheel.style.transform=`rotate(${spins}deg)`; const btn=document.getElementById("spinBtn"); btn.disabled=true; btn.innerText="SPINNING..."; setTimeout(()=>{ isSpinning=false; document.getElementById("spinResultAmount").innerText=currentSpinReward; document.getElementById("spinResultCard").classList.remove("hidden"); document.getElementById("claimSpinBtn").classList.remove("hidden"); btn.classList.add("hidden"); },4100); }
 function claimSpinReward(){ if(currentSpinReward<=0) return; const btn=document.getElementById("claimSpinBtn"); btn.disabled=true; btn.innerText="LOADING AD..."; function finalizeClaim(){ poolBalance+=currentSpinReward; localStorage.setItem("v_balance",String(poolBalance)); const data=getSpinData(); const today=getSpinDate(); localStorage.setItem("v_spin_date",today); localStorage.setItem("v_spin_today","1"); localStorage.setItem("v_spin_won_today",String(data.won+currentSpinReward)); localStorage.setItem("v_spin_last",String(Date.now())); document.getElementById("spinResultCard").classList.add("hidden"); btn.classList.add("hidden"); const spinBtn=document.getElementById("spinBtn"); spinBtn.classList.remove("hidden"); spinBtn.disabled=true; currentSpinReward=0; const wheel=document.getElementById("spinWheel"); wheel.style.transition="none"; wheel.style.transform="rotate(0deg)"; setTimeout(()=>{wheel.style.transition="transform 4s cubic-bezier(0.15,0,0.15,1)";},50); updateUI(); updateSpinUI(); syncToSupabase(); alert("Claimed to Pool!"); } try{ if(typeof window.show_11874733==="function"){ const result=window.show_11874733(); if(result && result.then){ result.then(finalizeClaim).catch(()=>{ window.open(AD_LINKS[0],"_blank"); setTimeout(finalizeClaim,800); }); }else{ window.open(AD_LINKS[0],"_blank"); setTimeout(finalizeClaim,800); } }else{ window.open(AD_LINKS[0],"_blank"); setTimeout(finalizeClaim,800); } }catch(e){ finalizeClaim(); } }
-async function fetchLivePrice(){
-  const priceEl=document.getElementById("livePrice");
-  if(priceEl){ priceEl.textContent="$"+liveVantaPriceUsd.toFixed(8)+" USDT • LIVE"; }
-  updateVaultUI();
-}
+async function fetchLivePrice(){ const priceEl=document.getElementById("livePrice"); if(priceEl){ priceEl.textContent="$"+liveVantaPriceUsd.toFixed(8)+" USDT • LIVE"; } updateVaultUI(); }
 fetchLivePrice();
 function updateVaultUI(){
   const pool=poolBalance; const onchain=onChainBalance; const combined=pool+onchain;
@@ -192,27 +167,9 @@ function updateVaultUI(){
 }
 async function fetchProfileOnchain(){
   const wallet = connectedWalletAddress || localStorage.getItem("v_wallet") || "";
-  if(!wallet) return;
-  let bal=0;
-  try{
-    const r=await fetch(`https://tonapi.io/v2/accounts/${wallet}/jettons?currencies=usd`,{cache:"no-store"});
-    const d=await r.json();
-    if(d?.balances){
-      for(let j of d.balances){
-        const sym=(j.jetton?.symbol||"").toUpperCase();
-        if(sym==="VANTA" || j.jetton?.address===VANTA_TOKEN_ADDRESS){
-          const dec=j.jetton?.decimals||9;
-          bal=Number(j.balance)/(10**dec);
-          break;
-        }
-      }
-    }
-  }catch(e){}
-  onChainBalance=bal;
-  localStorage.setItem("v_onchain_cached", String(bal));
-  autoJumpLevel();
-  updateVaultUI();
-  renderMiners();
+  if(!wallet) return; let bal=0;
+  try{ const r=await fetch(`https://tonapi.io/v2/accounts/${wallet}/jettons?currencies=usd`,{cache:"no-store"}); const d=await r.json(); if(d?.balances){ for(let j of d.balances){ const sym=(j.jetton?.symbol||"").toUpperCase(); if(sym==="VANTA" || j.jetton?.address===VANTA_TOKEN_ADDRESS){ const dec=j.jetton?.decimals||9; bal=Number(j.balance)/(10**dec); break; } } } }catch(e){}
+  onChainBalance=bal; localStorage.setItem("v_onchain_cached", String(bal)); autoJumpLevel(); updateVaultUI(); renderMiners();
 }
 setInterval(()=>{ const w=connectedWalletAddress||localStorage.getItem("v_wallet"); if(w) fetchProfileOnchain(); }, 15000);
 setTimeout(fetchProfileOnchain, 1500);
@@ -231,7 +188,24 @@ function getReactTime(){return safeNum(localStorage.getItem("v_react_last"),0);}
 function updateReactUI(){ const last=getReactTime();const now=Date.now();const diff=now-last;const threeHours=3*60*60*1000; const el=document.getElementById("reactTimer");const btn=document.getElementById("reactBtn"); if(!el||!btn)return; if(diff>=threeHours||last===0){ el.innerText="Ready! +5 VANTA"; btn.innerText="React";btn.disabled=false; }else{ const remain=threeHours-diff;const h=Math.floor(remain/3600000);const m=Math.floor((remain%3600000)/60000); el.innerText=`Next in ${h}h ${m}m`; btn.innerText=h>0?`${h}h ${m}m`:`${m}m`;btn.disabled=true; } }
 setInterval(updateReactUI,1000);
 function doReactTask(){ const last=getReactTime();const now=Date.now();const threeHours=3*60*60*1000; if(now-last < threeHours && last!==0){alert(`Wait`);return;} window.open("https://t.me/VantaBotHub/104","_blank"); setTimeout(()=>{ poolBalance+=5; localStorage.setItem("v_balance",String(poolBalance)); localStorage.setItem("v_react_last",String(Date.now())); updateUI(); updateReactUI(); syncToSupabase(); alert("+5 VANTA!"); },3000); }
-function renderMiners(){ const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML=""; for(let i=1;i<=visibleLevels;i++){ const rateDay=getMiningRatePerDay(i); const isActive=i===currentMinerLevel; const isOwned=i<currentMinerLevel; let cardHtml=""; if(isOwned) cardHtml=`<p class="text-xs">Lvl ${i} ✅</p><p class="text-[10px] text-white/40">${rateDay.toFixed(2)}/day</p>`; else if(isActive) cardHtml=`<p class="text-xs font-bold text-blue-300">Lvl ${i} - ACTIVE ✅</p><p class="text-[10px] text-green-300">${rateDay.toFixed(2)}/day</p>`; else cardHtml=`<p class="text-xs">Lvl ${i}</p><p class="text-[10px] text-white/40">${rateDay.toFixed(2)}/day</p><button onclick="openLevelModal(${i})" class="w-full gold-gradient py-2 rounded-lg text-[10px] mt-2 font-bold">VIEW LVL ${i}</button>`; const card=document.createElement("div"); card.className="glass p-3 "+(isActive?"border border-blue-500/50 ":"")+" cursor-pointer"; card.innerHTML=cardHtml; grid.appendChild(card); } document.getElementById("myLevelShow").innerText=currentMinerLevel; document.getElementById("mySpeedShow").innerText=getMiningRatePerDay(currentMinerLevel).toFixed(2)+" /day"; }
+function renderMiners(){
+  const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML="";
+  for(let i=1;i<=visibleLevels;i++){
+    const rateDay=getMiningRatePerDay(i);
+    const isActive=i===currentMinerLevel;
+    const isOwned=i<currentMinerLevel;
+    let dotClass="timeline-dot "; let cardClass="timeline-card ";
+    let leftHtml=""; let rightHtml="";
+    if(isOwned){ dotClass+="owned"; cardClass+="owned"; leftHtml=`<div><p class="text-[13px] font-bold">Lvl ${i} <span class="text-[#00FF88]">✅</span></p><p class="text-[10px] text-white/50">${rateDay.toFixed(2)}/day • Owned</p></div>`; rightHtml=`<span class="text-[#00FF88] text-[10px] font-bold">UNLOCKED</span>`; }
+    else if(isActive){ dotClass+="active"; cardClass+="active"; leftHtml=`<div><p class="text-[13px] font-bold text-[#FFD700]">Lvl ${i} • ACTIVE ⚡</p><p class="text-[10px] text-yellow-200/70">${rateDay.toFixed(2)}/day • Mining</p></div>`; rightHtml=`<span class="text-[#FFD700] text-[10px] font-bold animate-pulse">MINING</span>`; }
+    else{ dotClass+="locked"; cardClass+="locked"; leftHtml=`<div><p class="text-[13px] font-bold text-white/70">Lvl ${i}</p><p class="text-[10px] text-white/40">${rateDay.toFixed(2)}/day</p></div>`; rightHtml=`<button onclick="openLevelModal(${i})" class="gold-gradient px-3 py-1.5 rounded-full text-[10px] font-black">VIEW</button>`; }
+    const item=document.createElement("div"); item.className="timeline-item";
+    item.innerHTML=`<div class="${dotClass}"></div><div class="${cardClass}">${leftHtml}${rightHtml}</div>`;
+    grid.appendChild(item);
+  }
+  document.getElementById("myLevelShow").innerText=currentMinerLevel;
+  document.getElementById("mySpeedShow").innerText=getMiningRatePerDay(currentMinerLevel).toFixed(2)+" /day";
+}
 function loadMoreMiners(){visibleLevels=Math.min(1000,visibleLevels+20);renderMiners();}
 function openLevelModal(targetLevel){ const combined=poolBalance+onChainBalance; const have=combined; let totalNeeded=getTotalNeededForLevel(targetLevel); if(targetLevel<=currentMinerLevel) totalNeeded=0; const usdtPrice=getFastUSDT_TON(targetLevel); document.getElementById('modalLevelTitle').innerText=`LEVEL ${targetLevel}`; document.getElementById('haveVanta').innerText=`${have.toLocaleString()} VANTA (Combined)`; document.getElementById('needTotal').innerText=`${totalNeeded} VANTA`; document.getElementById('needMore').innerText= have>=totalNeeded ? `✅ FREE UNLOCKED!` : `Need ${(totalNeeded-have).toFixed(0)} more`; document.getElementById('payBtnPrice').innerText=usdtPrice.toFixed(2); document.getElementById('modalRate').innerText=`${getMiningRatePerDay(targetLevel).toFixed(2)} VANTA/day`; document.getElementById('buyLevelBtn').onclick=()=>buyLevelWithTon(targetLevel); document.getElementById('levelModal').style.display='flex'; }
 function closeLevelModal(){ document.getElementById('levelModal').style.display='none'; }

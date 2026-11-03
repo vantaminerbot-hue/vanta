@@ -8,7 +8,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@tonconnect/ui@2.0.9/dist/tonconnect-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<script src="https://adsgram.ai/js/adsgram.min.js"></script>
 <script src="//libtl.com/sdk.js" data-zone="11874733" data-sdk="show_11874733"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
@@ -79,7 +79,7 @@ const AD_LINKS=["https://omg10.com/4/11886018","https://omg10.com/4/11881385"];
 const OWNER_WALLET="UQCbXnjJ-vVo3oGtovId9TRs_H-O3CO9irjgazyk8F39_XOu";
 const VERIFICATION_NANOTON="50000000";const WITHDRAW_FEE=70;const MIN_WITHDRAW=1000;
 const MAX_TAPS_PER_MINUTE=60;const MAX_OFFLINE_HOURS=2;const MAX_BALANCE=5000000000;const MAX_MINING_PENDING=5000;
-const ADSGRAM_BLOCK_ID = 57855;
+const ADSGRAM_BLOCK_ID = "57855";
 const NFT_CONFIG = { elite: { price: 2, multiplier: 1.5, dailyBonus: 100, days: 14, name: "Elite" }, overlord: { price: 5, multiplier: 2, dailyBonus: 100, days: 28, name: "Overlord" }, genesis: { price: 10, multiplier: 2.5, dailyBonus: 100, days: 56, name: "Genesis" } };
 let secretSupply = { elite: 0, overlord: 0, genesis: 0 };
 function getVipData(){ try{ const tier = localStorage.getItem("v_nft_tier") || ""; const start = Number(localStorage.getItem("v_nft_start")||0); const bonusClaimed = Number(localStorage.getItem("v_nft_bonus_claimed")||0); return { tier, start, bonusClaimed }; }catch(e){ return {tier:"",start:0,bonusClaimed:0}; } }
@@ -184,7 +184,7 @@ async function verifyAccount(){if(isVerified()){alert("Already verified");return
 function isUserJoined(){const done=readArray("v_tasks_done");return localStorage.getItem("v_joined_channel")==="true"||done.includes("join_channel");}
 function checkTasksUI(){const done=readArray("v_tasks_done");const b=document.getElementById("taskBtn1");if(b&&done.includes("join_channel")){b.innerText="✅ Done";b.disabled=true;}updateAdsUI();updateMonetagUI();updateReactUI();}
 function doTask(amount, taskId, link){const done=readArray("v_tasks_done");if(done.includes(taskId)){alert("Already done");return;}const btnMap={"join_channel":"taskBtn1"};const bid=btnMap[taskId];const b=bid?document.getElementById(bid):null;if(b&& (b.innerText==="Join")){window.open(link,"_blank");b.innerText="Verify ✅";return;}poolBalance+=amount;if(!done.includes(taskId))done.push(taskId);if(taskId==="join_channel")localStorage.setItem("v_joined_channel","true");localStorage.setItem("v_tasks_done",JSON.stringify(done));localStorage.setItem("v_balance",String(poolBalance));if(b){b.innerText="✅ Done";b.disabled=true;}updateUI();syncToSupabase();}
-// === ADSGRAM + MONETAG SEPARATE ===
+// === ADSGRAM + MONETAG SEPARATE - FIXED STRING ID ===
 function getAdsDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function getAdsCount(){const t=getAdsDate();if(localStorage.getItem("v_ads_date")!==t){localStorage.setItem("v_ads_date",t);localStorage.setItem("v_ads_today","0");return 0;}return Math.max(0,Math.floor(safeNum(localStorage.getItem("v_ads_today"),0)));}
 function updateAdsUI(){const c=getAdsCount();const el=document.getElementById("adsCount");const btn=document.getElementById("watchAdsBtn");if(el)el.innerText=c;if(btn){if(c>=20){btn.innerText="✅ 20/20 Done";btn.disabled=true;}else{btn.innerText="Watch Ad (+2)";btn.disabled=false;}}}
@@ -192,11 +192,15 @@ function watchAdsgramTask(){
   const count=getAdsCount(); if(count>=20){alert("Adsgram 20/20 done");return;}
   const btn=document.getElementById("watchAdsBtn"); btn.disabled=true; btn.innerText="Loading Adsgram...";
   function reward(){ let c=getAdsCount(); poolBalance+=2; c+=1; localStorage.setItem("v_ads_date",getAdsDate()); localStorage.setItem("v_ads_today",String(c)); localStorage.setItem("v_balance",String(poolBalance)); updateUI(); updateAdsUI(); syncToSupabase(); alert("+2 VANTA Adsgram! "+c+"/20"); btn.disabled=false; btn.innerText="Watch Ad (+2)"; }
-  try{
-    const AdCon = window.Adsgram ? window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID }) : null;
-    if(AdCon){ AdCon.show().then(r=>{ if(r.done) reward(); else { btn.disabled=false; btn.innerText="Watch Ad (+2)"; if(r.error) console.log("Adsgram error:",r.error); } }).catch(e=>{ console.log(e); btn.disabled=false; btn.innerText="Watch Ad (+2)"; }); return; }
-  }catch(e){ console.log(e); }
-  btn.disabled=false; btn.innerText="Watch Ad (+2)"; alert("Adsgram not ready, try again");
+  if(window.Adsgram){
+    try{
+      const AdCon = window.Adsgram.init({ blockId: "57855" });
+      AdCon.show().then(r=>{ 
+        if(r.done) reward(); 
+        else { btn.disabled=false; btn.innerText="Watch Ad (+2)"; console.log("Adsgram:",r); if(r.error) alert("Adsgram: "+r.error); } 
+      }).catch(e=>{ console.log(e); btn.disabled=false; btn.innerText="Watch Ad (+2)"; });
+    }catch(e){ console.log(e); btn.disabled=false; btn.innerText="Watch Ad (+2)"; }
+  } else { btn.disabled=false; btn.innerText="Watch Ad (+2)"; alert("Adsgram not loaded - check script tag"); }
 }
 function getMonetagDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function getMonetagCount(){const t=getMonetagDate();if(localStorage.getItem("v_monetag_date")!==t){localStorage.setItem("v_monetag_date",t);localStorage.setItem("v_monetag_today","0");return 0;}return Math.max(0,Math.floor(safeNum(localStorage.getItem("v_monetag_today"),0)));}

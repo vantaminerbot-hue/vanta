@@ -59,7 +59,10 @@ button:disabled{opacity:.65;cursor:not-allowed}
 
 <div id="vip-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">💎 VIP NFT Miners</h1><div class="glass p-3 mt-4 text-xs text-center"><p>Your Tier: <b id="vipTierText">Free Miner</b></p></div><div class="mt-4 space-y-4"><div class="glass p-4 border border-[#cd7f32]/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold">⚙️ Elite Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 1.5x FOREVER • Withdraw 2000</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg">2 TON</p><button id="buyEliteBtn" onclick="mintNFT('elite')" class="bg-[#cd7f32] text-white px-5 py-2 rounded-full text-xs font-bold">Mint 2 TON</button></div></div><div class="glass p-4 border border-gray-400/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold">👑 Overlord Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 2x FOREVER • Withdraw 2000</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg">5 TON</p><button id="buyOverlordBtn" onclick="mintNFT('overlord')" class="bg-gray-300 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 5 TON</button></div></div><div class="glass p-4 border border-yellow-400/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold text-yellow-300">💎 Genesis Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 2.5x FOREVER • Withdraw 2000</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg text-yellow-300">10 TON</p><button id="buyGenesisBtn" onclick="mintNFT('genesis')" class="bg-yellow-400 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 10 TON</button></div></div></div></div>
 
-<div id="tasks-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">Earn Rewards</h1><div class="mt-4 space-y-3">
+<div id="tasks-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">Earn Rewards</h1>
+<!-- DAILY CHECK -->
+<div class="glass p-4 mt-4 border border-yellow-400/40 bg-yellow-500/10"><div class="flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">📅</div><div><p class="text-sm font-bold">Daily Check-In</p><p class="text-xs text-white/50">Come back every day, no miss!</p><p class="text-[11px] text-yellow-300 mt-1 font-bold" id="dailyCheckStreak">Day 1 • +1 VANTA</p></div></div><button id="dailyCheckBtn" onclick="claimDailyCheck()" class="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold">Claim</button></div><div id="dailyCheckDays" class="flex justify-between mt-4 gap-1"></div><p id="dailyCheckTimer" class="text-[10px] text-white/40 mt-2 text-center">Ready!</p></div>
+<div class="mt-4 space-y-3">
 <div class="glass p-4 flex justify-between items-center border border-green-400/40 bg-green-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div><div><p class="text-sm font-bold">Watch Ads (Adsgram)</p><p class="text-xs text-white/50">+2 per ad • 20/day</p><p class="text-xs text-green-400 mt-1 font-bold">Today: <span id="adsCount">0</span>/20</p></div></div><button id="watchAdsBtn" onclick="watchAdsgramTask()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad (+2)</button></div>
 <div class="glass p-4 flex justify-between items-center border border-blue-400/40 bg-blue-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">🎬</div><div><p class="text-sm font-bold">Watch Ads (Monetag)</p><p class="text-xs text-white/50">+1 per ad • 30/day</p><p class="text-xs text-blue-400 mt-1 font-bold">Today: <span id="monetagCount">0</span>/30</p></div></div><button id="watchMonetagBtn" onclick="watchMonetagTask()" class="bg-blue-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad (+1)</button></div>
 <div class="glass p-4 flex justify-between items-center border border-pink-400/40 bg-pink-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-pink-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 • Every 3hrs</p><p class="text-[10px] text-pink-300 mt-1" id="reactTimer">Ready!</p></div></div><button id="reactBtn" onclick="doReactTask()" class="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div>
@@ -98,8 +101,6 @@ let secretSupply = { elite: 0, overlord: 0, genesis: 0 };
 function getVipData(){ try{ const tier = localStorage.getItem("v_nft_tier") || ""; const start = Number(localStorage.getItem("v_nft_start")||0); const bonusClaimed = Number(localStorage.getItem("v_nft_bonus_claimed")||0); return { tier, start, bonusClaimed }; }catch(e){ return {tier:"",start:0,bonusClaimed:0}; } }
 function getNftMultiplier(){ const data = getVipData(); if(!data.tier) return 1; return NFT_CONFIG[data.tier]?.multiplier || 1; }
 function getWithdrawLimits(){ const vip = getVipData(); const isVip = vip.tier && vip.tier !== ""; if(isVip) return { min: 2000, max: 2000, label: "VIP - 2000 VANTA" }; return { min: 1000, max: 1000, label: "Normal - 1000 VANTA" }; }
-function getMinWithdraw(){ return getWithdrawLimits().min; }
-function getMaxWithdraw(){ return getWithdrawLimits().max; }
 async function fetchNftSupply(){ try{ const { data } = await supabaseClient.from("vanta_users").select("nft_tier").not("nft_tier","is",null); let e=0,o=0,g=0; (data||[]).forEach(u=>{ if(u.nft_tier==="elite")e++; if(u.nft_tier==="overlord")o++; if(u.nft_tier==="genesis")g++; }); secretSupply.elite = e; secretSupply.overlord = o; secretSupply.genesis = g; checkSoldOut(); }catch(err){} }
 function checkSoldOut(){ const eliteBtn = document.getElementById("buyEliteBtn"); const overlordBtn = document.getElementById("buyOverlordBtn"); const genesisBtn = document.getElementById("buyGenesisBtn"); if(secretSupply.elite >= 10 && eliteBtn){ eliteBtn.innerText = "❌ SOLD OUT"; eliteBtn.disabled = true; } if(secretSupply.overlord >= 10 && overlordBtn){ overlordBtn.innerText = "❌ SOLD OUT"; overlordBtn.disabled = true; } if(secretSupply.genesis >= 10 && genesisBtn){ genesisBtn.innerText = "❌ SOLD OUT"; genesisBtn.disabled = true; } }
 function updateVipUI(){ try{ const data=getVipData(); const tierText=document.getElementById("vipTierText"); const badge=document.getElementById("vipBadge"); const boostShow=document.getElementById("boostShow"); if(!tierText) return; if(!data.tier){ tierText.innerText="Free Miner"; if(badge) badge.classList.add("hidden"); if(boostShow) boostShow.innerText=""; }else{ const cfg=NFT_CONFIG[data.tier]; tierText.innerText=cfg.name+" ("+cfg.multiplier+"x)"; tierText.className="text-yellow-400 font-bold"; if(badge){ badge.classList.remove("hidden"); badge.innerText="💎 "+cfg.name+" "+cfg.multiplier+"x"; } if(boostShow) boostShow.innerText="| BOOST "+cfg.multiplier+"x"; } }catch(e){} }
@@ -184,6 +185,37 @@ function applyOfflineMining(){
   }
   localStorage.setItem("v_last_mine_time",String(Date.now()));
 }
+// === DAILY CHECK-IN ===
+const DAILY_REWARDS=[1,3,5,7,9,11,15];
+function getDateStr(offsetDays=0){ const d=new Date(); d.setDate(d.getDate()+offsetDays); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function getDailyCheckData(){ let lastDate=localStorage.getItem("v_daily_last")||""; let streak=Number(localStorage.getItem("v_daily_streak")||"0"); return {lastDate,streak}; }
+function updateDailyCheckUI(){
+  const {lastDate,streak}=getDailyCheckData();
+  const today=getDateStr(0); const yesterday=getDateStr(-1);
+  let currentStreak=streak; let canClaim=true;
+  if(lastDate===today){ canClaim=false; }
+  else if(lastDate===yesterday){ if(currentStreak>=7) currentStreak=0; }
+  else if(lastDate!=="" && lastDate!==today && lastDate!==yesterday){ currentStreak=0; localStorage.setItem("v_daily_streak","0"); }
+  let nextDay=1;
+  if(lastDate===today){ nextDay=currentStreak; } else { nextDay=currentStreak+1; if(nextDay>7) nextDay=1; }
+  if(!lastDate) nextDay=1;
+  const nextReward=DAILY_REWARDS[nextDay-1];
+  const streakEl=document.getElementById("dailyCheckStreak"); const btn=document.getElementById("dailyCheckBtn"); const timerEl=document.getElementById("dailyCheckTimer"); const daysEl=document.getElementById("dailyCheckDays");
+  if(streakEl){ if(lastDate===today){ streakEl.innerText=`Day ${currentStreak} Claimed ✅ • Come back tomorrow`; } else { streakEl.innerText=`Day ${nextDay} • +${nextReward} VANTA`; } }
+  if(btn){ if(!canClaim){ btn.innerText="✅ Claimed"; btn.disabled=true; } else { btn.innerText=`Claim +${nextReward}`; btn.disabled=false; } }
+  if(timerEl){ if(lastDate===today){ timerEl.innerText="Come back tomorrow to continue your streak. If you miss, it resets to Day 1!"; } else if(lastDate!=="" && lastDate!==yesterday && lastDate!==today){ timerEl.innerText="⚠️ You missed a day! Streak reset to Day 1."; } else { timerEl.innerText="Claim every day. Miss one day = reset to Day 1."; } }
+  if(daysEl){ daysEl.innerHTML=""; DAILY_REWARDS.forEach((reward,i)=>{ const dayNum=i+1; let bg="bg-white/10 text-white/50"; if(lastDate===today && dayNum<=currentStreak){ bg="bg-green-500 text-black font-bold"; } else if(lastDate!==today && dayNum===nextDay){ bg="bg-yellow-400 text-black font-bold animate-pulse"; } else if(lastDate!==today && dayNum<nextDay){ bg="bg-green-500/30 text-green-300"; } const div=document.createElement("div"); div.className=`${bg} rounded-xl py-2 text-center text-[10px] flex-1`; div.innerHTML=`Day ${dayNum}<br>+${reward}`; daysEl.appendChild(div); }); }
+}
+function claimDailyCheck(){
+  const {lastDate,streak}=getDailyCheckData(); const today=getDateStr(0); const yesterday=getDateStr(-1);
+  if(lastDate===today){ alert("You already claimed today. Come back tomorrow!"); return; }
+  let newStreak=1;
+  if(lastDate===yesterday){ newStreak=streak+1; if(newStreak>7) newStreak=1; } else if(lastDate===""){ newStreak=1; } else { newStreak=1; alert("You missed a day! Streak reset to Day 1."); }
+  const reward=DAILY_REWARDS[newStreak-1];
+  poolBalance+=reward; localStorage.setItem("v_balance",String(poolBalance)); localStorage.setItem("v_daily_last",today); localStorage.setItem("v_daily_streak",String(newStreak));
+  updateDailyCheckUI(); updateUI(); syncToSupabase(); alert(`Daily Check Day ${newStreak} Claimed! +${reward} VANTA 🎉\n\nCome back tomorrow for Day ${newStreak===7?1:newStreak+1}`);
+}
+setInterval(updateDailyCheckUI,60000);
 let currentSpinReward=0; let isSpinning=false;
 const SPIN_COOLDOWN_MS=24*60*60*1000;
 function getSpinDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -248,7 +280,7 @@ function isVerified(){return localStorage.getItem("v_verified")==="1"&&getVerifi
 function updateVerificationUI(){ const verified=isVerified(); const card=document.getElementById("verificationCard"); const status=document.getElementById("verificationStatus"); const btn=document.getElementById("verifyBtn"); const icon=document.getElementById("verificationIcon"); if(verified){ if(card)card.className="glass p-4 mt-4 border border-green-500/40 bg-green-500/10"; if(status){status.innerText="✅ Verified";} if(icon)icon.innerText="✅"; if(btn){btn.innerText="✅ VERIFIED";btn.disabled=true;} }else{ if(card)card.className="glass p-4 mt-4 border border-yellow-500/40"; if(status){status.innerText="Not verified";} if(icon)icon.innerText="🔐"; if(btn){btn.innerText=connectedWalletAddress?"VERIFY WITH 0.05 TON":"CONNECT WALLET FIRST";btn.disabled=false;} } }
 async function verifyAccount(){if(isVerified()){alert("Already verified");return;}if(!connectedWalletAddress){alert("Connect wallet first");return;}const btn=document.getElementById("verifyBtn");btn.disabled=true;btn.innerText="Opening Wallet...";try{const result=await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:VERIFICATION_NANOTON}]});if(!result?.boc)throw new Error("fail");localStorage.setItem("v_verified_wallet",connectedWalletAddress);localStorage.setItem("v_verified","1");updateVerificationUI();await syncToSupabase();alert("Verified! ✅");}catch(e){btn.disabled=false;btn.innerText="VERIFY WITH 0.05 TON";alert("Verification failed");}}
 function isUserJoined(){const done=readArray("v_tasks_done");return localStorage.getItem("v_joined_channel")==="true"||done.includes("join_channel");}
-function checkTasksUI(){const done=readArray("v_tasks_done");const b=document.getElementById("taskBtn1");if(b&&done.includes("join_channel")){b.innerText="✅ Done";b.disabled=true;}updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();}
+function checkTasksUI(){const done=readArray("v_tasks_done");const b=document.getElementById("taskBtn1");if(b&&done.includes("join_channel")){b.innerText="✅ Done";b.disabled=true;}updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateDailyCheckUI();}
 function doTask(amount, taskId, link){const done=readArray("v_tasks_done");if(done.includes(taskId)){alert("Already done");return;}const btnMap={"join_channel":"taskBtn1"};const bid=btnMap[taskId];const b=bid?document.getElementById(bid):null;if(b&& (b.innerText==="Join")){window.open(link,"_blank");b.innerText="Verify ✅";return;}poolBalance+=amount;if(!done.includes(taskId))done.push(taskId);if(taskId==="join_channel")localStorage.setItem("v_joined_channel","true");localStorage.setItem("v_tasks_done",JSON.stringify(done));localStorage.setItem("v_balance",String(poolBalance));if(b){b.innerText="✅ Done";b.disabled=true;}updateUI();syncToSupabase();}
 function getAdsDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function getAdsCount(){const t=getAdsDate();if(localStorage.getItem("v_ads_date")!==t){localStorage.setItem("v_ads_date",t);localStorage.setItem("v_ads_today","0");return 0;}return Math.max(0,Math.floor(safeNum(localStorage.getItem("v_ads_today"),0)));}
@@ -420,11 +452,11 @@ function updateUI(){
   const badge=document.getElementById("joinStatusBadge");
   if(isUserJoined()){badge.innerText="● JOINED";badge.className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500";}
   else{badge.innerText="● NOT JOINED";badge.className="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500";}
-  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();checkNftDailyBonus();
+  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();checkNftDailyBonus();updateDailyCheckUI();
   updateVaultUI(); updateDailyUI();
   if(lastRenderedLevel!==currentMinerLevel){ renderMiners(); lastRenderedLevel=currentMinerLevel; }
 }
-function showPage(page){ ["mine","vip","spin","miners","tasks","friends","profile"].forEach(n=>{ const el=document.getElementById(n+"-page"); if(el) el.classList.add("hidden"); const nav=document.getElementById("nav-"+n); if(nav){ nav.classList.remove("nav-active"); nav.style.opacity="0.6"; } }); document.getElementById(page+"-page").classList.remove("hidden"); const navActive=document.getElementById("nav-"+page); if(navActive){ navActive.classList.add("nav-active"); navActive.style.opacity="1"; } if(page==="miners")renderMiners(); if(page==="tasks"){checkTasksUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();} if(page==="friends")loadMyReferrals(); if(page==="profile"){loadWithdrawsFromSupabase();fetchProfileOnchain();fetchLivePrice();updateVaultUI();} if(page==="spin"){updateSpinUI();} if(page==="vip"){updateVipUI(); fetchNftSupply();} }
+function showPage(page){ ["mine","vip","spin","miners","tasks","friends","profile"].forEach(n=>{ const el=document.getElementById(n+"-page"); if(el) el.classList.add("hidden"); const nav=document.getElementById("nav-"+n); if(nav){ nav.classList.remove("nav-active"); nav.style.opacity="0.6"; } }); document.getElementById(page+"-page").classList.remove("hidden"); const navActive=document.getElementById("nav-"+page); if(navActive){ navActive.classList.add("nav-active"); navActive.style.opacity="1"; } if(page==="miners")renderMiners(); if(page==="tasks"){checkTasksUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateDailyCheckUI();} if(page==="friends")loadMyReferrals(); if(page==="profile"){loadWithdrawsFromSupabase();fetchProfileOnchain();fetchLivePrice();updateVaultUI();} if(page==="spin"){updateSpinUI();} if(page==="vip"){updateVipUI(); fetchNftSupply();} }
 async function registerReferral(){
   const inviterParam = urlParams.get("ref") || urlParams.get("start");
   const startParam = tg?.initDataUnsafe?.start_param || "";
@@ -463,7 +495,7 @@ setInterval(()=>{
 },1000);
 const savedWallet=localStorage.getItem("v_wallet");if(savedWallet){document.getElementById("walletShort").innerText="✅ "+savedWallet.slice(0,6)+"..."+savedWallet.slice(-4);const wp=document.getElementById("walletDisplayProfile"); if(wp) wp.innerText=savedWallet.slice(0,5)+"..."+savedWallet.slice(-3);}
 document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";
-updateUI();renderMiners();checkTasksUI();updateFriendsUI();loadMyReferrals();loadWithdrawsFromSupabase();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();fetchNftSupply();updateVaultUI();
+updateUI();renderMiners();checkTasksUI();updateFriendsUI();loadMyReferrals();loadWithdrawsFromSupabase();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();fetchNftSupply();updateVaultUI();updateDailyCheckUI();
 setInterval(()=>{syncToSupabase();},15000);
 </script>
 </body>

@@ -3,633 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vanta - V7 TIMELINE MINERS - FIXED</title>
+<title>VANTA</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/@tonconnect/ui@2.0.9/dist/tonconnect-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-<script src="//libtl.com/sdk.js" data-zone="11874733" data-sdk="show_11874733"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
-body{background:#001a4d radial-gradient(ellipse at 50% 0%,#00308a 0%,#001a4d 50%,#000c26 100%);color:white;padding-bottom:90px;font-family:'Segoe UI',sans-serif;min-height:100vh}
-.glass{background:rgba(255,255,255,.09);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:16px}
-.gold-gradient{background:linear-gradient(90deg,#FFD700,#FFA500);color:black;font-weight:bold}
-.blue-btn{background:linear-gradient(90deg,#0a3d9c,#1e62ff);color:white;font-weight:bold;border:1px solid rgba(255,255,255,.2)}
-.green-glow{color:#00FF88;text-shadow:0 0 15px #00FF88}
-.coin{width:180px;height:180px;background:radial-gradient(circle at 30% 30%,#FFEC8B,#FFD700 40%,#B8860B);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:70px;font-weight:900;color:#000;box-shadow:0 0 40px rgba(0,80,255,.6),0 0 80px rgba(0,40,150,.4),inset 0 0 20px rgba(0,0,0,.5);border:4px solid #FFC300;user-select:none;animation:roll 3s linear infinite}
-@keyframes roll{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-.nav-active{color:#60a5fa!important}
-#ton-connect button{width:100%!important}
-button:disabled{opacity:.65;cursor:not-allowed}
-.vault-card{background:linear-gradient(135deg,#00c896 0%,#00997a 50%,#0066cc 100%);border-radius:24px;padding:20px;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(0,200,150,.3)}
-.vault-card::after{content:'V';position:absolute;right:-10px;top:-20px;font-size:120px;font-weight:900;color:rgba(255,255,255,.12);transform:rotate(-15deg)}
-.vault-inner{background:rgba(0,0,0,.25);border-radius:12px;padding:12px;display:flex;gap:10px;margin-top:16px}
-.vault-mini{flex:1;background:rgba(0,0,0,.25);border-radius:12px;padding:10px}
-.wheel-wrap{position:relative;width:300px;height:300px;margin:20px auto}
-.wheel{width:100%;height:100%;border-radius:50%;border:6px solid #FFD700;position:relative;overflow:hidden;transition:transform 4s cubic-bezier(0.15,0,0.15,1);box-shadow:0 0 30px rgba(255,215,0,.4), inset 0 0 20px rgba(0,0,0,.5)}
-.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;background:radial-gradient(#FFD700,#B8860B);border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;z-index:10}
-.wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #FFD700;z-index:11}
-.wheel-label{position:absolute;left:50%;top:50%;width:50px;height:50px;margin-left:-25px;margin-top:-25px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#000;text-shadow:0 1px 0 rgba(255,255,255,.8);pointer-events:none}
-.timeline-wrap{position:relative;padding-left:38px}
-.timeline-line{position:absolute;left:15px;top:10px;bottom:10px;width:3px;background:linear-gradient(to bottom,#FFD700,#0a3d9c,#00FF88);border-radius:10px;opacity:.6}
-.timeline-item{position:relative;margin-bottom:14px;display:flex;align-items:center;gap:12px}
-.timeline-dot{position:absolute;left:-30px;width:16px;height:16px;border-radius:50%;border:3px solid #001a4d;z-index:2}
-.timeline-dot.owned{background:#00FF88;box-shadow:0 0 10px #00FF88}
-.timeline-dot.active{background:#FFD700;box-shadow:0 0 15px #FFD700;animation:pulse 1.5s infinite}
-.timeline-dot.locked{background:#ffffff30;border-color:#ffffff30}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
-.timeline-card{flex:1;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px}
-.timeline-card.owned{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25)}
-.timeline-card.active{background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);box-shadow:0 0 20px rgba(255,215,0,.15)}
-.timeline-card.locked{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
-#securityOverlay{position:fixed;inset:0;z-index:9999999;background:#000c26 radial-gradient(ellipse at 50% 0%,#001a4d 0%,#000c26 80%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
-.sec-logo-box{width:290px;height:290px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#0a2a5a,#001a4d);border:4px solid #FFD700;box-shadow:0 0 40px rgba(255,215,0,.5);display:flex;align-items:center;justify-content:center}
-.float{animation:float 3s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-#cfBox{margin-top:22px;background:#fff;border-radius:12px;padding:14px 18px;min-width:310px}
+body{background:#0a0a0a;color:#fff;font-family:sans-serif}
+.glass{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px}
+.gold-gradient{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;font-weight:bold}
+.nav-active{color:#FFD700 !important;opacity:1 !important}
+.hidden{display:none}
 </style>
 </head>
-<body>
-<div id="securityOverlay"><div class="sec-logo-box float"><div style="font-size:100px;font-weight:900;color:#FFD700">V</div></div><h1 style="margin-top:18px;font-size:54px;font-weight:900;color:#FFD700">Vanta</h1><div id="cfBox"><div class="cf-turnstile" data-sitekey="0x4AAAAAAFkZVgEgD-8pFMz1" data-callback="onVantaVerified"></div></div><p style="color:#FFD700;margin-top:18px;font-size:13px;font-weight:700">Complete the security check to enter Vanta.</p></div>
+<body class="pb-24">
+<div class="max-w-md mx-auto p-4">
 
-<div id="mine-page" class="p-4 max-w-md mx-auto"><div class="flex justify-between items-center mb-3"><div><p id="userName" class="font-bold text-lg">Miner</p><div class="flex gap-2 mt-1"><span class="bg-white text-black text-xs px-3 py-1 rounded-full font-bold">Lvl <span id="lvl">1</span></span><span id="joinStatusBadge" class="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500">● NOT JOINED</span><span id="vipBadge" class="hidden bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold"></span></div><button onclick="toggleSound()" id="soundBtn" class="text-[10px] mt-2 bg-white/10 px-2 py-1 rounded">🔊 Sound ON</button></div><div class="glass px-3 py-2 text-xs min-w-[135px] text-center"><p id="walletShort" class="text-[11px]">Connect Wallet</p><div id="ton-connect" class="mt-2"></div></div></div><div id="verificationCard" class="glass p-4 mt-4 border border-yellow-500/40"><div class="flex items-center justify-between"><div><p class="text-sm font-bold">🔐 Verification</p><p id="verificationStatus" class="text-xs text-yellow-400 mt-1">Not verified</p></div><div id="verificationIcon" class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-xl">🔐</div></div><p class="text-xs text-white/60 mt-3">Verify with <b class="text-[#FFD700]">0.05 TON</b> to unlock withdrawals.</p><button id="verifyBtn" onclick="verifyAccount()" class="w-full gold-gradient py-3 rounded-xl mt-4 text-sm">VERIFY WITH 0.05 TON</button></div><div class="glass p-4 mt-3 border border-green-500/30 bg-green-500/10 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">💸</div><div><p class="text-sm font-bold">Payout Proofs</p><p class="text-xs text-white/50">See real payments to users</p></div></div><button onclick="openPayoutChannel()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">View Proofs</button></div><div class="text-center mt-5 relative"><p class="text-xs tracking-[0.3em] text-white/50">MINING (Auto Only)</p><h1 class="text-3xl font-bold mt-1"><span id="miningBalance">0.0000</span> <span class="text-[#FFD700] text-xl">VANTA</span></h1><p class="text-[11px] text-white/40 mt-1">Auto-mining active • No tapping needed</p><div class="glass mt-3 py-2 px-4 inline-block text-xs">APP POOL BALANCE: <b id="pool" class="text-[#00FF88]">0.0000</b> VANTA <span id="poolUsd" class="text-[#00FF88] text-[10px] font-bold"></span></div><p id="livePriceBox" class="text-[11px] mt-2 font-bold">VANTA Price: <span id="livePrice" class="text-[#00FF88]">$0.00000000 USDT • LIVE</span></p><p class="text-xs mt-1 text-white/60">Mined Today: <span id="minedTodayShow" class="text-yellow-300 font-bold">0.00</span> / <span id="dailyCapShow" class="font-bold">3.00</span> VANTA</p><div class="w-full bg-white/10 rounded-full h-2 mt-2 overflow-hidden"><div id="dailyProgressBar" class="bg-yellow-400 h-2 rounded-full" style="width:0%"></div></div><p class="text-2xl font-bold green-glow mt-3" id="miningPlus">+0.0000 /sec</p><div class="flex justify-center mt-6 relative"><div class="coin" id="vCoin">V</div></div><button id="claimBtn" onclick="claimMining()" class="w-full blue-btn py-4 rounded-xl mt-8 text-lg">CLAIM TO POOL (Watch Ad)</button><p class="text-xs text-white/40 mt-3">Power: <span id="power">3.02</span> TH/s | <span id="rateShow">0.00000</span>/sec <span id="boostShow" class="text-yellow-400 font-bold"></span> | <span id="dayRate">3.00/day</span></p></div></div>
-
-<div id="spin-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">🎡 Spin & Win</h1><p class="text-center text-xs mt-1 text-white/50">Daily free spin - Win up to <b class="text-[#FFD700]">30 VANTA</b>!</p><div class="glass p-3 mt-4 flex justify-between text-xs"><span>Status: <b id="spinCount" class="text-[#FFD700]">0/1</b></span><span>Won: <b id="spinWonToday" class="text-[#00FF88]">0 VANTA</b></span></div><div class="wheel-wrap"><div class="wheel-pointer"></div><div id="spinWheel" class="wheel" style="background: conic-gradient(#FFD700 0deg 51.4deg, #FFA500 51.4deg 102.8deg, #00FF88 102.8deg 154.2deg, #60a5fa 154.2deg 205.7deg, #ff6b9d 205.7deg 257.1deg, #FFEC8B 257.1deg 308.5deg, #a78bfa 308.5deg 360deg);"><div class="wheel-label" style="transform: rotate(25deg) translate(90px) rotate(-25deg);">30</div><div class="wheel-label" style="transform: rotate(77deg) translate(90px) rotate(-77deg);">25</div><div class="wheel-label" style="transform: rotate(128deg) translate(90px) rotate(-128deg);">3</div><div class="wheel-label" style="transform: rotate(180deg) translate(90px) rotate(-180deg);">5</div><div class="wheel-label" style="transform: rotate(231deg) translate(90px) rotate(-231deg);">10</div><div class="wheel-label" style="transform: rotate(283deg) translate(90px) rotate(-283deg);">15</div><div class="wheel-label" style="transform: rotate(334deg) translate(90px) rotate(-334deg);">20</div></div><div class="wheel-center">V</div></div><div id="spinResultCard" class="glass p-4 mt-4 text-center hidden border border-yellow-400/30"><p class="text-xs text-white/50">YOU WON</p><h2 class="text-3xl font-bold text-[#FFD700] mt-1"><span id="spinResultAmount">0</span> VANTA</h2></div><button id="spinBtn" onclick="spinWheel()" class="w-full gold-gradient py-4 rounded-xl mt-6 text-lg font-black">🎡 SPIN NOW</button><button id="claimSpinBtn" onclick="claimSpinReward()" class="w-full blue-btn py-4 rounded-xl mt-3 text-sm hidden">📺 WATCH AD TO CLAIM</button><p id="spinTimer" class="text-center text-xs mt-3 font-bold"></p></div>
-
-<div id="vip-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">💎 VIP NFT Miners</h1><div class="glass p-3 mt-4 text-xs text-center"><p>Your Tier: <b id="vipTierText">Free Miner</b></p></div><div class="mt-4 space-y-4"><div class="glass p-4 border border-[#cd7f32]/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold">⚙️ Elite Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 1.5x FOREVER • Withdraw 2000</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg">2 TON</p><button id="buyEliteBtn" onclick="mintNFT('elite')" class="bg-[#cd7f32] text-white px-5 py-2 rounded-full text-xs font-bold">Mint 2 TON</button></div></div><div class="glass p-4 border border-gray-400/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold">👑 Overlord Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 2x FOREVER • Withdraw 2000</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg">5 TON</p><button id="buyOverlordBtn" onclick="mintNFT('overlord')" class="bg-gray-300 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 5 TON</button></div></div><div class="glass p-4 border border-yellow-400/40 rounded-2xl"><div class="flex justify-between"><h3 class="font-bold text-yellow-300">💎 Genesis Miner</h3></div><p class="text-xs mt-2 text-white/70">✅ 2.5x FOREVER • Withdraw 2000</p><div class="flex justify-between items-center mt-3"><p class="font-bold text-lg text-yellow-300">10 TON</p><button id="buyGenesisBtn" onclick="mintNFT('genesis')" class="bg-yellow-400 text-black px-5 py-2 rounded-full text-xs font-bold">Mint 10 TON</button></div></div></div></div>
-
-<div id="tasks-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-2xl font-bold text-center">Earn Rewards</h1>
-<div class="glass p-4 mt-4 border border-yellow-400/40 bg-yellow-500/10"><div class="flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">📅</div><div><p class="text-sm font-bold">Daily Check-In</p><p class="text-xs text-white/50">Come back every day to keep your streak.</p><p class="text-[11px] text-yellow-300 mt-1 font-bold" id="dailyCheckStreak">Day 1 • +1 VANTA</p></div></div><button id="dailyCheckBtn" onclick="claimDailyCheck()" class="bg-yellow-400 text-black px-4 py-2 rounded-full text-xs font-bold">Claim</button></div><div id="dailyCheckDays" class="flex justify-between mt-4 gap-1"></div><p id="dailyCheckTimer" class="text-[10px] text-white/40 mt-2 text-center">Ready!</p></div>
-<div class="mt-4 space-y-3">
-<div class="glass p-4 flex justify-between items-center border border-green-400/40 bg-green-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">📺</div><div><p class="text-sm font-bold">Watch Ads (Adsgram)</p><p class="text-xs text-white/50">+2 per ad • 20/day</p><p class="text-xs text-green-400 mt-1 font-bold">Today: <span id="adsCount">0</span>/20</p></div></div><button id="watchAdsBtn" onclick="watchAdsgramTask()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad (+2)</button></div>
-<div class="glass p-4 flex justify-between items-center border border-blue-400/40 bg-blue-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">🎬</div><div><p class="text-sm font-bold">Watch Ads (Monetag)</p><p class="text-xs text-white/50">+1 per ad • 30/day</p><p class="text-xs text-blue-400 mt-1 font-bold">Today: <span id="monetagCount">0</span>/30</p></div></div><button id="watchMonetagBtn" onclick="watchMonetagTask()" class="bg-blue-400 text-black px-4 py-2 rounded-full text-xs font-bold">Watch Ad (+1)</button></div>
-<div class="glass p-4 flex justify-between items-center border border-pink-400/40 bg-pink-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-pink-500/20 rounded-full flex items-center justify-center">❤️</div><div><p class="text-sm font-bold">React to Post</p><p class="text-xs text-white/50">+5 • Every 3hrs</p><p class="text-[10px] text-pink-300 mt-1" id="reactTimer">Ready!</p></div></div><button id="reactBtn" onclick="doReactTask()" class="bg-pink-400 text-black px-4 py-2 rounded-full text-xs font-bold">React</button></div>
-<div class="glass p-4 flex justify-between items-center border border-green-400/40 bg-green-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">💸</div><div><p class="text-sm font-bold">Check Payout Channel</p><p class="text-xs text-white/50">+5 VANTA • Every 12hrs</p><p class="text-[10px] text-green-300 mt-1" id="payoutTimer">Ready!</p></div></div><button id="payoutBtn" onclick="doPayoutTask()" class="bg-green-400 text-black px-4 py-2 rounded-full text-xs font-bold">Check (+5)</button></div>
-
-<!-- BIO TASK -->
-<div class="glass p-4 flex justify-between items-center border border-purple-400/40 bg-purple-500/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">🔗</div><div><p class="text-sm font-bold">Add Link To Your Bio</p><p class="text-xs text-white/50">+5 VANTA • Every 24hrs</p><p class="text-[10px] text-purple-300 mt-1" id="bioTimer">Ready!</p><p class="text-[9px] text-white/40 mt-1">Add: t.me/Vanta23bot to your Telegram bio</p></div></div><button id="bioBtn" onclick="doBioTask()" class="bg-purple-400 text-black px-4 py-2 rounded-full text-xs font-bold">Add To Bio</button></div>
-
-<!-- BIO COPY BOX - FIXED COPY -->
-<div id="bioCopyBox" class="hidden glass p-4 mt-2 border border-purple-400/60 bg-purple-500/10">
-  <p class="text-sm font-bold text-purple-300">Step 1: Copy This Link</p>
-  <p class="text-[11px] text-white/60 mt-1">Long-press the box below and tap Copy, then paste it in your Telegram bio.</p>
-  <textarea id="bioCopyText" readonly onclick="this.select()" class="w-full mt-3 p-3 rounded-xl bg-black/50 border border-purple-400/50 text-white text-sm">⛏️ Mining VANTA | t.me/Vanta23bot</textarea>
-  <button onclick="copyBioLink()" class="w-full bg-purple-400 text-black py-3 rounded-xl mt-3 text-sm font-bold">📋 TAP TO COPY LINK</button>
-  <p class="text-[10px] text-white/50 mt-2 text-center">After you copy, go to Telegram &gt; Settings &gt; Edit Profile &gt; Bio &gt; Paste &gt; Save</p>
-  <button onclick="bioAddedConfirm()" class="w-full gold-gradient py-3 rounded-xl mt-2 text-sm font-bold">✅ I HAVE ADDED IT TO MY BIO</button>
+<!-- TOP -->
+<div class="flex justify-between items-center">
+  <div><p class="font-bold text-xl">VANTA 💎</p><span id="joinStatusBadge" class="text-xs px-3 py-1 rounded-full border">● NOT JOINED</span></div>
+  <button id="soundBtn" class="text-xs">🔊 Sound ON</button>
 </div>
 
-<div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💬</div><div><p class="text-sm font-bold">Join Vanta Channel *</p><p class="text-xs text-white/50">+10 • Required</p></div></div><button id="taskBtn1" onclick="doTask(10,'join_channel','https://t.me/VantaBotHub')" class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold">Join</button></div></div></div>
+<!-- BALANCE -->
+<div class="glass p-4 mt-4 text-center">
+  <p class="text-xs text-white/60">MINING BALANCE</p>
+  <p class="text-3xl font-bold text-[#FFD700]"><span id="miningBalance">0.00000</span> VANTA</p>
+  <p class="text-xs mt-1">Rate: <span id="rateShow">0.000000</span>/sec • <span id="dayRate">0/day</span> • Power: <span id="power">3.02</span></p>
+  <p id="miningPlus" class="text-xs text-green-400 mt-1">+0.000000 /sec</p>
+  <p class="text-xs mt-2">Profile: <span id="miningProfile">0.00000</span></p>
+</div>
 
-<div id="miners-page" class="hidden p-4 max-w-md mx-auto"><h2 class="text-center text-white/50 text-xs tracking-widest mb-3">MINERS LVL 1 - 1000 • STAIRCASE</h2><div class="glass p-3 mb-4 flex justify-between text-xs"><p>Your Level: <b id="myLevelShow" class="text-[#FFD700]">1</b> / 1000</p><p>Speed: <b id="mySpeedShow" class="text-green-400">3.00 /day</b></p></div><div class="timeline-wrap" id="timelineWrap"><div class="timeline-line"></div><div id="minersGrid"></div></div><button onclick="loadMoreMiners()" class="w-full glass py-3 rounded-xl mt-4 text-xs">Load More ▼</button></div>
+<!-- MINE PAGE -->
+<div id="mine-page">
+  <div class="glass p-4 mt-4 text-center">
+    <p class="font-bold">⛏️ Mine VANTA</p>
+    <p class="text-xs text-white/60 mt-1">Mining dey run every second</p>
+    <button onclick="claimMining()" class="w-full gold-gradient py-3 rounded-xl mt-3 text-sm">CLAIM</button>
+  </div>
+</div>
 
-<div id="levelModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center; padding:20px;"><div style="background:#0a1933; border:1px solid rgba(255,215,0,0.3); padding:22px; border-radius:20px; width:100%; max-width:360px; color:white;"><h2 id="modalLevelTitle" class="text-xl font-black text-center text-[#FFD700]">LEVEL 10</h2><p class="text-center text-[11px] text-white/50 mt-1" id="modalRate">3.00 VANTA/day</p><div class="glass p-3 mt-4 text-sm space-y-2"><div class="flex justify-between"><span class="text-white/60 text-xs">You have Combined:</span><b id="haveVanta" class="text-[#00FF88]">0 VANTA</b></div><div class="flex justify-between"><span class="text-white/60 text-xs">Need for FREE auto:</span><b id="needTotal">0 VANTA</b></div><div class="flex justify-between"><span class="text-green-400 text-xs">Status:</span><b id="needMore" class="text-green-400">FREE UNLOCKED!</b></div></div><button id="buyLevelBtn" style="width:100%; padding:14px; background:linear-gradient(90deg,#FFD700,#FFA500); color:black; border:none; border-radius:12px; font-weight:900; margin-top:16px;">Pay <span id="payBtnPrice">0.50</span> USDT (TON)</button><button onclick="closeLevelModal()" style="width:100%; padding:10px; background:rgba(255,255,255,0.08); color:#aaa; border-radius:10px; margin-top:10px;">Close</button></div></div>
+<!-- VIP PAGE -->
+<div id="vip-page" class="hidden">
+  <div class="glass p-4 mt-4 text-center">
+    <p class="font-bold">👑 VIP - Optional Boost Only</p>
+    <p class="text-xs text-white/60">VIP na only to mine faster. No VIP needed to withdraw.</p>
+    <div id="vipCards" class="mt-3 space-y-3"></div>
+    <div id="vipStatus" class="text-xs mt-3"></div>
+  </div>
+  <div id="nftSupply" class="text-xs text-center mt-2 text-white/60"></div>
+</div>
 
-<div id="friends-page" class="hidden p-4 max-w-md mx-auto"><div class="glass p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🔗</div><div><p class="text-sm font-bold">Your Invite Link</p><p id="refLink" class="text-[10px] text-white/50 break-all w-48"></p></div></div><button onclick="copyRef()" class="blue-btn px-4 py-2 rounded-full text-xs">Copy</button></div><div class="glass p-4 flex justify-between items-center mt-3"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">👥</div><div><p class="text-sm font-bold">Your Referrals</p><p class="text-xs text-white/50"><span id="refCount">0</span> total</p></div></div></div><div id="refRewardCard" class="glass p-4 flex justify-between items-center mt-3 border border-blue-500/20"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">🎁</div><div><p class="text-sm font-bold">Referral Reward</p><p id="refRewardText" class="text-xs text-white/50">0 available</p><p id="refEarned" class="text-[10px] text-white/30 mt-1">0 VANTA</p></div></div><button onclick="claimReferral()" id="claimReferralBtn" class="bg-white/20 px-4 py-2 rounded-full text-xs">Claim</button></div><div id="teamWalletCard" class="glass p-4 flex justify-between items-center mt-3 border border-blue-400/40 bg-blue-600/10"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">💼</div><div><p class="text-sm font-bold">Team Wallet (5%)</p><p id="teamWalletText" class="text-xs text-blue-200">0.00 VANTA available</p></div></div><button onclick="claimTeamWallet()" id="claimTeamBtn" class="blue-btn px-4 py-2 rounded-full text-xs">Claim to Pool</button></div><div id="refList" class="mt-6 space-y-2"></div></div>
+<!-- SPIN PAGE -->
+<div id="spin-page" class="hidden">
+  <div class="glass p-4 mt-4 text-center">
+    <p class="font-bold">🎡 Spin</p>
+    <p id="spinInfo" class="text-xs text-white/60 mt-1"></p>
+    <button onclick="doSpin()" class="w-full gold-gradient py-3 rounded-xl mt-3 text-sm">SPIN</button>
+  </div>
+</div>
 
-<div id="profile-page" class="hidden p-4 max-w-md mx-auto"><h1 class="text-xl font-bold text-center">Profile</h1><div class="vault-card mt-4"><p class="text-[10px] tracking-widest opacity-80">COMBINED HOLDING • DECIDES YOUR LEVEL</p><div class="flex items-center gap-2 mt-2"><div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black">V</div><h1 class="text-3xl font-black tracking-tight"><span id="combinedBalance">0.00</span></h1></div><div class="flex items-center gap-2 mt-1"><span class="bg-black/30 px-3 py-1 rounded-full text-xs font-bold">≈ $<span id="combinedUsd">0.00</span></span></div><p class="text-xs mt-2 opacity-90">🟡 • Level <span id="combinedLevel">1</span> (MAX 1000)</p><div class="vault-inner"><div class="vault-mini"><p class="text-[10px] opacity-70">↗ In-app Pool</p><p class="text-lg font-bold mt-1"><span id="balProfile">0</span></p><p class="text-[11px] opacity-70">≈ $<span id="balProfileUsdSmall">0.00</span></p></div><div class="vault-mini"><p class="text-[10px] opacity-70 flex justify-between">⧉ On-chain Real <span onclick="fetchProfileOnchain()" class="cursor-pointer">↻</span></p><p class="text-lg font-bold mt-1"><span id="balProfileOnchain">0.00</span></p><p class="text-[11px] opacity-70">≈ $<span id="balProfileOnchainUsdSmall">0.00</span></p></div></div><p class="text-[9px] mt-3 opacity-60 text-center">Rate: <span id="vaultRateText">$0.00000000</span> / VANTA • LIVE • Combined = Level</p></div><h2 class="text-lg font-bold mt-6">TON Wallet</h2><div class="glass p-4 mt-3 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-12 h-12 bg-cyan-400 rounded-2xl flex items-center justify-center text-xl">💼</div><div><p class="font-bold text-sm">Connected</p><p id="walletDisplayProfile" class="text-xs text-white/50">UQCb...XOu</p></div></div><div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">↗</div></div><div id="profileVerification" class="glass p-4 mt-3 border border-green-500/30 bg-green-500/10"><div class="flex justify-between items-center"><div><p class="font-bold text-sm">Wallet verified</p></div><span id="profileVerificationIcon" class="text-xl">✅</span></div></div><div class="glass p-4 mt-3 flex justify-between"><div><p class="text-sm font-bold">Mining (Unclaimed)</p></div><p class="text-blue-300 font-bold"><span id="miningProfile">0</span> VANTA</p></div><div class="glass p-4 mt-3"><p class="text-sm font-bold">Withdraw History</p><div id="withdrawHistory" class="mt-2"><p class="text-white/30 text-xs text-center">Loading...</p></div></div><div id="withdrawCard" class="glass p-4 mt-4"><p class="text-sm font-bold">Withdraw</p><p id="withdrawLimitText" class="text-xs text-white/60 mt-1">Minimum: <b class="text-[#FFD700]">1000 VANTA</b> • Maximum: <b class="text-[#FFD700]">1000 VANTA</b> • Fee: <b>70 VANTA</b></p><p class="text-[11px] text-yellow-300 mt-1">Normal users: 1000 VANTA exactly • VIP users: 2000 VANTA exactly • 1 per 24hrs</p><p class="text-xs text-yellow-300 mt-1 font-bold" id="withdrawCooldownText">✅ Withdrawal Available - 1 per 24 hours</p><p class="text-xs text-blue-300 mt-1">You will receive: <b id="receiveAmt">0.00</b> VANTA</p><input id="withdrawAmt" oninput="calcReceive()" type="number" min="1000" max="2000" step="any" placeholder="Enter amount (1000 or 2000)" class="w-full mt-2 p-3 rounded-xl bg-black/40 border border-white/10 text-white"><button onclick="withdraw()" id="withdrawBtn" class="w-full bg-white text-black mt-3 py-3 rounded-xl font-bold">Request Withdrawal</button><button onclick="openPayoutChannel()" class="w-full mt-2 py-3 rounded-xl font-bold bg-green-500/20 border border-green-500/40 text-green-300 text-sm">💸 View Payout Proofs</button><p class="text-[10px] text-white/40 mt-2 text-center">Strict Rule: Only 1 withdrawal per 24 hours. Normal = 1000 VANTA. VIP (Elite/Overlord/Genesis) = 2000 VANTA. Fee = 70 VANTA. You must verify with 0.05 TON before you can withdraw.</p></div><div class="glass p-4 mt-3 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">👤</div><div><p class="text-sm font-bold">User ID</p><p id="userIdShow" class="text-xs text-white/50"></p></div></div></div></div>
+<!-- MINERS PAGE -->
+<div id="miners-page" class="hidden">
+  <div class="glass p-4 mt-4">
+    <p class="font-bold text-center">⛏️ Miners</p>
+    <div id="minersList" class="mt-3 space-y-2"></div>
+  </div>
+</div>
 
-<div class="fixed bottom-0 left-0 right-0 bg-black border-t border-white/10 flex justify-around p-2 max-w-md mx-auto"><button onclick="showPage('mine')" id="nav-mine" class="nav-active flex flex-col items-center"><span class="text-xl">⛏️</span><span class="text-[10px]">Mine</span></button><button onclick="showPage('vip')" id="nav-vip" class="flex flex-col items-center opacity-60"><span class="text-xl">💎</span><span class="text-[10px]">VIP</span></button><button onclick="showPage('spin')" id="nav-spin" class="flex flex-col items-center opacity-60"><span class="text-xl">🎡</span><span class="text-[10px]">Spin</span></button><button onclick="showPage('tasks')" id="nav-tasks" class="flex flex-col items-center opacity-60"><span class="text-xl">📝</span><span class="text-[10px]">Tasks</span></button><button onclick="showPage('miners')" id="nav-miners" class="flex flex-col items-center opacity-60"><span class="text-xl">⚡</span><span class="text-[10px]">Miners</span></button><button onclick="showPage('friends')" id="nav-friends" class="flex flex-col items-center opacity-60"><span class="text-xl">👥</span><span class="text-[10px]">Friends</span></button><button onclick="showPage('profile')" id="nav-profile" class="flex flex-col items-center opacity-60"><span class="text-xl">👤</span><span class="text-[10px]">Profile</span></button></div>
+<!-- TASKS PAGE -->
+<div id="tasks-page" class="hidden">
+  <div class="glass p-4 mt-4">
+    <p class="font-bold text-center">📋 Tasks</p>
+    <p class="text-xs text-center text-white/60 mt-1">Complete tasks, earn VANTA</p>
+
+    <!-- START BOT TASK - NEW - 10 VANTA ONCE -->
+    <div class="glass p-4 mt-3 flex justify-between items-center">
+      <div>
+        <p class="font-bold text-sm">🤖 Start Bot</p>
+        <p class="text-xs text-white/60">Start the bot to get reward</p>
+        <p class="text-xs text-[#FFD700] font-bold mt-1">+10 VANTA • Once only</p>
+      </div>
+      <button id="startBotTaskBtn" onclick="doStartBotTask()" class="gold-gradient px-4 py-2 rounded-xl text-xs font-bold">START</button>
+    </div>
+
+    <!-- OTHER TASKS -->
+    <div id="otherTasks" class="mt-3 space-y-3">
+      <div class="glass p-4 flex justify-between items-center">
+        <div><p class="font-bold text-sm">📢 Join Channel</p><p class="text-xs text-white/60">Join our channel</p></div>
+        <button onclick="doJoinTask()" class="gold-gradient px-4 py-2 rounded-xl text-xs">JOIN</button>
+      </div>
+      <div class="glass p-4 flex justify-between items-center">
+        <div><p class="font-bold text-sm">📺 Watch Ad</p><p class="text-xs text-white/60">Watch ad to earn</p></div>
+        <button onclick="doAdTask()" class="gold-gradient px-4 py-2 rounded-xl text-xs">WATCH</button>
+      </div>
+      <div class="glass p-4 flex justify-between items-center">
+        <div><p class="font-bold text-sm">📝 Daily Check-in</p><p class="text-xs text-white/60">Check in daily</p></div>
+        <button onclick="doDailyCheck()" class="gold-gradient px-4 py-2 rounded-xl text-xs">CLAIM</button>
+      </div>
+      <div id="adsBox"></div>
+      <div id="monetagBox"></div>
+      <div id="reactBox"></div>
+      <div id="payoutBox"></div>
+      <div id="dailyCheckBox"></div>
+      <div id="bioBox"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FRIENDS PAGE -->
+<div id="friends-page" class="hidden">
+  <div class="glass p-4 mt-4">
+    <p class="font-bold text-center">👥 Friends</p>
+    <p class="text-xs text-center text-white/60 mt-1">Invite friends, earn bonus</p>
+    <button onclick="inviteFriend()" class="w-full gold-gradient py-3 rounded-xl mt-3 text-sm">INVITE FRIEND</button>
+    <div id="friendsList" class="mt-3"></div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="profile-page" class="hidden">
+  <div class="glass p-4 mt-4">
+    <p class="font-bold text-center">👤 Profile</p>
+    <p class="text-xs text-center mt-1">Wallet: <span id="walletDisplayProfile">Not connected</span></p>
+    <p class="text-xs text-center mt-1">Wallet Short: <span id="walletShort">Not connected</span></p>
+    <button onclick="connectWallet()" class="w-full gold-gradient py-3 rounded-xl mt-3 text-sm">CONNECT WALLET</button>
+    <div id="verificationBox" class="mt-3"></div>
+    <div id="vaultBox" class="mt-3"></div>
+    <div id="dailyBox" class="mt-3"></div>
+  </div>
+
+  <!-- WITHDRAW -->
+  <div class="glass p-4 mt-4">
+    <p class="font-bold text-center">💸 Withdraw</p>
+    <p id="withdrawLimitText" class="text-xs text-center mt-1"></p>
+    <input id="withdrawAmt" type="number" placeholder="Enter amount (1000 - 1000)" class="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-3 mt-3 text-sm outline-none" />
+    <p class="text-xs mt-2">You will receive: <b id="receiveAmt">0.00</b> VANTA</p>
+    <p id="withdrawCooldownText" class="text-xs mt-1"></p>
+    <button id="withdrawBtn" onclick="withdraw()" class="w-full gold-gradient py-3 rounded-xl mt-3 text-sm">Request Withdrawal</button>
+    <div id="withdrawHistory" class="mt-3 text-xs"></div>
+  </div>
+</div>
+
+</div>
+
+<!-- NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-black/90 border-t border-white/10">
+  <div class="max-w-md mx-auto grid grid-cols-7 text-center text-[10px] py-2">
+    <div id="nav-mine" onclick="showPage('mine')" class="nav-active">⛏️<br>Mine</div>
+    <div id="nav-vip" onclick="showPage('vip')" style="opacity:0.6">👑<br>VIP</div>
+    <div id="nav-spin" onclick="showPage('spin')" style="opacity:0.6">🎡<br>Spin</div>
+    <div id="nav-miners" onclick="showPage('miners')" style="opacity:0.6">⚒️<br>Miners</div>
+    <div id="nav-tasks" onclick="showPage('tasks')" style="opacity:0.6">📋<br>Tasks</div>
+    <div id="nav-friends" onclick="showPage('friends')" style="opacity:0.6">👥<br>Friends</div>
+    <div id="nav-profile" onclick="showPage('profile')" style="opacity:0.6">👤<br>Profile</div>
+  </div>
+</div>
 
 <script>
-"use strict";
-function onVantaVerified(token){localStorage.setItem('vanta_cf_passed','1');document.getElementById('securityOverlay').style.display='none';}
-if(localStorage.getItem('vanta_cf_passed')==='1'){document.getElementById('securityOverlay').style.display='none';}
-const SUPABASE_URL = "https://ydrplmyfchfimkwcqyqw.supabase.co";
-const SUPABASE_KEY = "sb_publishable_zQIHYhN3xg-7p8EtXxXRrQ_NZeGwL3f";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const VANTA_TOKEN_ADDRESS="EQB7uzT7yi0WDcfYpOjn5Yg-7Ir3TUs4wMK0TFl2JmdugmfB";
-const AD_LINKS=["https://omg10.com/4/11886018","https://omg10.com/4/11881385"];
-const OWNER_WALLET="UQCbXnjJ-vVo3oGtovId9TRs_H-O3CO9irjgazyk8F39_XOu";
-const VERIFICATION_NANOTON="50000000";
-const PAYOUT_CHANNEL="https://t.me/vantapayoutchannel";
-function openPayoutChannel(){ window.open(PAYOUT_CHANNEL,"_blank"); }
+const tg = window.Telegram?.WebApp; tg?.expand();
+const tgId = tg?.initDataUnsafe?.user?.id || "123456";
+const tgName = tg?.initDataUnsafe?.user?.first_name || "Miner";
+const urlParams = new URLSearchParams(location.search);
+let poolBalance = Number(localStorage.getItem("v_balance")||0);
+let miningPending = Number(localStorage.getItem("v_mining_pending")||0);
+let currentMinerLevel = Number(localStorage.getItem("v_miner_level")||0);
+let soundOn = true;
+let connectedWalletAddress = localStorage.getItem("v_wallet")||"";
+const WITHDRAW_FEE = 70;
+const WITHDRAW_COOLDOWN_MS = 24*60*60*1000;
+const MAX_BALANCE = 1000000;
+const NFT_CONFIG = { elite:{price:0.2,multiplier:1.5,dailyBonus:100,days:14,name:"Elite"}, overlord:{price:0.5,multiplier:2,dailyBonus:100,days:28,name:"Overlord"}, genesis:{price:0.8,multiplier:2.5,dailyBonus:100,days:56,name:"Genesis"} };
+const supabaseClient = null; // put your supabase init here if you dey use am
+function safeNum(v,d){ const n=Number(v); return Number.isFinite(n)?n:d; }
+function getVantaPerSec(l){ return 0.0001 + l*0.00002; }
+function getMiningRatePerDay(l){ return getVantaPerSec(l)*86400; }
+function getDailyCap(){ return 5000; }
+function getMinedToday(){ return Number(localStorage.getItem("v_mined_today")||0); }
+function addMinedToday(v){ localStorage.setItem("v_mined_today", String(getMinedToday()+v)); }
+function isUserJoined(){ return localStorage.getItem("v_joined_channel")==="true"; }
+function isVerified(){ return isUserJoined(); }
+function getWithdrawLimits(){ return {min:1000,max:1000,label:"1000 VANTA"}; }
+function autoJumpLevel(){}
+function getVipData(){ try{return JSON.parse(localStorage.getItem("v_vip")||"{}")}catch(e){return {}} }
+function checkNftDailyBonus(){}
+function updateFriendsUI(){}
+function updateVerificationUI(){ const el=document.getElementById("verificationBox"); if(el) el.innerHTML = isUserJoined()? "✅ Verified - Channel Joined" : "📢 Join channel to verify - Free"; }
+function updateAdsUI(){}
+function updateMonetagUI(){}
+function updateReactUI(){}
+function updatePayoutUI(){}
+function updateSpinUI(){}
+function updateVipUI(){ const el=document.getElementById("vipCards"); if(!el) return; el.innerHTML = Object.entries(NFT_CONFIG).map(([k,v])=>`<div class="glass p-3 flex justify-between items-center"><div><b>${v.name}</b><p class="text-xs text-white/60">x${v.multiplier} speed • ${v.days} days</p></div><button onclick="buyVip('${k}')" class="gold-gradient px-3 py-2 rounded-xl text-xs">Mint ${v.price} TON</button></div>`).join(""); }
+function updateDailyCheckUI(){}
+function updateBioUI(){}
+function updateVaultUI(){}
+function updateDailyUI(){}
+function renderMiners(){ const el=document.getElementById("minersList"); if(el) el.innerHTML = `<p class="text-xs">Level: ${currentMinerLevel}</p>`; }
+function checkTasksUI(){ updateStartBotTaskUI(); }
+function loadMyReferrals(){}
+function loadWithdrawsFromSupabase(){}
+function fetchProfileOnchain(){}
+function fetchLivePrice(){}
+function fetchNftSupply(){}
+function syncToSupabase(){}
+function saveWithdrawToSupabase(req){ return Promise.resolve(true); }
+function applyOfflineMining(){}
+function registerReferral(){}
+function claimMining(){ if(miningPending<=0){alert("Nothing to claim");return;} poolBalance+=miningPending; miningPending=0; localStorage.setItem("v_balance",String(poolBalance)); localStorage.setItem("v_mining_pending","0"); updateUI(); alert("Claimed ✅"); }
+function connectWallet(){ const w=prompt("Enter wallet address"); if(w){connectedWalletAddress=w; localStorage.setItem("v_wallet",w); updateUI();} }
+function inviteFriend(){ const link=`https://t.me/Victors_Company_bot/app?startapp=ref_${tgId}`; navigator.clipboard?.writeText(link); alert("Invite link copied: "+link); }
+function buyVip(tier){ alert("VIP "+tier+" - "+NFT_CONFIG[tier].price+" TON - Optional Boost"); }
+function doSpin(){ alert("Spin - connect your spin logic here"); }
+function doJoinTask(){ localStorage.setItem("v_joined_channel","true"); updateUI(); window.open("https://t.me/VantaBotHub","_blank"); }
+function doAdTask(){ alert("Ad task"); }
+function doDailyCheck(){ alert("Daily check"); }
 
-// LIVE TON PRICE
-let liveTonPriceUsd = parseFloat(localStorage.getItem('v_live_ton_price')||"1.108") || 1.108;
-async function fetchLiveTonPrice(){
-  try{
-    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd');
-    const d = await r.json();
-    if(d['the-open-network']?.usd && d['the-open-network'].usd > 0){
-      liveTonPriceUsd = d['the-open-network'].usd;
-      localStorage.setItem('v_live_ton_price', String(liveTonPriceUsd));
-    }
-  }catch(e){
-    try{
-      const r2 = await fetch('https://api.dexscreener.com/latest/dex/tokens/EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c');
-      const d2 = await r2.json();
-      if(d2.pairs?.[0]?.priceUsd) liveTonPriceUsd = parseFloat(d2.pairs[0].priceUsd);
-    }catch(e2){}
-  }
-  return liveTonPriceUsd;
+// === START BOT TASK - 10 VANTA - ONCE ONLY ===
+function doStartBotTask(){
+  const done = localStorage.getItem("v_task_startbot_done") === "1";
+  if(done){ alert("You don already collect this task ✅"); updateStartBotTaskUI(); return; }
+  window.open("https://t.me/Victors_Company_bot/app?startapp=ref_EED5E0C4FA", "_blank");
+  const reward = 10;
+  poolBalance += reward;
+  localStorage.setItem("v_balance", String(poolBalance));
+  localStorage.setItem("v_task_startbot_done", "1");
+  updateUI(); updateStartBotTaskUI();
+  alert("✅ +10 VANTA! Start Bot task done.");
 }
-fetchLiveTonPrice();
-setInterval(fetchLiveTonPrice, 60000);
-
-// ROBUST COPY - Works in Telegram WebApp, iPhone, Android
-async function copyTextRobust(text){
-  try{
-    if(navigator.clipboard && window.isSecureContext){
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  }catch(e){}
-  try{
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.top = "0"; ta.style.left = "0"; ta.style.opacity = "0";
-    ta.setAttribute("readonly", "");
-    document.body.appendChild(ta);
-    ta.focus(); ta.select(); ta.setSelectionRange(0, 99999);
-    const ok = document.execCommand("copy");
-    document.body.removeChild(ta);
-    if(ok) return true;
-  }catch(e){}
-  return false;
-}
-
-const WITHDRAW_FEE=70;
-const WITHDRAW_COOLDOWN_MS=24*60*60*1000;
-const MAX_BALANCE=5000000000; const MAX_MINING_PENDING=5000;
-const ADSGRAM_BLOCK_ID = "57855";
-const NFT_CONFIG = { elite: { price: 2, multiplier: 1.5, dailyBonus: 100, days: 14, name: "Elite" }, overlord: { price: 5, multiplier: 2, dailyBonus: 100, days: 28, name: "Overlord" }, genesis: { price: 10, multiplier: 2.5, dailyBonus: 100, days: 56, name: "Genesis" } };
-let secretSupply = { elite: 0, overlord: 0, genesis: 0 };
-function getVipData(){ try{ const tier = localStorage.getItem("v_nft_tier") || ""; const start = Number(localStorage.getItem("v_nft_start")||0); const bonusClaimed = Number(localStorage.getItem("v_nft_bonus_claimed")||0); return { tier, start, bonusClaimed }; }catch(e){ return {tier:"",start:0,bonusClaimed:0}; } }
-function getNftMultiplier(){ const data = getVipData(); if(!data.tier) return 1; return NFT_CONFIG[data.tier]?.multiplier || 1; }
-function getWithdrawLimits(){ const vip = getVipData(); const isVip = vip.tier && vip.tier !== ""; if(isVip) return { min: 2000, max: 2000, label: "VIP - 2000 VANTA" }; return { min: 1000, max: 1000, label: "Normal - 1000 VANTA" }; }
-async function fetchNftSupply(){ try{ const { data } = await supabaseClient.from("vanta_users").select("nft_tier").not("nft_tier","is",null); let e=0,o=0,g=0; (data||[]).forEach(u=>{ if(u.nft_tier==="elite")e++; if(u.nft_tier==="overlord")o++; if(u.nft_tier==="genesis")g++; }); secretSupply.elite = e; secretSupply.overlord = o; secretSupply.genesis = g; checkSoldOut(); }catch(err){} }
-function checkSoldOut(){ const eliteBtn = document.getElementById("buyEliteBtn"); const overlordBtn = document.getElementById("buyOverlordBtn"); const genesisBtn = document.getElementById("buyGenesisBtn"); if(secretSupply.elite >= 10 && eliteBtn){ eliteBtn.innerText = "❌ SOLD OUT"; eliteBtn.disabled = true; } if(secretSupply.overlord >= 10 && overlordBtn){ overlordBtn.innerText = "❌ SOLD OUT"; overlordBtn.disabled = true; } if(secretSupply.genesis >= 10 && genesisBtn){ genesisBtn.innerText = "❌ SOLD OUT"; genesisBtn.disabled = true; } }
-function updateVipUI(){ try{ const data=getVipData(); const tierText=document.getElementById("vipTierText"); const badge=document.getElementById("vipBadge"); const boostShow=document.getElementById("boostShow"); if(!tierText) return; if(!data.tier){ tierText.innerText="Free Miner"; if(badge) badge.classList.add("hidden"); if(boostShow) boostShow.innerText=""; }else{ const cfg=NFT_CONFIG[data.tier]; tierText.innerText=cfg.name+" ("+cfg.multiplier+"x)"; tierText.className="text-yellow-400 font-bold"; if(badge){ badge.classList.remove("hidden"); badge.innerText="💎 "+cfg.name+" "+cfg.multiplier+"x"; } if(boostShow) boostShow.innerText="| BOOST "+cfg.multiplier+"x"; } }catch(e){} }
-async function mintNFT(tier){ if(secretSupply[tier] >= 10){ alert("SOLD OUT!"); return; } const cfg=NFT_CONFIG[tier]; if(!cfg) return; if(!connectedWalletAddress || !tonConnectUI){ alert("Connect TON wallet first"); return; } const btn=document.getElementById("buy"+tier.charAt(0).toUpperCase()+tier.slice(1)+"Btn"); if(btn){ btn.disabled=true; btn.innerText="Opening Wallet..."; } try{ const amountNano=String(Math.round(cfg.price*1e9)); const result=await tonConnectUI.sendTransaction({ validUntil: Math.floor(Date.now()/1000)+600, messages:[{address:OWNER_WALLET, amount:amountNano}] }); if(!result?.boc) throw new Error("fail"); localStorage.setItem("v_nft_tier", tier); localStorage.setItem("v_nft_start", String(Date.now())); localStorage.setItem("v_nft_bonus_claimed","0"); poolBalance+=cfg.dailyBonus; localStorage.setItem("v_balance", String(poolBalance)); updateVipUI(); updateUI(); await syncToSupabase(); await fetchNftSupply(); alert("Success! "+cfg.name); }catch(e){ alert("Cancelled or failed"); } finally{ if(btn){ btn.disabled=false; btn.innerText="Mint "+cfg.price+" TON"; } } }
-function checkNftDailyBonus(){ const data=getVipData(); if(!data.tier || !data.start) return; const cfg=NFT_CONFIG[data.tier]; const elapsed=Math.floor((Date.now()-data.start)/86400000); const should=Math.min(elapsed, cfg.days); if(should > data.bonusClaimed){ const add=(should-data.bonusClaimed)*cfg.dailyBonus; poolBalance+=add; localStorage.setItem("v_balance", String(poolBalance)); localStorage.setItem("v_nft_bonus_claimed", String(should)); updateUI(); syncToSupabase(); } }
-setInterval(checkNftDailyBonus,60000); setInterval(fetchNftSupply,15000);
-function safeNum(v,f=0){if(v===null||v===undefined||String(v).trim()==="")return f;const n=Number(v);return Number.isFinite(n)?n:f;}
-function readArray(k){try{const v=JSON.parse(localStorage.getItem(k)||"[]");return Array.isArray(v)?v:[];}catch(_){return[];}}
-let tg=window.Telegram?.WebApp; if(tg){tg.ready();tg.expand();}
-let tonConnectUI=null;let connectedWalletAddress="";let walletReady=false;
-try{if(window.TON_CONNECT_UI?.TonConnectUI){tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:"https://vantaminerbot-hue.github.io/vanta/tonconnect-manifest.json",buttonRootId:"ton-connect"});tonConnectUI.onStatusChange(function(w){if(w?.account?.address){connectedWalletAddress=w.account.address;walletReady=true;document.getElementById("walletShort").innerText=w.account.address.slice(0,6)+"..."+w.account.address.slice(-4);const wp=document.getElementById("walletDisplayProfile"); if(wp) wp.innerText=w.account.address.slice(0,5)+"..."+w.account.address.slice(-3); localStorage.setItem("v_wallet",connectedWalletAddress);fetchProfileOnchain();}else{connectedWalletAddress="";walletReady=false;document.getElementById("walletShort").innerText="Connect Wallet";}updateVerificationUI();updateWithdrawUI();});}}catch(e){}
-const urlParams=new URLSearchParams(window.location.search);
-const telegramUserId=tg?.initDataUnsafe?.user?.id?.toString()||"";
-let urlRealId=urlParams.get("ref")||urlParams.get("start")||"";
-let tgId=localStorage.getItem("v_tgId")||telegramUserId||urlRealId||"";
-if(!tgId||tgId==="0"||tgId===""){tgId=telegramUserId||urlRealId||("id_"+Math.floor(Math.random()*10000000));}
-localStorage.setItem("v_tgId",tgId);
-let tgName=tg?.initDataUnsafe?.user?.first_name||tg?.initDataUnsafe?.user?.username||localStorage.getItem("v_tgName")||"Miner";
-if(tgName!=="Miner")localStorage.setItem("v_tgName",tgName);
-document.getElementById("userName").innerText=tgName==="Miner"?"Miner":tgName+"'s Miner";
-document.getElementById("refLink").innerText="https://t.me/Vanta23bot?start="+tgId;
-document.getElementById("userIdShow").innerText=tgId;
-let _rawPool=safeNum(localStorage.getItem("v_balance"),0);
-let _rawMining=safeNum(localStorage.getItem("v_mining_pending"),0);
-if(!Number.isFinite(_rawMining) || _rawMining > MAX_MINING_PENDING || _rawMining < 0){_rawMining=0;localStorage.setItem("v_mining_pending","0");}
-if(_rawPool > MAX_BALANCE){_rawPool=MAX_BALANCE;localStorage.setItem("v_balance",String(MAX_BALANCE));}
-let poolBalance=_rawPool;let miningPending=_rawMining;
-let currentMinerLevel=Math.max(1,Math.min(1000,Math.floor(safeNum(localStorage.getItem("v_miner_level"),1))));
-let isClaiming=false;
-let liveVantaPriceUsd=parseFloat(localStorage.getItem("v_last_real_price")||"0")||0.00001409;
-let cachedRaw = Number(localStorage.getItem("v_onchain_cached")||0);
-if(cachedRaw > 100000 || cachedRaw < 0){ cachedRaw = 0; localStorage.setItem("v_onchain_cached","0"); }
-let onChainBalance = cachedRaw;
-let soundOn = localStorage.getItem("v_sound")!=="off";
-function toggleSound(){soundOn=!soundOn; localStorage.setItem("v_sound", soundOn?"on":"off"); document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";}
-const refKey="refs_of_"+tgId; const refClaimedKey="v_ref_claimed_"+tgId; const teamWalletKey="v_team_wallet_"+tgId; const teamClaimedKey="v_team_claimed_"+tgId;
-let refClaimed=Math.max(0,safeNum(localStorage.getItem(refClaimedKey),0)); let teamWallet=safeNum(localStorage.getItem(teamWalletKey),0); let teamClaimed=safeNum(localStorage.getItem(teamClaimedKey),0);
-let visibleLevels=20;
-function getMiningRatePerDay(lvl){ return 3 + (lvl-1)*0.2121212121; }
-function getVantaPerSec(lvl){ let base=getMiningRatePerDay(lvl)/86400; return base * getNftMultiplier(); }
-function getCostForLevel(lvl){ if(lvl<=1) return 0; if(lvl==2) return 100; if(lvl==3) return 125; if(lvl==4) return 150; if(lvl==5) return 200; if(lvl==6) return 250; if(lvl==7) return 300; if(lvl==8) return 350; if(lvl==9) return 400; if(lvl==10) return 500; return 500 + (lvl-10)*50; }
-function getFastUSDT_TON(lvl){ return lvl * 0.05; }
-function getTotalNeededForLevel(targetLevel){ let total=0; for(let i=2;i<=targetLevel;i++){ total+=getCostForLevel(i); } return total; }
-function getCorrectLevelForBalance(base){ if(base < 100) return 1; let lvl = 1; for(let i=2; i<=1000; i++){ let need = getTotalNeededForLevel(i); if(base >= need) lvl = i; else break; } return lvl; }
-function autoJumpLevel(){
-  const combined = poolBalance + onChainBalance;
-  const base = combined > 0 ? combined : poolBalance;
-  const needForCurrent = getTotalNeededForLevel(currentMinerLevel);
-  if(currentMinerLevel >= 100 && base < needForCurrent){
-    const correctLevel = getCorrectLevelForBalance(base);
-    if(correctLevel !== currentMinerLevel){ currentMinerLevel = correctLevel; localStorage.setItem("v_miner_level", String(currentMinerLevel)); }
-    return;
-  }
-  const correctLevel = getCorrectLevelForBalance(base);
-  if(correctLevel > currentMinerLevel){ currentMinerLevel = correctLevel; localStorage.setItem("v_miner_level", String(currentMinerLevel)); }
-  else if(currentMinerLevel >= 1000 && base < getTotalNeededForLevel(1000)){ currentMinerLevel = correctLevel; localStorage.setItem("v_miner_level", String(currentMinerLevel)); }
-}
-function getDailyCap(){ return getMiningRatePerDay(currentMinerLevel); }
-function getTodayKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
-function getMinedToday(){ const key="v_mined_today_"+tgId+"_"+getTodayKey(); return safeNum(localStorage.getItem(key),0); }
-function addMinedToday(amount){ const key="v_mined_today_"+tgId+"_"+getTodayKey(); const cur=getMinedToday()+amount; localStorage.setItem(key,String(cur)); return cur; }
-function updateDailyUI(){
-  const cap=getDailyCap(); const mined=getMinedToday();
-  const mEl=document.getElementById("minedTodayShow"); if(mEl) mEl.innerText=mined.toFixed(2);
-  const cEl=document.getElementById("dailyCapShow"); if(cEl) cEl.innerText=cap.toFixed(2);
-  const bar=document.getElementById("dailyProgressBar"); if(bar) bar.style.width=Math.min(100,(mined/cap)*100)+"%";
-}
-function applyOfflineMining(){
-  const last=safeNum(localStorage.getItem("v_last_mine_time"),0);
-  if(last>0){
-    const diffSec=Math.floor((Date.now()-last)/1000);
-    if(diffSec>0 && diffSec<86400){
-      const cap=getDailyCap(); const mined=getMinedToday();
-      const remaining=cap-mined;
-      if(remaining>0){
-        const rate=getVantaPerSec(currentMinerLevel);
-        let earn=rate*diffSec;
-        if(earn>remaining) earn=remaining;
-        if(earn>0){ miningPending+=earn; addMinedToday(earn); localStorage.setItem("v_mining_pending",String(miningPending)); }
-      }
-    }
-  }
-  localStorage.setItem("v_last_mine_time",String(Date.now()));
-}
-const DAILY_REWARDS=[1,3,5,7,9,11,15];
-function getDateStr(offsetDays=0){ const d=new Date(); d.setDate(d.getDate()+offsetDays); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
-function getDailyCheckData(){ let lastDate=localStorage.getItem("v_daily_last")||""; let streak=Number(localStorage.getItem("v_daily_streak")||"0"); return {lastDate,streak}; }
-function updateDailyCheckUI(){
-  const {lastDate,streak}=getDailyCheckData();
-  const today=getDateStr(0); const yesterday=getDateStr(-1);
-  let currentStreak=streak; let canClaim=true;
-  if(lastDate===today){ canClaim=false; }
-  else if(lastDate===yesterday){ if(currentStreak>=7) currentStreak=0; }
-  else if(lastDate!=="" && lastDate!==today && lastDate!==yesterday){ currentStreak=0; localStorage.setItem("v_daily_streak","0"); }
-  let nextDay=1;
-  if(lastDate===today){ nextDay=currentStreak; } else { nextDay=currentStreak+1; if(nextDay>7) nextDay=1; }
-  if(!lastDate) nextDay=1;
-  const nextReward=DAILY_REWARDS[nextDay-1];
-  const streakEl=document.getElementById("dailyCheckStreak"); const btn=document.getElementById("dailyCheckBtn"); const timerEl=document.getElementById("dailyCheckTimer"); const daysEl=document.getElementById("dailyCheckDays");
-  if(streakEl){ if(lastDate===today){ streakEl.innerText=`Day ${currentStreak} Claimed ✅ • Come back tomorrow`; } else { streakEl.innerText=`Day ${nextDay} • +${nextReward} VANTA`; } }
-  if(btn){ if(!canClaim){ btn.innerText="✅ Claimed"; btn.disabled=true; } else { btn.innerText=`Claim +${nextReward}`; btn.disabled=false; } }
-  if(timerEl){ if(lastDate===today){ timerEl.innerText="Come back tomorrow to continue your streak. If you miss, it resets to Day 1!"; } else if(lastDate!=="" && lastDate!==yesterday && lastDate!==today){ timerEl.innerText="⚠️ You missed a day! Streak reset to Day 1."; } else { timerEl.innerText="Claim every day. Miss one day = reset to Day 1."; } }
-  if(daysEl){ daysEl.innerHTML=""; DAILY_REWARDS.forEach((reward,i)=>{ const dayNum=i+1; let bg="bg-white/10 text-white/50"; if(lastDate===today && dayNum<=currentStreak){ bg="bg-green-500 text-black font-bold"; } else if(lastDate!==today && dayNum===nextDay){ bg="bg-yellow-400 text-black font-bold animate-pulse"; } else if(lastDate!==today && dayNum<nextDay){ bg="bg-green-500/30 text-green-300"; } const div=document.createElement("div"); div.className=`${bg} rounded-xl py-2 text-center text-[10px] flex-1`; div.innerHTML=`Day ${dayNum}<br>+${reward}`; daysEl.appendChild(div); }); }
-}
-function claimDailyCheck(){
-  const {lastDate,streak}=getDailyCheckData(); const today=getDateStr(0); const yesterday=getDateStr(-1);
-  if(lastDate===today){ alert("You already claimed today. Come back tomorrow!"); return; }
-  let newStreak=1;
-  if(lastDate===yesterday){ newStreak=streak+1; if(newStreak>7) newStreak=1; } else if(lastDate===""){ newStreak=1; } else { newStreak=1; alert("You missed a day! Streak reset to Day 1."); }
-  const reward=DAILY_REWARDS[newStreak-1];
-  poolBalance+=reward; localStorage.setItem("v_balance",String(poolBalance)); localStorage.setItem("v_daily_last",today); localStorage.setItem("v_daily_streak",String(newStreak));
-  updateDailyCheckUI(); updateUI(); syncToSupabase(); alert(`Daily Check Day ${newStreak} Claimed! +${reward} VANTA 🎉\n\nCome back tomorrow for Day ${newStreak===7?1:newStreak+1}`);
-}
-setInterval(updateDailyCheckUI,60000);
-let currentSpinReward=0; let isSpinning=false;
-const SPIN_COOLDOWN_MS=24*60*60*1000;
-function getSpinDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-function getSpinData(){ return { count: Math.max(0, Math.floor(safeNum(localStorage.getItem("v_spin_today"),0))), won: safeNum(localStorage.getItem("v_spin_won_today"),0), last: safeNum(localStorage.getItem("v_spin_last"),0), date: localStorage.getItem("v_spin_date")||"" }; }
-function updateSpinUI(){ const data=getSpinData(); const countEl=document.getElementById("spinCount"); const wonEl=document.getElementById("spinWonToday"); const timerEl=document.getElementById("spinTimer"); const btn=document.getElementById("spinBtn"); const today=getSpinDate(); const isNewDay = data.date!==today; const now=Date.now(); const diff=now-data.last; const canSpin = isNewDay || diff>=SPIN_COOLDOWN_MS; if(countEl) countEl.innerText= canSpin ? "1/1 Available" : "0/1 Used"; if(wonEl) wonEl.innerText=data.won.toFixed(1)+" VANTA"; if(timerEl && btn){ if(!canSpin){ const remain=SPIN_COOLDOWN_MS-diff; const h=Math.floor(remain/3600000); const m=Math.floor((remain%3600000)/60000); const s=Math.floor((remain%60000)/1000); timerEl.innerText=`Next free spin in ${h}h ${m}m ${s}s`; btn.disabled=true; }else{ timerEl.innerText="🎁 You have 1 FREE daily spin!"; btn.disabled=false; } } }
-setInterval(updateSpinUI,1000);
-function getRiggedReward(){ const r=Math.random()*100; if(r<5) return 3; if(r<35) return 5; if(r<65) return 10; if(r<85) return 15; return 20; }
-function spinWheel(){ if(isSpinning) return; const data=getSpinData(); const today=getSpinDate(); const now=Date.now(); const canSpin = data.date!==today || now-data.last>=SPIN_COOLDOWN_MS; if(!canSpin){alert("You already spun today");return;} isSpinning=true; currentSpinReward=getRiggedReward(); let targetAngleMap={3:128,5:180,10:231,15:283,20:334,25:77,30:25}; let baseAngle=targetAngleMap[currentSpinReward] || 180; const spins= 5*360 + (360-baseAngle); const wheel=document.getElementById("spinWheel"); wheel.style.transform=`rotate(${spins}deg)`; const btn=document.getElementById("spinBtn"); btn.disabled=true; btn.innerText="SPINNING..."; setTimeout(()=>{ isSpinning=false; document.getElementById("spinResultAmount").innerText=currentSpinReward; document.getElementById("spinResultCard").classList.remove("hidden"); document.getElementById("claimSpinBtn").classList.remove("hidden"); btn.classList.add("hidden"); },4100); }
-function claimSpinReward(){ if(currentSpinReward<=0) return; const btn=document.getElementById("claimSpinBtn"); btn.disabled=true; btn.innerText="LOADING AD (Monetag)..."; function finalizeClaim(){ poolBalance+=currentSpinReward; localStorage.setItem("v_balance",String(poolBalance)); const data=getSpinData(); const today=getSpinDate(); localStorage.setItem("v_spin_date",today); localStorage.setItem("v_spin_today","1"); localStorage.setItem("v_spin_won_today",String(data.won+currentSpinReward)); localStorage.setItem("v_spin_last",String(Date.now())); document.getElementById("spinResultCard").classList.add("hidden"); btn.classList.add("hidden"); const spinBtn=document.getElementById("spinBtn"); spinBtn.classList.remove("hidden"); spinBtn.disabled=true; currentSpinReward=0; const wheel=document.getElementById("spinWheel"); wheel.style.transition="none"; wheel.style.transform="rotate(0deg)"; setTimeout(()=>{wheel.style.transition="transform 4s cubic-bezier(0.15,0,0.15,1)";},50); updateUI(); updateSpinUI(); syncToSupabase(); alert("Claimed to Pool!"); } try{ if(typeof window.show_11874733==="function"){ const result=window.show_11874733(); if(result && result.then){ result.then(finalizeClaim).catch(()=>{ window.open(AD_LINKS[0],"_blank"); setTimeout(finalizeClaim,800); }); }else{ window.open(AD_LINKS[0],"_blank"); setTimeout(finalizeClaim,800); } }else{ window.open(AD_LINKS[0],"_blank"); setTimeout(finalizeClaim,800); } }catch(e){ finalizeClaim(); } }
-async function fetchLivePrice(){
-  let newPrice=null;
-  try{
-    const r=await fetch(`https://api.dexscreener.com/latest/dex/tokens/${VANTA_TOKEN_ADDRESS}`);
-    const d=await r.json();
-    if(d.pairs && d.pairs.length>0){
-      let best=d.pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0))[0];
-      newPrice=parseFloat(best.priceUsd);
-    }
-  }catch(e){}
-  if(!newPrice){
-    try{
-      const r=await fetch(`https://api.ston.fi/v1/assets/${VANTA_TOKEN_ADDRESS}`);
-      const d=await r.json();
-      if(d?.asset?.dex_price_usd) newPrice=parseFloat(d.asset.dex_price_usd);
-    }catch(e){}
-  }
-  if(newPrice && newPrice>0){ liveVantaPriceUsd=newPrice; localStorage.setItem("v_last_real_price", String(newPrice)); }
-  else { const last=parseFloat(localStorage.getItem("v_last_real_price")||"0"); if(last>0) liveVantaPriceUsd=last; }
-  const priceEl=document.getElementById("livePrice");
-  if(priceEl) priceEl.textContent="$"+liveVantaPriceUsd.toFixed(8)+" USDT • LIVE";
-  const vaultRate=document.getElementById("vaultRateText"); if(vaultRate) vaultRate.innerText="$"+liveVantaPriceUsd.toFixed(8);
-  updateVaultUI();
-}
-fetchLivePrice(); setInterval(fetchLivePrice,20000);
-function updateVaultUI(){
-  const pool=poolBalance; const onchain=onChainBalance; const combined=pool+onchain;
-  const price=liveVantaPriceUsd||0.00001409;
-  const combinedUsd=combined*price; const poolUsd=pool*price; const onchainUsd=onchain*price;
-  const cbEl=document.getElementById("combinedBalance"); const cuEl=document.getElementById("combinedUsd");
-  const clEl=document.getElementById("combinedLevel"); const pbEl=document.getElementById("balProfile");
-  const pbuEl=document.getElementById("balProfileUsdSmall"); const obEl=document.getElementById("balProfileOnchain");
-  const obuEl=document.getElementById("balProfileOnchainUsdSmall");
-  if(cbEl) cbEl.innerText=combined.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(cuEl) cuEl.innerText=combinedUsd.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(clEl) clEl.innerText=currentMinerLevel; if(pbEl) pbEl.innerText=Math.floor(pool).toLocaleString();
-  if(pbuEl) pbuEl.innerText=poolUsd.toFixed(4); if(obEl) obEl.innerText=Math.floor(onchain).toLocaleString();
-  if(obuEl) obuEl.innerText=onchainUsd.toFixed(2);
-  const poolMain=document.getElementById("pool"); const poolUsdMain=document.getElementById("poolUsd");
-  if(poolMain) poolMain.innerText=pool.toFixed(4); if(poolUsdMain) poolUsdMain.textContent=`(~$${poolUsd.toFixed(4)})`;
-  const lvlEl=document.getElementById("lvl"); if(lvlEl) lvlEl.innerText=currentMinerLevel;
-}
-async function fetchProfileOnchain(){
-  const wallet = connectedWalletAddress || localStorage.getItem("v_wallet") || "";
-  if(!wallet) return; let bal=0;
-  try{ const r=await fetch(`https://tonapi.io/v2/accounts/${wallet}/jettons?currencies=usd`,{cache:"no-store"}); const d=await r.json(); if(d?.balances){ for(let j of d.balances){ const sym=(j.jetton?.symbol||"").toUpperCase(); if(sym==="VANTA" || j.jetton?.address===VANTA_TOKEN_ADDRESS){ const dec=j.jetton?.decimals||9; bal=Number(j.balance)/(10**dec); break; } } } }catch(e){}
-  onChainBalance=bal; localStorage.setItem("v_onchain_cached", String(bal)); autoJumpLevel(); updateVaultUI();
-}
-setInterval(()=>{ const w=connectedWalletAddress||localStorage.getItem("v_wallet"); if(w) fetchProfileOnchain(); }, 15000);
-setTimeout(fetchProfileOnchain, 1500);
-function getVerifiedWallet(){return localStorage.getItem("v_verified_wallet")||"";}
-function isVerified(){return localStorage.getItem("v_verified")==="1"&&getVerifiedWallet()!=="";}
-function updateVerificationUI(){ const verified=isVerified(); const card=document.getElementById("verificationCard"); const status=document.getElementById("verificationStatus"); const btn=document.getElementById("verifyBtn"); const icon=document.getElementById("verificationIcon"); if(verified){ if(card)card.className="glass p-4 mt-4 border border-green-500/40 bg-green-500/10"; if(status){status.innerText="✅ Verified";} if(icon)icon.innerText="✅"; if(btn){btn.innerText="✅ VERIFIED";btn.disabled=true;} }else{ if(card)card.className="glass p-4 mt-4 border border-yellow-500/40"; if(status){status.innerText="Not verified";} if(icon)icon.innerText="🔐"; if(btn){btn.innerText=connectedWalletAddress?"VERIFY WITH 0.05 TON":"CONNECT WALLET FIRST";btn.disabled=false;} } }
-async function verifyAccount(){if(isVerified()){alert("Already verified");return;}if(!connectedWalletAddress){alert("Connect wallet first");return;}const btn=document.getElementById("verifyBtn");btn.disabled=true;btn.innerText="Opening Wallet...";try{const result=await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:VERIFICATION_NANOTON}]});if(!result?.boc)throw new Error("fail");localStorage.setItem("v_verified_wallet",connectedWalletAddress);localStorage.setItem("v_verified","1");updateVerificationUI();await syncToSupabase();alert("Verified! ✅");}catch(e){btn.disabled=false;btn.innerText="VERIFY WITH 0.05 TON";alert("Verification failed");}}
-function isUserJoined(){const done=readArray("v_tasks_done");return localStorage.getItem("v_joined_channel")==="true"||done.includes("join_channel");}
-function checkTasksUI(){const done=readArray("v_tasks_done");const b=document.getElementById("taskBtn1");if(b&&done.includes("join_channel")){b.innerText="✅ Done";b.disabled=true;}updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateDailyCheckUI();updateBioUI();}
-function doTask(amount, taskId, link){const done=readArray("v_tasks_done");if(done.includes(taskId)){alert("Already done");return;}const btnMap={"join_channel":"taskBtn1"};const bid=btnMap[taskId];const b=bid?document.getElementById(bid):null;if(b&& (b.innerText==="Join")){window.open(link,"_blank");b.innerText="Verify ✅";return;}poolBalance+=amount;if(!done.includes(taskId))done.push(taskId);if(taskId==="join_channel")localStorage.setItem("v_joined_channel","true");localStorage.setItem("v_tasks_done",JSON.stringify(done));localStorage.setItem("v_balance",String(poolBalance));if(b){b.innerText="✅ Done";b.disabled=true;}updateUI();syncToSupabase();}
-function getAdsDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-function getAdsCount(){const t=getAdsDate();if(localStorage.getItem("v_ads_date")!==t){localStorage.setItem("v_ads_date",t);localStorage.setItem("v_ads_today","0");return 0;}return Math.max(0,Math.floor(safeNum(localStorage.getItem("v_ads_today"),0)));}
-function updateAdsUI(){const c=getAdsCount();const el=document.getElementById("adsCount");const btn=document.getElementById("watchAdsBtn");if(el)el.innerText=c;if(btn){if(c>=20){btn.innerText="✅ 20/20 Done";btn.disabled=true;}else{btn.innerText="Watch Ad (+2)";btn.disabled=false;}}}
-function watchAdsgramTask(){
-  const count=getAdsCount(); if(count>=20){alert("Adsgram 20/20 done");return;}
-  const btn=document.getElementById("watchAdsBtn"); btn.disabled=true; btn.innerText="Loading Adsgram...";
-  function reward(){ let c=getAdsCount(); poolBalance+=2; c+=1; localStorage.setItem("v_ads_date",getAdsDate()); localStorage.setItem("v_ads_today",String(c)); localStorage.setItem("v_balance",String(poolBalance)); updateUI(); updateAdsUI(); syncToSupabase(); alert("+2 VANTA Adsgram! "+c+"/20"); btn.disabled=false; btn.innerText="Watch Ad (+2)"; }
-  try{
-    if(window.Adsgram){
-      const AdCon = window.Adsgram.init({ blockId: "57855" });
-      AdCon.show().then(r=>{
-        if(r && r.done) reward();
-        else { btn.disabled=false; btn.innerText="Watch Ad (+2)"; if(r && r.error) { console.log(r.error); alert("Adsgram error: "+r.error); } }
-      }).catch(e=>{ console.log(e); btn.disabled=false; btn.innerText="Watch Ad (+2)"; });
-    } else {
-      btn.disabled=false; btn.innerText="Watch Ad (+2)"; alert("Adsgram library not loaded yet - please reload the app");
-    }
-  }catch(e){ console.log(e); btn.disabled=false; btn.innerText="Watch Ad (+2)"; alert("Adsgram init error: "+e.message); }
-}
-function getMonetagDate(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-function getMonetagCount(){const t=getMonetagDate();if(localStorage.getItem("v_monetag_date")!==t){localStorage.setItem("v_monetag_date",t);localStorage.setItem("v_monetag_today","0");return 0;}return Math.max(0,Math.floor(safeNum(localStorage.getItem("v_monetag_today"),0)));}
-function updateMonetagUI(){const c=getMonetagCount();const el=document.getElementById("monetagCount");const btn=document.getElementById("watchMonetagBtn");if(el)el.innerText=c;if(btn){if(c>=30){btn.innerText="✅ 30/30 Done";btn.disabled=true;}else{btn.innerText="Watch Ad (+1)";btn.disabled=false;}}}
-function watchMonetagTask(){
-  const count=getMonetagCount(); if(count>=30){alert("Monetag 30/30 done");return;}
-  const btn=document.getElementById("watchMonetagBtn"); btn.disabled=true; btn.innerText="Loading Monetag...";
-  function reward(){ let c=getMonetagCount(); poolBalance+=1; c+=1; localStorage.setItem("v_monetag_date",getMonetagDate()); localStorage.setItem("v_monetag_today",String(c)); localStorage.setItem("v_balance",String(poolBalance)); updateUI(); updateMonetagUI(); syncToSupabase(); alert("+1 VANTA Monetag! "+c+"/30"); btn.disabled=false; btn.innerText="Watch Ad (+1)"; }
-  try{
-    if(typeof window.show_11874733==="function"){
-      const r=window.show_11874733();
-      if(r&&r.then){ r.then(reward).catch(()=>{ window.open(AD_LINKS[0],"_blank"); setTimeout(reward,800); }); }
-      else { window.open(AD_LINKS[0],"_blank"); setTimeout(reward,800); }
-    } else { window.open(AD_LINKS[0],"_blank"); setTimeout(reward,800); }
-  }catch(e){ btn.disabled=false; btn.innerText="Watch Ad (+1)"; }
-}
-function getReactTime(){return safeNum(localStorage.getItem("v_react_last"),0);}
-function updateReactUI(){ const last=getReactTime();const now=Date.now();const diff=now-last;const threeHours=3*60*60*1000; const el=document.getElementById("reactTimer");const btn=document.getElementById("reactBtn"); if(!el||!btn)return; if(diff>=threeHours||last===0){ el.innerText="Ready! +5 VANTA"; btn.innerText="React";btn.disabled=false; }else{ const remain=threeHours-diff;const h=Math.floor(remain/3600000);const m=Math.floor((remain%3600000)/60000); el.innerText=`Next in ${h}h ${m}m`; btn.innerText=h>0?`${h}h ${m}m`:`${m}m`;btn.disabled=true; } }
-setInterval(updateReactUI,1000);
-function doReactTask(){ const last=getReactTime();const now=Date.now();const threeHours=3*60*60*1000; if(now-last < threeHours && last!==0){alert(`Please wait`);return;} window.open("https://t.me/VantaBotHub/104","_blank"); setTimeout(()=>{ poolBalance+=5; localStorage.setItem("v_balance",String(poolBalance)); localStorage.setItem("v_react_last",String(Date.now())); updateUI(); updateReactUI(); syncToSupabase(); alert("+5 VANTA!"); },3000); }
-function getPayoutTime(){ return safeNum(localStorage.getItem("v_payout_last"),0); }
-function updatePayoutUI(){ const last=getPayoutTime(); const now=Date.now(); const twelveHours=12*60*60*1000; const diff=now-last; const el=document.getElementById("payoutTimer"); const btn=document.getElementById("payoutBtn"); if(!el||!btn) return; if(diff>=twelveHours||last===0){ el.innerText="Ready! +5 VANTA"; btn.innerText="Check (+5)"; btn.disabled=false; } else { const remain=twelveHours-diff; const h=Math.floor(remain/3600000); const m=Math.floor((remain%3600000)/60000); const s=Math.floor((remain%60000)/1000); el.innerText=`Next in ${h}h ${m}m`; btn.innerText=`${h}h ${m}m`; btn.disabled=true; } }
-setInterval(updatePayoutUI,1000);
-function doPayoutTask(){ const last=getPayoutTime(); const now=Date.now(); const twelveHours=12*60*60*1000; if(now-last < twelveHours && last!==0){ alert("Please wait. You can claim this task again in 12 hours."); return; } window.open(PAYOUT_CHANNEL,"_blank"); setTimeout(()=>{ poolBalance+=5; localStorage.setItem("v_balance",String(poolBalance)); localStorage.setItem("v_payout_last",String(Date.now())); updateUI(); updatePayoutUI(); syncToSupabase(); alert("+5 VANTA! Thank you for checking the Payout Channel."); },3000); }
-
-// BIO TASK: Add Link To Bio - 5 VANTA / 24hrs - MUST ADD BEFORE CLAIM
-const BIO_LINK = "https://t.me/Vanta23bot";
-const BIO_TEXT_TO_ADD = "⛏️ Mining VANTA | t.me/Vanta23bot";
-function getBioTime(){ return safeNum(localStorage.getItem("v_bio_last"),0); }
-function updateBioUI(){
-  const last = getBioTime(); const now = Date.now(); const day = 24*60*60*1000; const diff = now - last;
-  const el = document.getElementById("bioTimer"); const btn = document.getElementById("bioBtn");
-  if(!el || !btn) return;
-  const step = localStorage.getItem("v_bio_step") || "";
-  if(diff >= day || last === 0){
-    if(step === "added"){ el.innerText = "Link added? Click Verify to claim"; btn.innerText = "Verify & Claim (+5)"; btn.disabled = false; }
-    else { el.innerText = "Ready! +5 VANTA - Add link first"; btn.innerText = "Add To Bio"; btn.disabled = false; }
-  } else {
-    const remain = day - diff; const h = Math.floor(remain/3600000); const m = Math.floor((remain%3600000)/60000);
-    el.innerText = `Next in ${h}h ${m}m - Come back tomorrow`; btn.innerText = `${h}h ${m}m`; btn.disabled = true;
-  }
-}
-setInterval(updateBioUI, 1000);
-async function copyBioLink(){
-  const text = document.getElementById("bioCopyText").value;
-  const ok = await copyTextRobust(text);
-  if(ok){
-    alert("Link copied! Now go to Telegram > Settings > Edit Profile > Bio and paste it.");
-  } else {
-    alert("Please long-press the box above and tap Copy manually.");
-    document.getElementById("bioCopyText").select();
-  }
-}
-function bioAddedConfirm(){
-  document.getElementById("bioCopyBox").classList.add("hidden");
-  localStorage.setItem("v_bio_step", "added");
-  updateBioUI();
-  alert("Thank you! Now click VERIFY & CLAIM to get your +5 VANTA.");
-}
-function doBioTask(){
-  const last = getBioTime(); const now = Date.now(); const day = 24*60*60*1000;
-  if(now - last < day && last !== 0){ alert("You already claimed the Bio task. Please come back in 24 hours."); return; }
-  const step = localStorage.getItem("v_bio_step") || "";
-  if(step !== "added"){
-    const box = document.getElementById("bioCopyBox");
-    box.classList.remove("hidden");
-    box.scrollIntoView({behavior:"smooth", block:"center"});
-    copyTextRobust(BIO_TEXT_TO_ADD);
-    return;
-  }
-  const username = prompt("STEP 2: VERIFY\n\nEnter your Telegram username (without @) so we can check your bio.\n\nExample: if your username is @john, type john");
-  if(!username || username.trim().length < 3){ alert("Please enter your correct username to verify."); return; }
-  const confirmAdded = confirm(`Did you add this to your bio?\n\n"${BIO_TEXT_TO_ADD}"\n\nUsername: @${username.trim()}\n\nPress OK to confirm. Please keep the link in your bio for 24 hours.`);
-  if(!confirmAdded) return;
-  poolBalance += 5; localStorage.setItem("v_balance", String(poolBalance));
-  localStorage.setItem("v_bio_last", String(Date.now())); localStorage.setItem("v_bio_step", ""); localStorage.setItem("v_bio_username", username.trim());
-  updateUI(); updateBioUI(); syncToSupabase();
-  try{ supabaseClient.from("vanta_bio_tasks").insert({ user_id: String(tgId), username: String(username.trim()), bio_link: BIO_LINK, claimed_at: new Date().toISOString() }); }catch(e){}
-  alert("+5 VANTA! Bio Task Claimed!\n\nYour username has been saved for verification. Please keep the link in your bio for 24 hours.");
+function updateStartBotTaskUI(){
+  const btn = document.getElementById("startBotTaskBtn");
+  if(!btn) return;
+  if(localStorage.getItem("v_task_startbot_done") === "1"){
+    btn.innerText = "DONE ✅"; btn.disabled = true; btn.style.opacity = "0.5";
+  } else { btn.innerText = "START"; btn.disabled = false; btn.style.opacity = "1"; }
 }
 
-function renderMiners(){
-  const grid=document.getElementById("minersGrid");if(!grid)return;grid.innerHTML="";
-  for(let i=1;i<=visibleLevels;i++){
-    const rateDay=getMiningRatePerDay(i);
-    const isActive=i===currentMinerLevel;
-    const isOwned=i<currentMinerLevel;
-    let dotClass="timeline-dot "; let cardClass="timeline-card ";
-    let leftHtml=""; let rightHtml="";
-    if(isOwned){ dotClass+="owned"; cardClass+="owned"; leftHtml=`<div><p class="text-[13px] font-bold">Lvl ${i} <span class="text-[#00FF88]">✅</span></p><p class="text-[10px] text-white/50">${rateDay.toFixed(2)}/day • Owned</p></div>`; rightHtml=`<span class="text-[#00FF88] text-[10px] font-bold">UNLOCKED</span>`; }
-    else if(isActive){ dotClass+="active"; cardClass+="active"; leftHtml=`<div><p class="text-[13px] font-bold text-[#FFD700]">Lvl ${i} • ACTIVE ⚡</p><p class="text-[10px] text-yellow-200/70">${rateDay.toFixed(2)}/day • Mining</p></div>`; rightHtml=`<span class="text-[#FFD700] text-[10px] font-bold animate-pulse">MINING</span>`; }
-    else{ dotClass+="locked"; cardClass+="locked"; leftHtml=`<div><p class="text-[13px] font-bold text-white/70">Lvl ${i}</p><p class="text-[10px] text-white/40">${rateDay.toFixed(2)}/day</p></div>`; rightHtml=`<button onclick="openLevelModal(${i})" class="gold-gradient px-3 py-1.5 rounded-full text-[10px] font-black">VIEW</button>`; }
-    const item=document.createElement("div"); item.className="timeline-item";
-    item.innerHTML=`<div class="${dotClass}"></div><div class="${cardClass}">${leftHtml}${rightHtml}</div>`;
-    grid.appendChild(item);
-  }
-  document.getElementById("myLevelShow").innerText=currentMinerLevel;
-  document.getElementById("mySpeedShow").innerText=getMiningRatePerDay(currentMinerLevel).toFixed(2)+" /day";
-}
-function loadMoreMiners(){visibleLevels=Math.min(1000,visibleLevels+20);renderMiners();}
-function openLevelModal(targetLevel){ const combined=poolBalance+onChainBalance; const have=combined; let totalNeeded=getTotalNeededForLevel(targetLevel); if(targetLevel<=currentMinerLevel) totalNeeded=0; const usdtPrice=getFastUSDT_TON(targetLevel); document.getElementById('modalLevelTitle').innerText=`LEVEL ${targetLevel}`; document.getElementById('haveVanta').innerText=`${have.toLocaleString()} VANTA (Combined)`; document.getElementById('needTotal').innerText=`${totalNeeded} VANTA`; document.getElementById('needMore').innerText= have>=totalNeeded ? `✅ FREE UNLOCKED!` : `Need ${(totalNeeded-have).toFixed(0)} more`; document.getElementById('payBtnPrice').innerText=usdtPrice.toFixed(2); document.getElementById('modalRate').innerText=`${getMiningRatePerDay(targetLevel).toFixed(2)} VANTA/day`; document.getElementById('buyLevelBtn').onclick=()=>buyLevelWithTon(targetLevel); document.getElementById('levelModal').style.display='flex'; }
-function closeLevelModal(){ document.getElementById('levelModal').style.display='none'; }
-async function buyLevelWithTon(targetLevel){
-  if(!connectedWalletAddress || !tonConnectUI){ alert("Connect TON wallet first"); return; }
-  const btn=document.getElementById('buyLevelBtn'); btn.disabled=true; btn.innerText="Getting Live Price...";
-  const tonPriceUsd = await fetchLiveTonPrice();
-  const usdtPrice=getFastUSDT_TON(targetLevel);
-  const tonPrice=usdtPrice/tonPriceUsd;
-  const nanoTon=Math.floor(tonPrice*1e9).toString();
-  btn.innerText="Opening Wallet...";
-  try{ const result=await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:OWNER_WALLET,amount:nanoTon}]}); if(!result?.boc) throw new Error("fail"); if(targetLevel>currentMinerLevel){ currentMinerLevel=targetLevel; localStorage.setItem("v_miner_level",String(currentMinerLevel)); } updateUI(); renderMiners(); closeLevelModal(); await syncToSupabase(); alert(`Success! LEVEL ${targetLevel} - Paid ${tonPrice.toFixed(4)} TON ($${usdtPrice} at $${tonPriceUsd.toFixed(3)}/TON)`); }catch(e){ alert("Payment cancelled"); } finally{ btn.disabled=false; }
-}
-function updateFriendsUI(){
-  const myRefs=readArray(refKey);
-  const count=myRefs.length;
-  let available=Math.max(0,count*100-refClaimed);
-  const rcEl=document.getElementById("refCount"); if(rcEl) rcEl.innerText=count;
-  const reEl=document.getElementById("refEarned"); if(reEl) reEl.innerText=available+" VANTA";
-  const rrEl=document.getElementById("refRewardText"); if(rrEl) rrEl.innerText=available>0?available+" available":"All claimed";
-  const teamAvailable=Math.max(0,teamWallet-teamClaimed);
-  const twEl=document.getElementById("teamWalletText"); if(twEl) twEl.innerText=teamAvailable.toFixed(4)+" VANTA available";
-}
-async function loadMyReferrals(){
-  try{
-    const { data } = await supabaseClient.from("vanta_referrals").select("*").eq("inviter_id", String(tgId)).order("created_at",{ascending:false});
-    const count = data ? data.length : 0;
-    document.getElementById("refCount").innerText = count;
-    localStorage.setItem(refKey, JSON.stringify((data||[]).map(r=>r.invited_id)));
-    const list=document.getElementById("refList"); if(!list) return;
-    list.innerHTML="";
-    if(count===0){ list.innerHTML='<p class="text-center text-white/40 text-xs mt-4">No referrals yet</p>'; }
-    else{
-      data.forEach((r,i)=>{
-        const displayName = r.invited_name || r.invited_username || ("User "+(i+1));
-        const initial = displayName.charAt(0).toUpperCase();
-        const item=document.createElement("div");
-        item.className="glass p-3 text-xs flex justify-between items-center";
-        item.innerHTML=`<div class="flex items-center gap-2"><div class="w-8 h-8 bg-blue-500/30 rounded-full flex items-center justify-center font-bold">${initial}</div><div><p class="font-bold text-[13px]">${displayName}</p><p class="text-white/40 text-[10px]">${r.created_at?new Date(r.created_at).toLocaleDateString():""}</p></div></div><span class="text-blue-300 text-[10px]">5% team</span>`;
-        list.appendChild(item);
-      });
-    }
-    updateFriendsUI();
-  }catch(e){ console.log(e); }
-}
-function claimReferral(){ const myRefs=readArray(refKey);const count=myRefs.length;const unclaimed=Math.max(0,count*100-refClaimed); if(unclaimed<=0){alert("All claimed");return;} if(!isVerified()){alert("Verify first");return;} refClaimed+=unclaimed;localStorage.setItem(refClaimedKey,String(refClaimed)); poolBalance+=unclaimed;localStorage.setItem("v_balance",String(poolBalance)); updateUI();syncToSupabase();alert("+"+unclaimed+" VANTA"); }
-function claimTeamWallet(){ const available=Math.max(0,teamWallet-teamClaimed); if(available<=0){alert("No team reward yet");return;} teamClaimed+=available;poolBalance+=available; localStorage.setItem(teamClaimedKey,String(teamClaimed));localStorage.setItem("v_balance",String(poolBalance)); updateUI();syncToSupabase();alert("Team +"+available.toFixed(4)+" VANTA"); }
-async function copyRef(){
-  const l = document.getElementById("refLink").innerText;
-  const ok = await copyTextRobust(l);
-  if(ok){
-    alert("Invite link copied!\n\n" + l);
-    if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.notificationOccurred("success");
-  } else {
-    alert("Please copy the link manually.");
-  }
-}
-function tapCoin(){ return; }
-async function claimMining(){ if(miningPending<=0){alert("Nothing to claim");return;} if(isClaiming)return;isClaiming=true; const btn=document.getElementById("claimBtn");btn.innerText="Loading Ad (Monetag)...";btn.disabled=true; async function finish(){ const amount=miningPending;poolBalance+=amount;miningPending=0; localStorage.setItem("v_balance",String(poolBalance));localStorage.setItem("v_mining_pending","0"); updateUI();btn.innerText="CLAIM TO POOL (Watch Ad)";btn.disabled=false;isClaiming=false; await syncToSupabase();alert("+"+amount.toFixed(4)+" VANTA"); } setTimeout(async()=>{ if(typeof window.show_11874733==="function"){ try{const r=window.show_11874733();if(r&&r.then){r.then(finish).catch(()=>{btn.disabled=false;btn.innerText="CLAIM TO POOL (Watch Ad)";isClaiming=false;});}else await finish();}catch(e){await finish();} }else await finish(); },800); }
-async function syncToSupabase(){ try{ const vip=getVipData(); await supabaseClient.from("vanta_users").upsert({tg_id:String(tgId),username:String(tgName),balance:Number(poolBalance),mining_pending:Number(miningPending),miner_level:Number(currentMinerLevel),verified:isVerified(),verified_wallet:getVerifiedWallet(),wallet:connectedWalletAddress||localStorage.getItem("v_wallet")||"",ref_claimed:Number(refClaimed),team_wallet:Number(teamWallet),team_claimed:Number(teamClaimed),total_refs:readArray(refKey).length,nft_tier:vip.tier||null,updated_at:new Date().toISOString()},{onConflict:'tg_id'}); }catch(e){} }
-async function saveWithdrawToSupabase(req){ try{const {error}=await supabaseClient.from("withdraws").insert({user_id:String(req.userId),user_name:String(req.userName),amount:Number(req.amount),receive:Number(req.receive),wallet:String(req.wallet),status:"pending"});if(error)throw error;return true;}catch(e){return false;} }
-async function loadWithdrawsFromSupabase(){ const div=document.getElementById("withdrawHistory"); try{ if(div) div.innerHTML='<p class="text-white/30 text-xs text-center">Loading history...</p>'; let data = null; try{ const res = await supabaseClient.from("withdraws").select("*").eq("user_id", String(tgId)).order("created_at",{ascending:false}).limit(20); if(res.data && res.data.length>0) data = res.data; }catch(e){} if(!data||data.length===0){ if(div) div.innerHTML='<p class="text-white/30 text-xs text-center">No withdrawals yet</p>'; return; } div.innerHTML=""; data.forEach(r=>{ const row=document.createElement("div"); row.className="glass p-2 mt-2 text-[11px] flex justify-between border border-white/5"; row.innerHTML=`<div><b>${r.amount} → ${r.receive}</b><br><span class="text-white/40 text-[9px]">${new Date(r.created_at).toLocaleString()}</span></div><span class="${r.status==='pending'?'text-yellow-400':'text-green-400'} font-bold">${String(r.status).toUpperCase()}</span>`; div.appendChild(row); }); }catch(e){ if(div) div.innerHTML='<p class="text-red-400 text-xs text-center">Failed to load</p>'; } }
-function getLastWithdrawLocal(){ return safeNum(localStorage.getItem("v_last_withdraw_"+tgId),0); }
-function getWithdrawRemainingMs(){ const last = getLastWithdrawLocal(); if(!last) return 0; const diff = Date.now() - last; if(diff >= WITHDRAW_COOLDOWN_MS) return 0; return WITHDRAW_COOLDOWN_MS - diff; }
-function formatWithdrawRemaining(ms){ const h = Math.floor(ms/3600000); const m = Math.floor((ms%3600000)/60000); const s = Math.floor((ms%60000)/1000); return `${h}h ${m}m ${s}s`; }
+// === WITHDRAW ===
+function getWithdrawRemainingMs(){ const last = Number(localStorage.getItem("v_last_withdraw_"+tgId)||0); if(!last) return 0; const diff = Date.now()-last; if(diff >= WITHDRAW_COOLDOWN_MS) return 0; return WITHDRAW_COOLDOWN_MS - diff; }
+function formatWithdrawRemaining(ms){ const h=Math.floor(ms/3600000); const m=Math.floor((ms%3600000)/60000); const s=Math.floor((ms%60000)/1000); return `${h}h ${m}m ${s}s`; }
 function updateWithdrawUI(){
   calcReceive();
-  const b=document.getElementById("withdrawBtn"); const cdEl=document.getElementById("withdrawCooldownText"); const remain = getWithdrawRemainingMs();
-  if(cdEl){ if(remain > 0){ cdEl.innerText = `⏳ Next withdrawal in ${formatWithdrawRemaining(remain)} - 1 per 24 hours`; cdEl.className = "text-xs text-red-400 mt-1 font-bold"; } else { cdEl.innerText = `✅ Withdrawal Available - 1 per 24 hours`; cdEl.className = "text-xs text-yellow-300 mt-1 font-bold"; } }
-  if(b){ if(!isVerified()){ b.innerText="🔐 VERIFY TO WITHDRAW"; b.disabled=false; } else if(remain > 0){ b.innerText=`⏳ WAIT ${formatWithdrawRemaining(remain)}`; b.disabled=true; } else { b.innerText="Request Withdrawal"; b.disabled=false; } }
-}
-setInterval(updateWithdrawUI, 1000);
-async function checkWithdrawCooldownSupabase(){
-  try{ const { data } = await supabaseClient.from("withdraws").select("created_at").eq("user_id", String(tgId)).order("created_at",{ascending:false}).limit(1).maybeSingle(); if(data && data.created_at){ const last = new Date(data.created_at).getTime(); const diff = Date.now() - last; if(diff < WITHDRAW_COOLDOWN_MS){ localStorage.setItem("v_last_withdraw_"+tgId, String(last)); return WITHDRAW_COOLDOWN_MS - diff; } } }catch(e){} return getWithdrawRemainingMs();
+  const b=document.getElementById("withdrawBtn"); const cdEl=document.getElementById("withdrawCooldownText"); const remain=getWithdrawRemainingMs();
+  if(cdEl){ if(remain>0){ cdEl.innerText=`⏳ Next withdrawal in ${formatWithdrawRemaining(remain)} - 1 per 24 hours`; } else { cdEl.innerText=`✅ Withdrawal Available - 1 per 24 hours`; } }
+  if(b){ if(!isUserJoined()){ b.innerText="📢 JOIN CHANNEL TO WITHDRAW"; } else if(remain>0){ b.innerText=`⏳ WAIT ${formatWithdrawRemaining(remain)}`; b.disabled=true; } else { b.innerText="Request Withdrawal"; b.disabled=false; } }
 }
 function calcReceive(){
   const i=document.getElementById("withdrawAmt"); const r=document.getElementById("receiveAmt");
-  const a=Number(i.value.trim()||0); const rec=Math.max(0,a-WITHDRAW_FEE); if(r) r.innerText=rec.toFixed(2);
-  const limits=getWithdrawLimits();
-  const limitText=document.getElementById("withdrawLimitText");
-  if(limitText) limitText.innerHTML=`Minimum: <b class="text-[#FFD700]">${limits.min} VANTA</b> • Maximum: <b class="text-[#FFD700]">${limits.max} VANTA</b> • Fee: <b>70 VANTA</b> • <span class="text-yellow-300">${limits.label}</span>`;
-  if(i){ i.placeholder=`Enter amount (${limits.min} - ${limits.max})`; i.min=limits.min; i.max=limits.max; }
+  const a=Number(i?.value?.trim()||0); const rec=Math.max(0,a-WITHDRAW_FEE); if(r) r.innerText=rec.toFixed(2);
+  const limits=getWithdrawLimits(); const limitText=document.getElementById("withdrawLimitText");
+  if(limitText) limitText.innerHTML=`Minimum: <b>${limits.min} VANTA</b> • Maximum: <b>${limits.max} VANTA</b> • Fee: <b>70 VANTA</b>`;
+  if(i){ i.placeholder=`Enter amount (${limits.min} - ${limits.max})`; }
 }
 async function withdraw(){
-  if(!isVerified()){alert("Please verify your account first");return;}
-  const localRemain = getWithdrawRemainingMs();
-  if(localRemain > 0){ alert(`You have already withdrawn in the last 24 hours.\n\nYour next withdrawal will be available in ${formatWithdrawRemaining(localRemain)}.\n\nStrict Rule: Only 1 withdrawal is allowed per 24 hours.`); updateWithdrawUI(); return; }
-  const serverRemain = await checkWithdrawCooldownSupabase();
-  if(serverRemain > 0){ alert(`You have already withdrawn in the last 24 hours.\n\nYour next withdrawal will be available in ${formatWithdrawRemaining(serverRemain)}.\n\nStrict Rule: Only 1 withdrawal is allowed per 24 hours.`); updateWithdrawUI(); return; }
-  const input=document.getElementById("withdrawAmt");
-  const amount=Number(input.value.trim());
-  if(!Number.isFinite(amount)){alert("Please enter an amount");return;}
+  if(!isUserJoined()){alert("Please join channel first - free");return;}
+  const localRemain=getWithdrawRemainingMs();
+  if(localRemain>0){ alert(`You don withdraw in last 24 hours.\nNext in ${formatWithdrawRemaining(localRemain)}`); return; }
+  const input=document.getElementById("withdrawAmt"); const amount=Number(input.value.trim());
+  if(!Number.isFinite(amount)){alert("Enter amount");return;}
   const limits=getWithdrawLimits();
-  const MIN_WITHDRAW=limits.min; const MAX_WITHDRAW=limits.max;
-  if(amount < MIN_WITHDRAW){ alert(`Your withdrawal must be ${MIN_WITHDRAW} VANTA\n\n${limits.label}\nBuy VIP to withdraw 2000.`); return; }
-  if(amount > MAX_WITHDRAW){ alert(`Your maximum withdrawal is ${MAX_WITHDRAW} VANTA.\n\n${limits.label}\nYou cannot withdraw more than ${MAX_WITHDRAW} VANTA at once.`); return; }
-  if(amount !== MIN_WITHDRAW){ alert(`You must withdraw exactly ${MIN_WITHDRAW} VANTA\n\n${limits.label}`); return; }
+  if(amount < limits.min){ alert(`Your withdrawal must be ${limits.min} VANTA`); return; }
+  if(amount > limits.max){ alert(`Max is ${limits.max} VANTA`); return; }
+  if(amount !== limits.min){ alert(`You must withdraw exactly ${limits.min} VANTA`); return; }
   if(amount>poolBalance){alert("Insufficient balance");return;}
-  const wallet=connectedWalletAddress||localStorage.getItem("v_wallet")||"";if(!wallet){alert("Please connect your wallet");return;}
-  const receive=amount-WITHDRAW_FEE;
-  if(receive <= 0){alert("The amount is too small after the fee");return;}
-  if(!confirm(`Withdrawal Summary\n\nAmount: ${amount} VANTA\nFee: ${WITHDRAW_FEE} VANTA\nYou will receive: ${receive} VANTA\n\nAfter this withdrawal, you must wait 24 hours before the next one.`))return;
-  const req={amount,receive,wallet,userId:String(tgId),userName:String(tgName)};
-  const saved=await saveWithdrawToSupabase(req);
-  if(!saved){alert("Network error. Please try again.");return;}
+  const wallet=connectedWalletAddress||localStorage.getItem("v_wallet")||""; if(!wallet){alert("Connect wallet");return;}
+  const receive=amount-WITHDRAW_FEE; if(receive<=0){alert("Too small after fee");return;}
+  if(!confirm(`Amount: ${amount} VANTA\nFee: ${WITHDRAW_FEE}\nYou receive: ${receive}`)) return;
   localStorage.setItem("v_last_withdraw_"+tgId, String(Date.now()));
-  poolBalance-=amount;localStorage.setItem("v_balance",String(poolBalance));
-  updateUI();loadWithdrawsFromSupabase();await syncToSupabase();input.value="";calcReceive();updateWithdrawUI();
-  alert(`Withdrawal request submitted successfully.\n\nYou will receive ${receive} VANTA.\nYour next withdrawal will be available in 24 hours.`);
+  poolBalance-=amount; localStorage.setItem("v_balance",String(poolBalance));
+  updateUI(); input.value=""; calcReceive(); updateWithdrawUI();
+  alert(`Withdrawal submitted ✅\nYou go receive ${receive} VANTA\nNext in 24 hours.`);
 }
-let lastRenderedLevel = -1;
+
+let lastRenderedLevel=-1;
 function updateUI(){
   autoJumpLevel();
-  if(poolBalance>MAX_BALANCE){poolBalance=MAX_BALANCE;localStorage.setItem("v_balance",String(MAX_BALANCE));}
-  poolBalance=Math.max(0,safeNum(poolBalance,0));miningPending=Math.max(0,safeNum(miningPending,0));
+  poolBalance=Math.max(0,safeNum(poolBalance,0)); miningPending=Math.max(0,safeNum(miningPending,0));
   document.getElementById("miningBalance").innerText=miningPending.toFixed(5);
   document.getElementById("miningProfile").innerText=miningPending.toFixed(5);
   const rate=getVantaPerSec(currentMinerLevel);
   document.getElementById("power").innerText=(3.02+currentMinerLevel*0.06).toFixed(2);
   const minedToday=getMinedToday(); const cap=getDailyCap();
-  if(minedToday>=cap){ document.getElementById("miningPlus").innerText="DAILY LIMIT REACHED ✅"; }
-  else{ document.getElementById("miningPlus").innerText="+"+rate.toFixed(6)+" /sec"; }
+  document.getElementById("miningPlus").innerText = minedToday>=cap ? "DAILY LIMIT REACHED ✅" : "+"+rate.toFixed(6)+" /sec";
   document.getElementById("rateShow").innerText=rate.toFixed(6);
-  const dayRate=getMiningRatePerDay(currentMinerLevel);
-  const dayEl=document.getElementById("dayRate"); if(dayEl) dayEl.innerText=dayRate.toFixed(2)+"/day";
+  const dayEl=document.getElementById("dayRate"); if(dayEl) dayEl.innerText=getMiningRatePerDay(currentMinerLevel).toFixed(2)+"/day";
   const badge=document.getElementById("joinStatusBadge");
   if(isUserJoined()){badge.innerText="● JOINED";badge.className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500";}
   else{badge.innerText="● NOT JOINED";badge.className="bg-red-500/20 text-red-400 text-xs px-3 py-1 rounded-full border border-red-500";}
-  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();checkNftDailyBonus();updateDailyCheckUI();updateBioUI();
-  updateVaultUI(); updateDailyUI();
+  calcReceive();updateFriendsUI();updateVerificationUI();updateWithdrawUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();checkNftDailyBonus();updateDailyCheckUI();updateBioUI();updateVaultUI();updateDailyUI();
   if(lastRenderedLevel!==currentMinerLevel){ renderMiners(); lastRenderedLevel=currentMinerLevel; }
 }
-function showPage(page){ ["mine","vip","spin","miners","tasks","friends","profile"].forEach(n=>{ const el=document.getElementById(n+"-page"); if(el) el.classList.add("hidden"); const nav=document.getElementById("nav-"+n); if(nav){ nav.classList.remove("nav-active"); nav.style.opacity="0.6"; } }); document.getElementById(page+"-page").classList.remove("hidden"); const navActive=document.getElementById("nav-"+page); if(navActive){ navActive.classList.add("nav-active"); navActive.style.opacity="1"; } if(page==="miners")renderMiners(); if(page==="tasks"){checkTasksUI();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateDailyCheckUI();updateBioUI();} if(page==="friends")loadMyReferrals(); if(page==="profile"){loadWithdrawsFromSupabase();fetchProfileOnchain();fetchLivePrice();updateVaultUI();} if(page==="spin"){updateSpinUI();} if(page==="vip"){updateVipUI(); fetchNftSupply();} }
-async function registerReferral(){
-  const inviterParam = urlParams.get("ref") || urlParams.get("start");
-  const startParam = tg?.initDataUnsafe?.start_param || "";
-  const inviter = inviterParam || startParam;
-  if(!inviter || inviter === String(tgId)) return;
-  if(localStorage.getItem("v_inviter_registered")==="1") return;
-  try{
-    const { data } = await supabaseClient.from("vanta_referrals").select("*").eq("invited_id", String(tgId)).maybeSingle();
-    if(data){ localStorage.setItem("v_inviter_registered","1"); return; }
-    const realName = tg?.initDataUnsafe?.user?.first_name || tgName || "Miner";
-    const realUsername = tg?.initDataUnsafe?.user?.username || "";
-    const fullName = realUsername ? realName + " (@" + realUsername + ")" : realName;
-    await supabaseClient.from("vanta_referrals").insert({
-      inviter_id: String(inviter),
-      invited_id: String(tgId),
-      invited_name: String(fullName),
-      invited_username: String(realUsername)
-    });
-    localStorage.setItem("v_inviter_registered","1");
-    localStorage.setItem("v_inviter", inviter);
-  }catch(e){ console.log("ref error", e); }
+function showPage(page){
+  ["mine","vip","spin","miners","tasks","friends","profile"].forEach(n=>{ const el=document.getElementById(n+"-page"); if(el) el.classList.add("hidden"); const nav=document.getElementById("nav-"+n); if(nav){ nav.classList.remove("nav-active"); nav.style.opacity="0.6"; } });
+  document.getElementById(page+"-page").classList.remove("hidden");
+  const navActive=document.getElementById("nav-"+page); if(navActive){ navActive.classList.add("nav-active"); navActive.style.opacity="1"; }
+  if(page==="miners") renderMiners();
+  if(page==="tasks"){ checkTasksUI(); }
+  if(page==="profile"){ loadWithdrawsFromSupabase(); }
+  if(page==="vip"){ updateVipUI(); }
 }
-applyOfflineMining();
-registerReferral();
-setInterval(()=>{
-  const cap=getDailyCap(); const mined=getMinedToday();
-  if(mined>=cap) return;
-  const rate=getVantaPerSec(currentMinerLevel);
-  let toAdd=rate;
-  if(mined+toAdd>cap) toAdd=cap-mined;
-  if(toAdd<=0) return;
-  miningPending+=toAdd; addMinedToday(toAdd);
-  localStorage.setItem("v_mining_pending",String(miningPending));
-  localStorage.setItem("v_last_mine_time",String(Date.now()));
-  updateUI();
-},1000);
-const savedWallet=localStorage.getItem("v_wallet");if(savedWallet){document.getElementById("walletShort").innerText="✅ "+savedWallet.slice(0,6)+"..."+savedWallet.slice(-4);const wp=document.getElementById("walletDisplayProfile"); if(wp) wp.innerText=savedWallet.slice(0,5)+"..."+savedWallet.slice(-3);}
+setInterval(()=>{ const cap=getDailyCap(); const mined=getMinedToday(); if(mined>=cap) return; const rate=getVantaPerSec(currentMinerLevel); let toAdd=rate; if(mined+toAdd>cap) toAdd=cap-mined; if(toAdd<=0) return; miningPending+=toAdd; addMinedToday(toAdd); localStorage.setItem("v_mining_pending",String(miningPending)); updateUI(); },1000);
+const savedWallet=localStorage.getItem("v_wallet"); if(savedWallet){ document.getElementById("walletShort").innerText="✅ "+savedWallet.slice(0,6)+"..."+savedWallet.slice(-4); const wp=document.getElementById("walletDisplayProfile"); if(wp) wp.innerText=savedWallet.slice(0,5)+"..."+savedWallet.slice(-3); }
 document.getElementById("soundBtn").innerText=soundOn?"🔊 Sound ON":"🔇 Sound OFF";
-updateUI();renderMiners();checkTasksUI();updateFriendsUI();loadMyReferrals();loadWithdrawsFromSupabase();updateAdsUI();updateMonetagUI();updateReactUI();updatePayoutUI();updateSpinUI();updateVipUI();fetchNftSupply();updateVaultUI();updateDailyCheckUI();updateBioUI();
-setInterval(()=>{syncToSupabase();},15000);
+updateUI(); renderMiners(); checkTasksUI();
 </script>
 </body>
 </html>
